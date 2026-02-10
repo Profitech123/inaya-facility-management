@@ -1,0 +1,244 @@
+import React, { useEffect, useState } from 'react';
+import { base44 } from '@/api/base44Client';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, CheckCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+
+export default function BookService() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [user, setUser] = useState(null);
+  const [step, setStep] = useState(1);
+  const [serviceId, setServiceId] = useState(null);
+  const [bookingData, setBookingData] = useState({
+    property_id: '',
+    scheduled_date: null,
+    scheduled_time: '',
+    customer_notes: ''
+  });
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
+    const params = new URLSearchParams(window.location.search);
+    setServiceId(params.get('service'));
+  }, []);
+
+  const { data: service } = useQuery({
+    queryKey: ['service', serviceId],
+    queryFn: async () => {
+      const services = await base44.entities.Service.list();
+      return services.find(s => s.id === serviceId);
+    },
+    enabled: !!serviceId
+  });
+
+  const { data: properties = [] } = useQuery({
+    queryKey: ['myProperties', user?.id],
+    queryFn: () => base44.entities.Property.filter({ owner_id: user.id }),
+    enabled: !!user,
+    initialData: []
+  });
+
+  const createBookingMutation = useMutation({
+    mutationFn: (data) => base44.entities.Booking.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['myBookings']);
+      setStep(3);
+    }
+  });
+
+  const handleBooking = () => {
+    if (!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    createBookingMutation.mutate({
+      service_id: serviceId,
+      customer_id: user.id,
+      property_id: bookingData.property_id,
+      scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
+      scheduled_time: bookingData.scheduled_time,
+      customer_notes: bookingData.customer_notes,
+      total_amount: service.price,
+      status: 'pending',
+      payment_status: 'paid'
+    });
+  };
+
+  if (!user || !service) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (step === 3) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="text-center py-12">
+            <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Booking Confirmed!</h2>
+            <p className="text-slate-600 mb-6">
+              Your service has been booked successfully. We'll send you a confirmation email shortly.
+            </p>
+            <div className="space-y-3">
+              <Button onClick={() => navigate(createPageUrl('MyBookings'))} className="w-full bg-emerald-600 hover:bg-emerald-700">
+                View My Bookings
+              </Button>
+              <Button onClick={() => navigate(createPageUrl('Dashboard'))} variant="outline" className="w-full">
+                Go to Dashboard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
+        <div className="max-w-4xl mx-auto px-6">
+          <h1 className="text-4xl font-bold mb-2">Book Service</h1>
+          <p className="text-slate-300">{service.name}</p>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Booking Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Select Property</label>
+                  {properties.length === 0 ? (
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-yellow-800 mb-2">No properties added yet.</p>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={() => navigate(createPageUrl('MyProperties'))}
+                      >
+                        Add Property
+                      </Button>
+                    </div>
+                  ) : (
+                    <Select value={bookingData.property_id} onValueChange={(val) => setBookingData({...bookingData, property_id: val})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose a property" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {properties.map(prop => (
+                          <SelectItem key={prop.id} value={prop.id}>
+                            {prop.address} ({prop.property_type})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Select Date</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start">
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {bookingData.scheduled_date ? format(bookingData.scheduled_date, 'PPP') : 'Pick a date'}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={bookingData.scheduled_date}
+                        onSelect={(date) => setBookingData({...bookingData, scheduled_date: date})}
+                        disabled={(date) => date < new Date()}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Select Time</label>
+                  <Select value={bookingData.scheduled_time} onValueChange={(val) => setBookingData({...bookingData, scheduled_time: val})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a time slot" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="08:00-10:00">08:00 - 10:00</SelectItem>
+                      <SelectItem value="10:00-12:00">10:00 - 12:00</SelectItem>
+                      <SelectItem value="12:00-14:00">12:00 - 14:00</SelectItem>
+                      <SelectItem value="14:00-16:00">14:00 - 16:00</SelectItem>
+                      <SelectItem value="16:00-18:00">16:00 - 18:00</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Additional Notes</label>
+                  <Textarea
+                    value={bookingData.customer_notes}
+                    onChange={(e) => setBookingData({...bookingData, customer_notes: e.target.value})}
+                    placeholder="Any special instructions or requirements"
+                    rows={4}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <div className="text-sm text-slate-600 mb-1">Service</div>
+                  <div className="font-medium text-slate-900">{service.name}</div>
+                </div>
+                
+                {bookingData.scheduled_date && (
+                  <div>
+                    <div className="text-sm text-slate-600 mb-1">Date & Time</div>
+                    <div className="font-medium text-slate-900">
+                      {format(bookingData.scheduled_date, 'PPP')}
+                      {bookingData.scheduled_time && ` at ${bookingData.scheduled_time}`}
+                    </div>
+                  </div>
+                )}
+
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span>AED {service.price}</span>
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={handleBooking} 
+                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  disabled={!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time || createBookingMutation.isPending}
+                >
+                  {createBookingMutation.isPending ? 'Processing...' : 'Confirm & Pay'}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

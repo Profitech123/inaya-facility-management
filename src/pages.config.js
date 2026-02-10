@@ -56,6 +56,12 @@ import Dashboard from './pages/Dashboard';
 import MyBookings from './pages/MyBookings';
 import MySubscriptions from './pages/MySubscriptions';
 import MyProperties from './pages/MyProperties';
+import BookService from './pages/BookService';
+import SubscribePackage from './pages/SubscribePackage';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminServices from './pages/AdminServices';
+import AdminBookings from './pages/AdminBookings';
+import AdminSubscriptions from './pages/AdminSubscriptions';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +75,12 @@ export const PAGES = {
     "MyBookings": MyBookings,
     "MySubscriptions": MySubscriptions,
     "MyProperties": MyProperties,
+    "BookService": BookService,
+    "SubscribePackage": SubscribePackage,
+    "AdminDashboard": AdminDashboard,
+    "AdminServices": AdminServices,
+    "AdminBookings": AdminBookings,
+    "AdminSubscriptions": AdminSubscriptions,
 }
 
 export const pagesConfig = {
