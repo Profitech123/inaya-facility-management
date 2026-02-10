@@ -23,6 +23,12 @@ export default function AdminBookings() {
     initialData: []
   });
 
+  const { data: providers = [] } = useQuery({
+    queryKey: ['providers'],
+    queryFn: () => base44.entities.Provider.list(),
+    initialData: []
+  });
+
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Booking.update(id, data),
     onSuccess: () => {
@@ -94,15 +100,31 @@ export default function AdminBookings() {
                     
                     <div>
                       <div className="text-sm text-slate-600 mb-2">Assign Provider</div>
-                      <Input
-                        placeholder="Provider name"
-                        defaultValue={booking.assigned_provider || ''}
-                        onBlur={(e) => {
-                          if (e.target.value !== booking.assigned_provider) {
-                            handleProviderAssign(booking, e.target.value);
-                          }
+                      <Select 
+                        value={booking.assigned_provider_id || ''} 
+                        onValueChange={(val) => {
+                          const provider = providers.find(p => p.id === val);
+                          updateMutation.mutate({
+                            id: booking.id,
+                            data: { 
+                              ...booking, 
+                              assigned_provider_id: val,
+                              assigned_provider: provider?.full_name || ''
+                            }
+                          });
                         }}
-                      />
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select provider" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {providers.map(provider => (
+                            <SelectItem key={provider.id} value={provider.id}>
+                              {provider.full_name} ({provider.average_rating.toFixed(1)}★)
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div>

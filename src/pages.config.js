@@ -62,6 +62,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminServices from './pages/AdminServices';
 import AdminBookings from './pages/AdminBookings';
 import AdminSubscriptions from './pages/AdminSubscriptions';
+import ProviderPortal from './pages/ProviderPortal';
+import ProviderJobs from './pages/ProviderJobs';
+import ProviderJobDetails from './pages/ProviderJobDetails';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +84,9 @@ export const PAGES = {
     "AdminServices": AdminServices,
     "AdminBookings": AdminBookings,
     "AdminSubscriptions": AdminSubscriptions,
+    "ProviderPortal": ProviderPortal,
+    "ProviderJobs": ProviderJobs,
+    "ProviderJobDetails": ProviderJobDetails,
 }
 
 export const pagesConfig = {
