@@ -9,6 +9,7 @@ import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users 
 import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
+import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
 import AuthGuard from '../components/AuthGuard';
 
 function AdminSubscriptionsContent() {
