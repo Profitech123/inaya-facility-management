@@ -49,6 +49,7 @@
  */
 import About from './pages/About';
 import AdminAuditLogs from './pages/AdminAuditLogs';
+import AdminBookings from './pages/AdminBookings';
 import AdminCSVMigration from './pages/AdminCSVMigration';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLiveChat from './pages/AdminLiveChat';
@@ -64,6 +65,7 @@ import Dashboard from './pages/Dashboard';
 import HardServices from './pages/HardServices';
 import Home from './pages/Home';
 import IntegratedFM from './pages/IntegratedFM';
+import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
 import OurPeople from './pages/OurPeople';
@@ -77,15 +79,15 @@ import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
-import AdminBookings from './pages/AdminBookings';
 import UserProfile from './pages/UserProfile';
-import MyBookings from './pages/MyBookings';
+import AdminProviderDetail from './pages/AdminProviderDetail';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "About": About,
     "AdminAuditLogs": AdminAuditLogs,
+    "AdminBookings": AdminBookings,
     "AdminCSVMigration": AdminCSVMigration,
     "AdminDashboard": AdminDashboard,
     "AdminLiveChat": AdminLiveChat,
@@ -101,6 +103,7 @@ export const PAGES = {
     "HardServices": HardServices,
     "Home": Home,
     "IntegratedFM": IntegratedFM,
+    "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,
     "OurPeople": OurPeople,
@@ -114,9 +117,8 @@ export const PAGES = {
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
     "Support": Support,
-    "AdminBookings": AdminBookings,
     "UserProfile": UserProfile,
-    "MyBookings": MyBookings,
+    "AdminProviderDetail": AdminProviderDetail,
 }
 
 export const pagesConfig = {
