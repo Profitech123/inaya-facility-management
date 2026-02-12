@@ -90,7 +90,7 @@ export default function Hero() {
           >
             <div className="bg-gradient-to-br from-slate-200 to-slate-100 rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1621905167918-48416bd8575a?w=600&q=80"
+                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80"
                 alt="Professional maintenance technician"
                 className="w-full h-full object-cover"
                 loading="eager"
