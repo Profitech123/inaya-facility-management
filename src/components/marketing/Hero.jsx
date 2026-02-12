@@ -56,7 +56,7 @@ export default function Hero() {
                   Explore Packages
                 </Button>
               </Link>
-              <Link to={createPageUrl('Services')}>
+              <Link to={createPageUrl('OnDemandServices')}>
                 <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100 text-base px-8 h-12">
                   Book a Service
                 </Button>

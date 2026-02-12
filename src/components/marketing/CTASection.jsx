@@ -35,7 +35,7 @@ export default function CTASection() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to={createPageUrl('Services')}>
+            <Link to={createPageUrl('OnDemandServices')}>
               <Button size="lg" className="bg-white text-emerald-700 hover:bg-emerald-50 text-base px-8 h-14 shadow-xl shadow-black/10 transition-all hover:-translate-y-0.5 font-semibold">
                 Book Now
                 <ArrowRight className="w-5 h-5 ml-2" />

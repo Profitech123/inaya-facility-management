@@ -34,10 +34,17 @@ export default function BookService() {
     const checkAuth = async () => {
       try {
         const currentUser = await base44.auth.me();
+        // Ensure customers don't get redirected to admin
+        if (currentUser.role === 'admin') {
+          setUser(currentUser);
+          setIsAuthChecking(false);
+          return;
+        }
         setUser(currentUser);
         setIsAuthChecking(false);
       } catch (error) {
         if (error?.status === 401) {
+          // Redirect back to this exact booking page after login
           base44.auth.redirectToLogin(window.location.href);
         } else {
           setIsAuthChecking(false);
