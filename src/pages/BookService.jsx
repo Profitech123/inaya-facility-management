@@ -82,16 +82,10 @@ export default function BookService() {
       return;
     }
 
-    // Check if running in iframe
-    if (window.self !== window.top) {
-      alert('Payment checkout only works from the published app. Please open the app in a new tab.');
-      return;
-    }
-
     setIsProcessingPayment(true);
 
-    // Step 1: Create booking with pending payment
-    const booking = await createBookingMutation.mutateAsync({
+    // Create booking with dummy payment (testing mode)
+    await createBookingMutation.mutateAsync({
       service_id: serviceId,
       customer_id: user.id,
       property_id: bookingData.property_id,
@@ -101,24 +95,12 @@ export default function BookService() {
       total_amount: grandTotal,
       addon_ids: selectedAddonIds,
       addons_amount: addonsTotal,
-      status: 'pending',
-      payment_status: 'pending'
+      status: 'confirmed',
+      payment_status: 'paid'
     });
 
-    // Step 2: Create Stripe checkout session
-    const response = await base44.functions.invoke('createCheckoutSession', {
-      booking_id: booking.id,
-      service_name: service.name,
-      total_amount: grandTotal,
-    });
-
-    // Step 3: Redirect to Stripe
-    if (response.data?.checkout_url) {
-      window.location.href = response.data.checkout_url;
-    } else {
-      toast.error('Failed to create payment session');
-      setIsProcessingPayment(false);
-    }
+    setIsProcessingPayment(false);
+    setStep(3);
   };
 
   if (!user || !service) {
