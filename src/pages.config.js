@@ -79,6 +79,10 @@ import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import UserProfile from './pages/UserProfile';
+import OnDemandServices from './pages/OnDemandServices';
+import FAQ from './pages/FAQ';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +119,10 @@ export const PAGES = {
     "Subscriptions": Subscriptions,
     "Support": Support,
     "UserProfile": UserProfile,
+    "OnDemandServices": OnDemandServices,
+    "FAQ": FAQ,
+    "TermsOfService": TermsOfService,
+    "PrivacyPolicy": PrivacyPolicy,
 }
 
 export const pagesConfig = {
