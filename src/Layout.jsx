@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomerChatWidget from './components/chat/CustomerChatWidget';
+import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 
 export default function Layout({ children, currentPageName }) {
@@ -193,7 +194,7 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </main>
 
-      {user && user.role !== 'admin' && <CustomerChatWidget />}
+      <AIChatWidget />
 
       <footer className="bg-slate-950 text-white py-16">
         <div className="max-w-7xl mx-auto px-6">

@@ -64,25 +64,25 @@ import BookService from './pages/BookService';
 import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
+import FAQ from './pages/FAQ';
 import HardServices from './pages/HardServices';
 import Home from './pages/Home';
 import IntegratedFM from './pages/IntegratedFM';
 import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
+import OnDemandServices from './pages/OnDemandServices';
 import OurPeople from './pages/OurPeople';
 import PaymentHistory from './pages/PaymentHistory';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProjectManagement from './pages/ProjectManagement';
 import Services from './pages/Services';
 import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
-import UserProfile from './pages/UserProfile';
-import OnDemandServices from './pages/OnDemandServices';
-import FAQ from './pages/FAQ';
 import TermsOfService from './pages/TermsOfService';
-import PrivacyPolicy from './pages/PrivacyPolicy';
+import UserProfile from './pages/UserProfile';
 import __Layout from './Layout.jsx';
 
 
@@ -104,25 +104,25 @@ export const PAGES = {
     "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
     "Dashboard": Dashboard,
+    "FAQ": FAQ,
     "HardServices": HardServices,
     "Home": Home,
     "IntegratedFM": IntegratedFM,
     "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,
+    "OnDemandServices": OnDemandServices,
     "OurPeople": OurPeople,
     "PaymentHistory": PaymentHistory,
+    "PrivacyPolicy": PrivacyPolicy,
     "ProjectManagement": ProjectManagement,
     "Services": Services,
     "SoftServices": SoftServices,
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
     "Support": Support,
-    "UserProfile": UserProfile,
-    "OnDemandServices": OnDemandServices,
-    "FAQ": FAQ,
     "TermsOfService": TermsOfService,
-    "PrivacyPolicy": PrivacyPolicy,
+    "UserProfile": UserProfile,
 }
 
 export const pagesConfig = {
