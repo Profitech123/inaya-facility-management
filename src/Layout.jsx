@@ -89,7 +89,15 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenuContent>
               </DropdownMenu>
               <Link to={createPageUrl('OnDemandServices')} className={navLinkClass('OnDemandServices')}>On-Demand</Link>
-              <Link to={createPageUrl('Subscriptions')} className={navLinkClass('Subscriptions')}>Packages</Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['Subscriptions','PackageBuilder'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
+                  Packages
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('Subscriptions')} className="w-full">Pre-built Plans</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('PackageBuilder')} className="w-full">Custom Package Builder</Link></DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Link to={createPageUrl('FAQ')} className={navLinkClass('FAQ')}>FAQ</Link>
               <Link to={createPageUrl('Contact')} className={navLinkClass('Contact')}>Contact</Link>
             </div>
@@ -176,6 +184,7 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Project Management</Link>
               <Link to={createPageUrl('OnDemandServices')} className="block text-emerald-600 font-semibold" onClick={() => setMobileMenuOpen(false)}>On-Demand Services</Link>
               <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Packages</Link>
+              <Link to={createPageUrl('PackageBuilder')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Custom Builder</Link>
               <Link to={createPageUrl('FAQ')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
               <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
               {!user && (

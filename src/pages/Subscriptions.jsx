@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, Puzzle, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import PlanCards from '../components/subscriptions/PlanCards';
 import ComparisonTable from '../components/subscriptions/ComparisonTable';
 import PlanManagement from '../components/subscriptions/PlanManagement';
@@ -80,8 +83,28 @@ export default function Subscriptions() {
         </div>
       </div>
 
-      {/* AI Package Suggestion */}
+      {/* Custom Package Builder CTA */}
       <div className="max-w-6xl mx-auto px-6 pt-10 pb-0">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4 text-white shadow-lg">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+              <Puzzle className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold">Build Your Own Package</h3>
+              <p className="text-emerald-100 text-sm">Mix & match services, set frequencies, and save custom plans tailored to your home.</p>
+            </div>
+          </div>
+          <Link to={createPageUrl('PackageBuilder')}>
+            <Button className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold gap-2 px-6 shadow-md">
+              Start Building <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* AI Package Suggestion */}
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-0">
         <AIPackageSuggestion packages={packages} />
       </div>
 
