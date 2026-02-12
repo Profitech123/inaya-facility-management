@@ -120,7 +120,7 @@ function AdminBookingsContent() {
 
           <TabsContent value="list" className="mt-6">
             <div className="space-y-4">
-          {bookings.map(booking => {
+          {filteredBookings.map(booking => {
             const service = getService(booking.service_id);
             
             return (
