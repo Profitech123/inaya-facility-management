@@ -18,10 +18,9 @@ export default function Subscriptions() {
     queryKey: ['subscriptionPackages'],
     queryFn: async () => {
       const allPackages = await base44.entities.SubscriptionPackage.list();
-      return allPackages.filter(pkg => pkg.is_active);
+      return allPackages.filter(pkg => pkg.is_active === true);
     },
-    initialData: [],
-    staleTime: 120000
+    initialData: []
   });
 
   const { data: subscriptions = [] } = useQuery({
