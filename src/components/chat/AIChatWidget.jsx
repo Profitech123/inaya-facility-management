@@ -49,8 +49,33 @@ export default function AIChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [userContext, setUserContext] = useState('');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Load user context for personalized responses
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await base44.auth.me();
+        if (!user) return;
+        const [bookings, properties, subscriptions] = await Promise.all([
+          base44.entities.Booking.list('-created_date', 10).then(all => all.filter(b => b.customer_id === user.id)),
+          base44.entities.Property.list().then(all => all.filter(p => p.owner_id === user.id)),
+          base44.entities.Subscription.list().then(all => all.filter(s => s.customer_id === user.id && s.status === 'active')),
+        ]);
+        const ctx = `\n\nLOGGED-IN USER CONTEXT (use this to personalize responses):
+- Name: ${user.full_name || 'Customer'}
+- Properties: ${properties.length > 0 ? properties.map(p => `${p.property_type} in ${p.area || p.address} (${p.bedrooms || '?'} BR)`).join(', ') : 'None registered'}
+- Active subscription: ${subscriptions.length > 0 ? 'Yes' : 'No'}
+- Recent bookings: ${bookings.length > 0 ? bookings.slice(0, 5).map(b => `${b.status} on ${b.scheduled_date}`).join(', ') : 'None'}
+- Total past bookings: ${bookings.length}`;
+        setUserContext(ctx);
+      } catch {
+        // Not logged in, no user context
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -79,7 +104,7 @@ export default function AIChatWidget() {
       ).join('\n');
 
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${historyForPrompt}\n\nRespond to the customer's latest message. Be concise and helpful.`,
+        prompt: `${SYSTEM_CONTEXT}${userContext}\n\nConversation so far:\n${historyForPrompt}\n\nRespond to the customer's latest message. Be concise and helpful. If you have user context, personalize your response (e.g., reference their property type, past bookings, or suggest relevant services).`,
         response_json_schema: {
           type: "object",
           properties: {
@@ -135,7 +160,7 @@ export default function AIChatWidget() {
       ).join('\n');
 
       base44.integrations.Core.InvokeLLM({
-        prompt: `${SYSTEM_CONTEXT}\n\nConversation so far:\n${historyForPrompt}\n\nRespond to the customer's latest message. Be concise and helpful.`,
+        prompt: `${SYSTEM_CONTEXT}${userContext}\n\nConversation so far:\n${historyForPrompt}\n\nRespond to the customer's latest message. Be concise and helpful. If you have user context, personalize your response.`,
         response_json_schema: {
           type: "object",
           properties: {
