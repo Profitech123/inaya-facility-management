@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Package, DollarSign, Users, TrendingUp } from 'lucide-react';
+import { Calendar, Package, DollarSign, Users, TrendingUp, Repeat } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import AuthGuard from '../components/AuthGuard';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
+import AdminNotifications from '../components/admin/AdminNotifications';
+import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
+import DashboardRevenueByService from '../components/admin/DashboardRevenueByService';
+import DashboardMiniSubscriptions from '../components/admin/DashboardMiniSubscriptions';
+import DashboardTechPerformance from '../components/admin/DashboardTechPerformance';
 
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
@@ -18,7 +23,7 @@ function AdminDashboardContent() {
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
-    queryFn: () => base44.entities.Booking.list('-created_date', 100),
+    queryFn: () => base44.entities.Booking.list('-created_date', 200),
     enabled: !!user,
     initialData: [],
     staleTime: 30000
@@ -35,6 +40,14 @@ function AdminDashboardContent() {
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
+    enabled: !!user,
+    initialData: [],
+    staleTime: 60000
+  });
+
+  const { data: providers = [] } = useQuery({
+    queryKey: ['providers'],
+    queryFn: () => base44.entities.Provider.list(),
     enabled: !!user,
     initialData: [],
     staleTime: 60000
@@ -58,70 +71,71 @@ function AdminDashboardContent() {
 
   const totalRevenue = bookings.reduce((sum, b) => sum + (b.payment_status === 'paid' ? b.total_amount : 0), 0);
   const monthlyRecurring = subscriptions.filter(s => s.status === 'active').reduce((sum, s) => sum + s.monthly_amount, 0);
+  const uniqueCustomers = new Set([...bookings.map(b => b.customer_id), ...subscriptions.map(s => s.customer_id)]).size;
+  const completedJobs = bookings.filter(b => b.status === 'completed').length;
+  const avgBookingValue = bookings.filter(b => b.payment_status === 'paid').length > 0
+    ? Math.round(totalRevenue / bookings.filter(b => b.payment_status === 'paid').length)
+    : 0;
 
   if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+
+  const kpis = [
+    { label: 'Total Revenue', value: `AED ${totalRevenue.toLocaleString()}`, sub: 'From paid bookings', icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Monthly Recurring', value: `AED ${monthlyRecurring.toLocaleString()}`, sub: `${subscriptions.filter(s => s.status === 'active').length} active subs`, icon: Repeat, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Total Bookings', value: bookings.length, sub: `${bookings.filter(b => b.status === 'pending').length} pending`, icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Customers', value: uniqueCustomers, sub: `${completedJobs} jobs done`, icon: Users, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: 'Services', value: services.length, sub: `${services.filter(s => s.is_active).length} active`, icon: TrendingUp, color: 'text-rose-600', bg: 'bg-rose-50' },
+    { label: 'Avg Booking', value: `AED ${avgBookingValue}`, sub: 'Per paid booking', icon: Package, color: 'text-teal-600', bg: 'bg-teal-50' },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
-          <p className="text-slate-500">Manage services, bookings, and subscriptions</p>
+          <p className="text-slate-500">Business overview and critical alerts</p>
         </div>
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Total Bookings</CardTitle>
-              <Calendar className="w-4 h-4 text-slate-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">{bookings.length}</div>
-              <p className="text-xs text-slate-500 mt-1">
-                {bookings.filter(b => b.status === 'pending').length} pending
-              </p>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Active Subscriptions</CardTitle>
-              <Package className="w-4 h-4 text-slate-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">
-                {subscriptions.filter(s => s.status === 'active').length}
-              </div>
-              <p className="text-xs text-slate-500 mt-1">
-                AED {monthlyRecurring.toLocaleString()}/mo recurring
-              </p>
-            </CardContent>
-          </Card>
+        {/* KPI Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+          {kpis.map((kpi, idx) => {
+            const Icon = kpi.icon;
+            return (
+              <Card key={idx} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-5 pb-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className={`w-9 h-9 rounded-lg ${kpi.bg} flex items-center justify-center`}>
+                      <Icon className={`w-4 h-4 ${kpi.color}`} />
+                    </div>
+                  </div>
+                  <div className={`text-2xl font-bold ${kpi.color}`}>{kpi.value}</div>
+                  <span className="text-[11px] text-slate-400">{kpi.sub}</span>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Services</CardTitle>
-              <TrendingUp className="w-4 h-4 text-slate-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">{services.length}</div>
-              <p className="text-xs text-slate-500 mt-1">
-                {services.filter(s => s.is_active).length} active
-              </p>
-            </CardContent>
-          </Card>
+        {/* Notifications / Alerts */}
+        <div className="mb-8">
+          <AdminNotifications
+            bookings={bookings}
+            subscriptions={subscriptions}
+            tickets={tickets}
+            providers={providers}
+          />
+        </div>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Total Revenue</CardTitle>
-              <DollarSign className="w-4 h-4 text-slate-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">
-                AED {totalRevenue.toLocaleString()}
-              </div>
-              <p className="text-xs text-slate-500 mt-1">From bookings</p>
-            </CardContent>
-          </Card>
+        {/* Charts Row 1: Booking Trends + Revenue by Service */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+          <DashboardBookingTrends bookings={bookings} />
+          <DashboardRevenueByService bookings={bookings} services={services} />
+        </div>
+
+        {/* Charts Row 2: Subscription Growth + Tech Performance */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          <DashboardMiniSubscriptions subscriptions={subscriptions} />
+          <DashboardTechPerformance providers={providers} bookings={bookings} reviews={reviews} />
         </div>
 
         {/* AI Feedback Summary */}
@@ -129,52 +143,31 @@ function AdminDashboardContent() {
           <AIFeedbackSummarizer reviews={reviews} tickets={tickets} bookings={bookings} />
         </div>
 
+        {/* Quick Actions + Recent Bookings */}
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Link to={createPageUrl('AdminServices')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Manage Services
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminBookings')}>
-                <Button variant="outline" className="w-full justify-start">
-                  View All Bookings
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminSubscriptions')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Manage Subscriptions
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminReports')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Analytics & Reports
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminSupport')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Customer Support
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminLiveChat')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Live Chat
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminAuditLogs')}>
-                <Button variant="outline" className="w-full justify-start">
-                  Audit Logs
-                </Button>
-              </Link>
-              <Link to={createPageUrl('AdminCSVMigration')}>
-                <Button variant="outline" className="w-full justify-start">
-                  CSV Data Migration
-                </Button>
-              </Link>
+            <CardContent className="grid grid-cols-2 gap-2">
+              {[
+                { label: 'Manage Services', page: 'AdminServices' },
+                { label: 'View Bookings', page: 'AdminBookings' },
+                { label: 'Subscriptions', page: 'AdminSubscriptions' },
+                { label: 'Tech Schedules', page: 'AdminTechSchedule' },
+                { label: 'Technicians', page: 'AdminTechnicians' },
+                { label: 'Support Tickets', page: 'AdminSupport' },
+                { label: 'Live Chat', page: 'AdminLiveChat' },
+                { label: 'Analytics', page: 'AdminAnalytics' },
+                { label: 'Reports', page: 'AdminReports' },
+                { label: 'Audit Logs', page: 'AdminAuditLogs' },
+              ].map(item => (
+                <Link key={item.page} to={createPageUrl(item.page)}>
+                  <Button variant="outline" className="w-full justify-start text-xs h-9">
+                    {item.label}
+                  </Button>
+                </Link>
+              ))}
             </CardContent>
           </Card>
 
@@ -183,22 +176,33 @@ function AdminDashboardContent() {
               <CardTitle>Recent Bookings</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {bookings.slice(0, 5).map(booking => (
-                  <div key={booking.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
-                      <div className="font-medium text-sm">#{booking.id.slice(0, 8)}</div>
-                      <div className="text-xs text-slate-500">{booking.scheduled_date}</div>
+              <div className="space-y-2">
+                {bookings.slice(0, 6).map(booking => {
+                  const svc = services.find(s => s.id === booking.service_id);
+                  return (
+                    <div key={booking.id} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm text-slate-800 truncate">{svc?.name || `#${booking.id.slice(0, 8)}`}</div>
+                        <div className="text-xs text-slate-400">{booking.scheduled_date} · {booking.scheduled_time || '—'}</div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className="text-xs font-medium text-slate-600">AED {booking.total_amount}</span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${
+                          booking.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          booking.status === 'confirmed' ? 'bg-blue-100 text-blue-800' :
+                          booking.status === 'in_progress' ? 'bg-purple-100 text-purple-800' :
+                          booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {booking.status}
+                        </span>
+                      </div>
                     </div>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      booking.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      booking.status === 'confirmed' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {booking.status}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
+                {bookings.length === 0 && (
+                  <p className="text-sm text-slate-400 text-center py-6">No bookings yet</p>
+                )}
               </div>
             </CardContent>
           </Card>
