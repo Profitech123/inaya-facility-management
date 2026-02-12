@@ -43,14 +43,11 @@ function AdminDashboardContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-slate-300">Manage services, bookings, and subscriptions</p>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+          <p className="text-slate-500">Manage services, bookings, and subscriptions</p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
