@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const clients = [
   "https://www.inaya.ae/wp-content/uploads/2018/02/client24.jpg",
@@ -23,28 +24,56 @@ const clients = [
 
 export default function ClientsCarousel() {
   return (
-    <div className="py-16 bg-white">
+    <div className="py-20 bg-slate-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Our Clients</h2>
-        <div className="overflow-hidden">
-          <div className="flex animate-scroll gap-8">
-            {[...clients, ...clients].map((src, idx) => (
-              <div key={idx} className="flex-shrink-0 w-28 h-20 bg-slate-50 rounded-lg flex items-center justify-center p-3">
-                <img src={src} alt="Client" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-            ))}
-          </div>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <span className="inline-block text-emerald-600 font-semibold text-sm uppercase tracking-widest mb-3">
+            Trusted By Industry Leaders
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">Our Clients</h2>
+        </motion.div>
+      </div>
+
+      {/* Scrolling rows */}
+      <div className="space-y-4">
+        <div className="flex animate-scroll-left gap-6 px-6">
+          {[...clients, ...clients].map((src, idx) => (
+            <div key={idx} className="flex-shrink-0 w-36 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <img src={src} alt="Client" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            </div>
+          ))}
+        </div>
+        <div className="flex animate-scroll-right gap-6 px-6">
+          {[...clients.slice().reverse(), ...clients.slice().reverse()].map((src, idx) => (
+            <div key={idx} className="flex-shrink-0 w-36 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+              <img src={src} alt="Client" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            </div>
+          ))}
         </div>
       </div>
+
       <style>{`
-        @keyframes scroll {
+        @keyframes scrollLeft {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
+        @keyframes scrollRight {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
-        .animate-scroll:hover {
+        .animate-scroll-left {
+          animation: scrollLeft 40s linear infinite;
+        }
+        .animate-scroll-right {
+          animation: scrollRight 45s linear infinite;
+        }
+        .animate-scroll-left:hover,
+        .animate-scroll-right:hover {
           animation-play-state: paused;
         }
       `}</style>
