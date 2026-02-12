@@ -4,17 +4,38 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Wrench, Sparkles, Phone, Headphones, Link2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import QuoteRequestForm from '../components/services/QuoteRequestForm';
 
 export default function IntegratedFM() {
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-5xl font-bold mb-6">Facilities Management Services</h1>
-          <p className="text-xl text-slate-300 max-w-3xl">
+      {/* Hero with Background Image */}
+      <div className="relative bg-slate-900 text-white py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=80" 
+            alt="Modern building facilities" 
+            className="w-full h-full object-cover opacity-30"
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <p className="text-emerald-400 font-semibold mb-3">Comprehensive Solutions</p>
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">Integrated Facilities Management</h1>
+          <p className="text-xl text-slate-300 max-w-3xl mb-8">
             Our integrated Facilities Management offering provides the most comprehensive range of both 'hard' maintenance and 'soft' cleaning/specialised services.
           </p>
+          <div className="flex flex-wrap gap-4">
+            <Link to={createPageUrl('OnDemandServices')}>
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
+                Book Now <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <a href="#quote-form">
+              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                Request a Quote
+              </Button>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -66,13 +87,9 @@ export default function IntegratedFM() {
             })}
           </div>
 
-          {/* CTA */}
-          <div className="mt-16 text-center">
-            <Link to={createPageUrl('Contact')}>
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
-                <Phone className="w-5 h-5 mr-2" /> Get in Touch
-              </Button>
-            </Link>
+          {/* Quote Form */}
+          <div className="mt-16" id="quote-form">
+            <QuoteRequestForm serviceName="Integrated Facilities Management" />
           </div>
         </div>
       </div>

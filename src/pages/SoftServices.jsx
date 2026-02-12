@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Sparkles, Shield, Trash2, TreePine, Bug, Waves, Phone } from 'lucide-react';
+import { Sparkles, Shield, Trash2, TreePine, Bug, Waves, Phone, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import QuoteRequestForm from '../components/services/QuoteRequestForm';
 
 const softServices = [
   { icon: Sparkles, title: "Cleaning Services", desc: "Large-scale residential and commercial cleaning services including deep cleaning, regular maintenance cleaning, and specialized cleaning." },
@@ -67,17 +68,21 @@ export default function SoftServices() {
             </div>
           </div>
 
-          <div className="mt-12 text-center">
-            <Link to={createPageUrl('Services')}>
+          <div className="mt-12 text-center mb-16">
+            <Link to={createPageUrl('OnDemandServices')}>
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 mr-4">
-                Book a Soft Service
+                Book a Soft Service <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-            <Link to={createPageUrl('Contact')}>
+            <a href="#quote-form">
               <Button size="lg" variant="outline">
-                <Phone className="w-4 h-4 mr-2" /> Contact Us
+                Request a Quote
               </Button>
-            </Link>
+            </a>
+          </div>
+
+          <div id="quote-form">
+            <QuoteRequestForm serviceName="Soft Services" />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Building, ClipboardList, DollarSign, Users, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import QuoteRequestForm from '../components/services/QuoteRequestForm';
 
 const keyProjects = [
   "APCO Worldwide – Office Interior fit out, Media City",
@@ -88,12 +89,16 @@ export default function ProjectManagement() {
             </div>
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-12 text-center mb-16">
             <Link to={createPageUrl('Contact')}>
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700">
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 mr-4">
                 <Phone className="w-5 h-5 mr-2" /> Discuss Your Project
               </Button>
             </Link>
+          </div>
+
+          <div id="quote-form">
+            <QuoteRequestForm serviceName="Project Management" />
           </div>
         </div>
       </div>

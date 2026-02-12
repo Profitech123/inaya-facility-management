@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Wrench, Zap, Droplets, Wind, Paintbrush, Flame, Gauge, Phone } from 'lucide-react';
+import { Wrench, Zap, Droplets, Wind, Paintbrush, Flame, Gauge, Phone, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import QuoteRequestForm from '../components/services/QuoteRequestForm';
 
 const hardServices = [
   { icon: Wind, title: "HVAC Maintenance", desc: "Complete air conditioning and ventilation system maintenance, repair and installation for optimal indoor climate control." },
@@ -67,17 +68,21 @@ export default function HardServices() {
             </div>
           </div>
 
-          <div className="mt-12 text-center">
-            <Link to={createPageUrl('Services')}>
+          <div className="mt-12 text-center mb-16">
+            <Link to={createPageUrl('OnDemandServices')}>
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 mr-4">
-                Book a Hard Service
+                Book a Hard Service <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-            <Link to={createPageUrl('Contact')}>
+            <a href="#quote-form">
               <Button size="lg" variant="outline">
-                <Phone className="w-4 h-4 mr-2" /> Contact Us
+                Request a Quote
               </Button>
-            </Link>
+            </a>
+          </div>
+
+          <div id="quote-form">
+            <QuoteRequestForm serviceName="Hard Services" />
           </div>
         </div>
       </div>
