@@ -248,11 +248,62 @@ function AdminBookingsContent() {
               </Card>
             );
           })}
-        </div>
-      </div>
-    </div>
-  );
-}
+           </div>
+          </TabsContent>
+          </Tabs>
+
+          {selectedDate && viewMode === 'calendar' && (
+          <div className="mt-6">
+           <div className="flex items-center justify-between mb-4">
+             <h2 className="text-lg font-semibold text-slate-900">
+               Bookings for {selectedDate.toLocaleDateString()}
+             </h2>
+             <Button variant="outline" size="sm" onClick={() => setSelectedDate(null)}>
+               Clear Filter
+             </Button>
+           </div>
+           <div className="space-y-4">
+             {filteredBookings.length === 0 ? (
+               <Card>
+                 <CardContent className="py-8 text-center text-slate-500">
+                   No bookings for this date
+                 </CardContent>
+               </Card>
+             ) : (
+               filteredBookings.map(booking => {
+                 const service = getService(booking.service_id);
+                 return (
+                   <Card key={booking.id}>
+                     <CardHeader>
+                       <div className="flex items-start justify-between">
+                         <div>
+                           <CardTitle className="text-lg mb-1">
+                             {service?.name || 'Service'} - {booking.scheduled_time}
+                           </CardTitle>
+                           <div className="text-sm text-slate-600">Booking #{booking.id.slice(0, 8)}</div>
+                         </div>
+                         <Badge className={
+                           booking.status === 'completed' ? 'bg-green-100 text-green-800' :
+                           booking.status === 'confirmed' ? 'bg-blue-100 text-blue-800' :
+                           booking.status === 'in_progress' ? 'bg-purple-100 text-purple-800' :
+                           booking.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                           'bg-yellow-100 text-yellow-800'
+                         }>
+                           {booking.status}
+                         </Badge>
+                       </div>
+                     </CardHeader>
+                   </Card>
+                 );
+               })
+             )}
+           </div>
+          </div>
+          )}
+          </div>
+          </div>
+          );
+          }
 
 export default function AdminBookings() {
   return (
