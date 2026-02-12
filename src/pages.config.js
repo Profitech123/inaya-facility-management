@@ -50,31 +50,31 @@
 import About from './pages/About';
 import AdminBookings from './pages/AdminBookings';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
 import AdminSubscriptions from './pages/AdminSubscriptions';
+import AdminSupport from './pages/AdminSupport';
 import BookService from './pages/BookService';
+import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
+import HardServices from './pages/HardServices';
 import Home from './pages/Home';
+import IntegratedFM from './pages/IntegratedFM';
 import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
+import OurPeople from './pages/OurPeople';
+import PaymentHistory from './pages/PaymentHistory';
+import ProjectManagement from './pages/ProjectManagement';
 import ProviderJobDetails from './pages/ProviderJobDetails';
 import ProviderJobs from './pages/ProviderJobs';
 import ProviderPortal from './pages/ProviderPortal';
 import Services from './pages/Services';
+import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
-import PaymentHistory from './pages/PaymentHistory';
 import Support from './pages/Support';
-import AdminReports from './pages/AdminReports';
-import AdminSupport from './pages/AdminSupport';
-import IntegratedFM from './pages/IntegratedFM';
-import HardServices from './pages/HardServices';
-import SoftServices from './pages/SoftServices';
-import ProjectManagement from './pages/ProjectManagement';
-import OurPeople from './pages/OurPeople';
-import BusinessExcellence from './pages/BusinessExcellence';
 import __Layout from './Layout.jsx';
 
 
@@ -82,31 +82,31 @@ export const PAGES = {
     "About": About,
     "AdminBookings": AdminBookings,
     "AdminDashboard": AdminDashboard,
+    "AdminReports": AdminReports,
     "AdminServices": AdminServices,
     "AdminSubscriptions": AdminSubscriptions,
+    "AdminSupport": AdminSupport,
     "BookService": BookService,
+    "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
     "Dashboard": Dashboard,
+    "HardServices": HardServices,
     "Home": Home,
+    "IntegratedFM": IntegratedFM,
     "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,
+    "OurPeople": OurPeople,
+    "PaymentHistory": PaymentHistory,
+    "ProjectManagement": ProjectManagement,
     "ProviderJobDetails": ProviderJobDetails,
     "ProviderJobs": ProviderJobs,
     "ProviderPortal": ProviderPortal,
     "Services": Services,
+    "SoftServices": SoftServices,
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
-    "PaymentHistory": PaymentHistory,
     "Support": Support,
-    "AdminReports": AdminReports,
-    "AdminSupport": AdminSupport,
-    "IntegratedFM": IntegratedFM,
-    "HardServices": HardServices,
-    "SoftServices": SoftServices,
-    "ProjectManagement": ProjectManagement,
-    "OurPeople": OurPeople,
-    "BusinessExcellence": BusinessExcellence,
 }
 
 export const pagesConfig = {
