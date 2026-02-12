@@ -18,6 +18,7 @@ const adminNavItems = [
   { label: 'Live Chat', icon: MessageSquare, page: 'AdminLiveChat' },
   { label: 'Audit Logs', icon: FileText, page: 'AdminAuditLogs' },
   { label: 'CSV Migration', icon: Database, page: 'AdminCSVMigration' },
+  { label: 'Technicians', icon: Shield, page: 'AdminProviderDetail' },
 ];
 
 export default function AdminLayout({ children, currentPage }) {
