@@ -100,6 +100,9 @@ export default function Layout({ children, currentPageName }) {
                   Support
                 </Link>
               )}
+              <Link to={createPageUrl('Services')} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Book a Service
+              </Link>
             </div>
 
             <div className="flex items-center gap-4">
