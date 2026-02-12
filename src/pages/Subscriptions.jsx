@@ -1,87 +1,93 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
+import { CheckCircle } from 'lucide-react';
+import PlanCards from '../components/subscriptions/PlanCards';
+import ComparisonTable from '../components/subscriptions/ComparisonTable';
+import PlanManagement from '../components/subscriptions/PlanManagement';
 
 export default function Subscriptions() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
+
   const { data: packages = [] } = useQuery({
     queryKey: ['subscriptionPackages'],
     queryFn: () => base44.entities.SubscriptionPackage.filter({ is_active: true }),
-    initialData: []
+    initialData: [],
+    staleTime: 120000
   });
+
+  const { data: subscriptions = [] } = useQuery({
+    queryKey: ['userSubscriptions'],
+    queryFn: () => base44.entities.Subscription.filter({ customer_id: user?.id, status: 'active' }),
+    enabled: !!user,
+    initialData: [],
+    staleTime: 60000
+  });
+
+  const currentSub = subscriptions[0];
+  const currentPkg = currentSub ? packages.find(p => p.id === currentSub.package_id) : null;
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-6">Subscription Packages</h1>
-          <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
-            Comprehensive home care packages with recurring services. Save time and money with our tailored subscription plans.
-          </p>
+      {/* Hero */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3">
+                Upgrade Your Comfort
+              </h1>
+              <p className="text-slate-500 max-w-lg text-lg">
+                Professional home maintenance tailored to your needs. Choose a plan that ensures peace of mind for you and your family.
+              </p>
+            </div>
+
+            {/* Current plan badge */}
+            {currentPkg && (
+              <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 flex items-center gap-3 flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-emerald-500" />
+                <div>
+                  <div className="text-[10px] font-bold text-emerald-600 tracking-wider">CURRENT PLAN</div>
+                  <div className="font-bold text-slate-900">{currentPkg.name}</div>
+                  {currentSub?.end_date && (
+                    <div className="text-xs text-slate-400">Renewing {currentSub.end_date}</div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          {packages.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-slate-600 text-lg mb-4">Subscription packages coming soon!</p>
-              <p className="text-slate-500 mb-8">We're preparing exclusive packages for homeowners.</p>
-              <Link to={createPageUrl('Services')}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700">
-                  Browse Individual Services
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-8">
-              {packages.map(pkg => (
-                <Card key={pkg.id} className={`relative ${pkg.popular ? 'border-2 border-emerald-500 shadow-xl' : ''}`}>
-                  {pkg.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <Badge className="bg-emerald-500 text-white px-4 py-1">
-                        <Star className="w-3 h-3 mr-1" />
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
-                  
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-2xl mb-2">{pkg.name}</CardTitle>
-                    <p className="text-slate-600 text-sm">{pkg.description}</p>
-                    <div className="mt-6">
-                      <div className="text-4xl font-bold text-slate-900">AED {pkg.monthly_price}</div>
-                      <div className="text-slate-500">/month</div>
-                      <div className="text-sm text-slate-500 mt-1">{pkg.duration_months} month contract</div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <ul className="space-y-3 mb-6">
-                      {pkg.features?.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-slate-700">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <Link to={createPageUrl('SubscribePackage') + '?package=' + pkg.id}>
-                      <Button className={`w-full ${pkg.popular ? 'bg-emerald-600 hover:bg-emerald-700' : ''}`}>
-                        Subscribe Now
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+      {/* Plan Cards */}
+      <div className="max-w-6xl mx-auto px-6 py-14">
+        {packages.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-slate-500 text-lg mb-2">Subscription packages coming soon!</p>
+            <p className="text-slate-400">We're preparing exclusive plans for homeowners.</p>
+          </div>
+        ) : (
+          <PlanCards packages={packages} currentPkgId={currentPkg?.id} />
+        )}
+      </div>
+
+      {/* Comparison Table */}
+      {packages.length > 0 && (
+        <div className="bg-white border-y border-slate-200">
+          <div className="max-w-6xl mx-auto px-6 py-14">
+            <ComparisonTable packages={packages} />
+          </div>
         </div>
+      )}
+
+      {/* Plan Management / FAQ */}
+      <div className="max-w-6xl mx-auto px-6 py-14">
+        <PlanManagement />
       </div>
     </div>
   );
