@@ -15,7 +15,7 @@ export default function Hero() {
           alt="Dubai skyline"
           className="w-full h-full object-cover opacity-30"
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40" />

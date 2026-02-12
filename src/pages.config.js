@@ -79,6 +79,7 @@ import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import AdminBookings from './pages/AdminBookings';
 import UserProfile from './pages/UserProfile';
+import MyBookings from './pages/MyBookings';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +116,7 @@ export const PAGES = {
     "Support": Support,
     "AdminBookings": AdminBookings,
     "UserProfile": UserProfile,
+    "MyBookings": MyBookings,
 }
 
 export const pagesConfig = {
