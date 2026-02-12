@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import CustomerChatWidget from './components/chat/CustomerChatWidget';
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -154,6 +155,8 @@ export default function Layout({ children, currentPageName }) {
       <main className="flex-1">
         {children}
       </main>
+
+      {user && user.role !== 'admin' && <CustomerChatWidget />}
 
       <footer className="bg-slate-950 text-white py-16">
         <div className="max-w-7xl mx-auto px-6">

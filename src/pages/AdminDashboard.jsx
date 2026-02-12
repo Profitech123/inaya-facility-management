@@ -142,6 +142,11 @@ export default function AdminDashboard() {
                   Customer Support
                 </Button>
               </Link>
+              <Link to={createPageUrl('AdminLiveChat')}>
+                <Button variant="outline" className="w-full justify-start">
+                  Live Chat
+                </Button>
+              </Link>
               <Link to={createPageUrl('AdminAuditLogs')}>
                 <Button variant="outline" className="w-full justify-start">
                   Audit Logs
