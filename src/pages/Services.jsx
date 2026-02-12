@@ -13,13 +13,15 @@ export default function Services() {
   const { data: categories = [] } = useQuery({
     queryKey: ['serviceCategories'],
     queryFn: () => base44.entities.ServiceCategory.list('display_order'),
-    initialData: []
+    initialData: [],
+    staleTime: 120000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.filter({ is_active: true }),
-    initialData: []
+    initialData: [],
+    staleTime: 120000
   });
 
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -74,7 +76,7 @@ export default function Services() {
                     <CardHeader>
                       {service.image_url && (
                         <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
-                          <img src={service.image_url} alt={service.name} className="w-full h-full object-cover" />
+                          <img src={service.image_url} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
                         </div>
                       )}
                       <div className="flex items-start justify-between mb-2">

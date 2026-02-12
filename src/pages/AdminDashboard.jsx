@@ -19,21 +19,24 @@ function AdminDashboardContent() {
     queryKey: ['allBookings'],
     queryFn: () => base44.entities.Booking.list('-created_date', 100),
     enabled: !!user,
-    initialData: []
+    initialData: [],
+    staleTime: 30000
   });
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
     queryFn: () => base44.entities.Subscription.list(),
     enabled: !!user,
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
     enabled: !!user,
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const totalRevenue = bookings.reduce((sum, b) => sum + (b.payment_status === 'paid' ? b.total_amount : 0), 0);
