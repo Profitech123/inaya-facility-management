@@ -54,10 +54,12 @@ import AdminCSVMigration from './pages/AdminCSVMigration';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLiveChat from './pages/AdminLiveChat';
 import AdminLogin from './pages/AdminLogin';
+import AdminProviderDetail from './pages/AdminProviderDetail';
 import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminSupport from './pages/AdminSupport';
+import AdminTechnicians from './pages/AdminTechnicians';
 import BookService from './pages/BookService';
 import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
@@ -71,17 +73,12 @@ import MySubscriptions from './pages/MySubscriptions';
 import OurPeople from './pages/OurPeople';
 import PaymentHistory from './pages/PaymentHistory';
 import ProjectManagement from './pages/ProjectManagement';
-import ProviderJobDetails from './pages/ProviderJobDetails';
-import ProviderJobs from './pages/ProviderJobs';
-import ProviderPortal from './pages/ProviderPortal';
 import Services from './pages/Services';
 import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import UserProfile from './pages/UserProfile';
-import AdminProviderDetail from './pages/AdminProviderDetail';
-import AdminTechnicians from './pages/AdminTechnicians';
 import __Layout from './Layout.jsx';
 
 
@@ -93,10 +90,12 @@ export const PAGES = {
     "AdminDashboard": AdminDashboard,
     "AdminLiveChat": AdminLiveChat,
     "AdminLogin": AdminLogin,
+    "AdminProviderDetail": AdminProviderDetail,
     "AdminReports": AdminReports,
     "AdminServices": AdminServices,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminSupport": AdminSupport,
+    "AdminTechnicians": AdminTechnicians,
     "BookService": BookService,
     "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
@@ -110,17 +109,12 @@ export const PAGES = {
     "OurPeople": OurPeople,
     "PaymentHistory": PaymentHistory,
     "ProjectManagement": ProjectManagement,
-    "ProviderJobDetails": ProviderJobDetails,
-    "ProviderJobs": ProviderJobs,
-    "ProviderPortal": ProviderPortal,
     "Services": Services,
     "SoftServices": SoftServices,
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
     "Support": Support,
     "UserProfile": UserProfile,
-    "AdminProviderDetail": AdminProviderDetail,
-    "AdminTechnicians": AdminTechnicians,
 }
 
 export const pagesConfig = {
