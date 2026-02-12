@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -21,20 +21,17 @@ export default function Layout({ children, currentPageName }) {
     base44.auth.me()
       .then(setUser)
       .catch((error) => {
-        // Expected error when not authenticated
         if (error?.status === 401) {
           setUser(null);
         } else {
-          console.error('Unexpected auth error:', error);
           setUser(null);
         }
       });
   }, []);
 
-  // Admin pages get their own separate layout — completely hidden from public site
+  // Admin pages get their own separate layout
   const isAdminPage = currentPageName?.startsWith('Admin');
   
-  // If customer tries to access admin page, redirect
   if (isAdminPage && user && user.role !== 'admin') {
     window.location.href = createPageUrl('Dashboard');
     return null;
@@ -43,12 +40,14 @@ export default function Layout({ children, currentPageName }) {
   if (isAdminPage) {
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
   }
-  
-  const isCustomer = user && user.role !== 'admin';
 
   const handleLogout = () => {
     base44.auth.logout();
   };
+
+  const isActivePage = (pageName) => currentPageName === pageName;
+  const navLinkClass = (pageName) => 
+    `transition-colors text-sm font-medium ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -65,12 +64,10 @@ export default function Layout({ children, currentPageName }) {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8 flex-1 justify-center">
-              <Link to={createPageUrl('Home')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
-                Home
-              </Link>
+            <div className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+              <Link to={createPageUrl('Home')} className={navLinkClass('Home')}>Home</Link>
               <DropdownMenu>
-                <DropdownMenuTrigger className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['About','OurPeople','BusinessExcellence'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
                   About
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -80,7 +77,7 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
-                <DropdownMenuTrigger className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['IntegratedFM','HardServices','SoftServices','ProjectManagement'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
                   Services
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -90,22 +87,15 @@ export default function Layout({ children, currentPageName }) {
                   <DropdownMenuItem asChild><Link to={createPageUrl('ProjectManagement')} className="w-full">Project Management</Link></DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Link to={createPageUrl('Subscriptions')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
-                Packages
-              </Link>
-              <Link to={createPageUrl('Contact')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
-                Contact
-              </Link>
-              {user && (
-                <Link to={createPageUrl('Support')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
-                  Support
-                </Link>
-              )}
+              <Link to={createPageUrl('OnDemandServices')} className={navLinkClass('OnDemandServices')}>On-Demand</Link>
+              <Link to={createPageUrl('Subscriptions')} className={navLinkClass('Subscriptions')}>Packages</Link>
+              <Link to={createPageUrl('FAQ')} className={navLinkClass('FAQ')}>FAQ</Link>
+              <Link to={createPageUrl('Contact')} className={navLinkClass('Contact')}>Contact</Link>
             </div>
 
             {/* Right Section */}
             <div className="flex items-center gap-3">
-              <Link to={createPageUrl('Services')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
+              <Link to={createPageUrl('OnDemandServices')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
                 Book a Service
               </Link>
 
@@ -131,19 +121,13 @@ export default function Layout({ children, currentPageName }) {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to={createPageUrl('MyBookings')} className="w-full">
-                        My Bookings
-                      </Link>
+                      <Link to={createPageUrl('MyBookings')} className="w-full">My Bookings</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to={createPageUrl('PaymentHistory')} className="w-full">
-                        Payment History
-                      </Link>
+                      <Link to={createPageUrl('PaymentHistory')} className="w-full">Payment History</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to={createPageUrl('Support')} className="w-full">
-                        Support
-                      </Link>
+                      <Link to={createPageUrl('Support')} className="w-full">Support</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                       <LogOut className="w-4 h-4 mr-2" />
@@ -179,19 +163,27 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white">
+          <div className="lg:hidden border-t border-slate-200 bg-white">
             <div className="px-6 py-4 space-y-3">
-              <Link to={createPageUrl('Home')} className="block text-slate-700 hover:text-emerald-600">Home</Link>
-              <Link to={createPageUrl('About')} className="block text-slate-700 hover:text-emerald-600">About Us</Link>
-              <Link to={createPageUrl('OurPeople')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Our People</Link>
-              <Link to={createPageUrl('BusinessExcellence')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Business Excellence</Link>
-              <Link to={createPageUrl('IntegratedFM')} className="block text-slate-700 hover:text-emerald-600">Integrated FM</Link>
-              <Link to={createPageUrl('HardServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Hard Services</Link>
-              <Link to={createPageUrl('SoftServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Soft Services</Link>
-              <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Project Management</Link>
-              <Link to={createPageUrl('Services')} className="block text-slate-700 hover:text-emerald-600">Book a Service</Link>
-              <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600">Packages</Link>
-              <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600">Contact</Link>
+              <Link to={createPageUrl('Home')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+              <Link to={createPageUrl('About')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
+              <Link to={createPageUrl('OurPeople')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Our People</Link>
+              <Link to={createPageUrl('BusinessExcellence')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Business Excellence</Link>
+              <Link to={createPageUrl('IntegratedFM')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Integrated FM</Link>
+              <Link to={createPageUrl('HardServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Hard Services</Link>
+              <Link to={createPageUrl('SoftServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Soft Services</Link>
+              <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Project Management</Link>
+              <Link to={createPageUrl('OnDemandServices')} className="block text-emerald-600 font-semibold" onClick={() => setMobileMenuOpen(false)}>On-Demand Services</Link>
+              <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Packages</Link>
+              <Link to={createPageUrl('FAQ')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
+              <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+              {!user && (
+                <div className="pt-3 border-t space-y-2">
+                  <Button onClick={() => base44.auth.redirectToLogin(window.location.href)} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                    Sign In / Create Account
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -225,6 +217,7 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl('HardServices')} className="block hover:text-white">Hard Services</Link>
                 <Link to={createPageUrl('SoftServices')} className="block hover:text-white">Soft Services</Link>
                 <Link to={createPageUrl('ProjectManagement')} className="block hover:text-white">Project Management</Link>
+                <Link to={createPageUrl('OnDemandServices')} className="block hover:text-white">On-Demand Services</Link>
               </div>
             </div>
             
@@ -234,6 +227,8 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl('About')} className="block hover:text-white">About Us</Link>
                 <Link to={createPageUrl('OurPeople')} className="block hover:text-white">Our People</Link>
                 <Link to={createPageUrl('BusinessExcellence')} className="block hover:text-white">Business Excellence</Link>
+                <Link to={createPageUrl('Subscriptions')} className="block hover:text-white">Packages</Link>
+                <Link to={createPageUrl('FAQ')} className="block hover:text-white">FAQ</Link>
                 <Link to={createPageUrl('Contact')} className="block hover:text-white">Contact</Link>
               </div>
             </div>
@@ -250,8 +245,12 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           
-          <div className="border-t border-slate-800/60 pt-8 text-center text-sm text-slate-500">
+          <div className="border-t border-slate-800/60 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
+            <div className="flex items-center gap-4">
+              <Link to={createPageUrl('TermsOfService')} className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link to={createPageUrl('PrivacyPolicy')} className="hover:text-white transition-colors">Privacy Policy</Link>
+            </div>
           </div>
         </div>
       </footer>
