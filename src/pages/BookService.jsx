@@ -229,41 +229,13 @@ export default function BookService() {
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Select Date</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {bookingData.scheduled_date ? format(bookingData.scheduled_date, 'PPP') : 'Pick a date'}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={bookingData.scheduled_date}
-                        onSelect={(date) => setBookingData({...bookingData, scheduled_date: date})}
-                        disabled={(date) => date < new Date()}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Select Time</label>
-                  <Select value={bookingData.scheduled_time} onValueChange={(val) => setBookingData({...bookingData, scheduled_time: val})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Choose a time slot" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="08:00-10:00">08:00 - 10:00</SelectItem>
-                      <SelectItem value="10:00-12:00">10:00 - 12:00</SelectItem>
-                      <SelectItem value="12:00-14:00">12:00 - 14:00</SelectItem>
-                      <SelectItem value="14:00-16:00">14:00 - 16:00</SelectItem>
-                      <SelectItem value="16:00-18:00">16:00 - 18:00</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <TimeSlotSelector
+                  selectedDate={bookingData.scheduled_date}
+                  selectedTimeSlot={bookingData.scheduled_time}
+                  onDateChange={(date) => setBookingData({...bookingData, scheduled_date: date, scheduled_time: ''})}
+                  onTimeSlotChange={(timeSlot) => setBookingData({...bookingData, scheduled_time: timeSlot})}
+                  bookedSlots={allBookings}
+                />
 
                 <AddonSelector
                   serviceId={serviceId}
