@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, DollarSign, Star } from 'lucide-react';
 import ProviderRating from '../components/ProviderRating';
+import BookingTimeline from '../components/booking/BookingTimeline';
 
 export default function MyBookings() {
   const [user, setUser] = useState(null);
@@ -106,6 +107,9 @@ export default function MyBookings() {
                       </div>
                     </CardHeader>
                     <CardContent>
+                      <div className="mb-4">
+                        <BookingTimeline booking={booking} />
+                      </div>
                       <div className="flex items-center justify-between">
                         <div>
                           {provider && (

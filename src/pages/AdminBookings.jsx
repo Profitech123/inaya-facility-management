@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import BookingTimeline from '../components/booking/BookingTimeline';
 
 export default function AdminBookings() {
   const queryClient = useQueryClient();
@@ -91,6 +92,9 @@ export default function AdminBookings() {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  <div className="mb-5">
+                    <BookingTimeline booking={booking} />
+                  </div>
                   <div className="grid md:grid-cols-3 gap-6">
                     <div>
                       <div className="text-sm text-slate-600 mb-2">Amount</div>
