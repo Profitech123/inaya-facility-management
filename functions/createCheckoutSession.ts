@@ -19,6 +19,8 @@ Deno.serve(async (req) => {
 
     const amountInCents = Math.round(total_amount * 100);
 
+    const origin = req.headers.get('origin') || req.headers.get('referer')?.replace(/\/[^/]*$/, '') || 'https://inaya-care-go.base44.app';
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -39,8 +41,8 @@ Deno.serve(async (req) => {
         customer_email: user.email,
       },
       customer_email: user.email,
-      success_url: success_url || `${req.headers.get('origin')}/BookService?payment=success&booking_id=${booking_id}`,
-      cancel_url: cancel_url || `${req.headers.get('origin')}/BookService?payment=cancelled&booking_id=${booking_id}`,
+      success_url: success_url || `${origin}/BookService?payment=success&booking_id=${booking_id}`,
+      cancel_url: cancel_url || `${origin}/BookService?payment=cancelled&booking_id=${booking_id}`,
     });
 
     console.log(`Checkout session created: ${session.id} for booking: ${booking_id}`);
