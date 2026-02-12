@@ -3,9 +3,9 @@ import { Award, Shield, Users, Clock } from 'lucide-react';
 
 const stats = [
   { icon: Users, value: "700+", label: "Expert Team Members" },
-  { icon: Clock, value: "24/7", label: "Customer Support" },
-  { icon: Award, value: "ISO Certified", label: "Quality Standards" },
-  { icon: Shield, value: "45+ Years", label: "Belhasa Group Legacy" }
+  { icon: Clock, value: "24/7", label: "Service & Maintenance" },
+  { icon: Award, value: "ISO Certified", label: "HSEEQ Standards" },
+  { icon: Shield, value: "549+", label: "Hectares Managed" }
 ];
 
 export default function TrustSignals() {
@@ -14,10 +14,10 @@ export default function TrustSignals() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
-            Trusted by Homeowners Across Dubai
+            A Member of Belhasa Group
           </h2>
           <p className="text-xl text-slate-600">
-            Part of Belhasa Group with decades of excellence in facilities management.
+            One of the UAE's most established group of companies, with both the resources and solid financial base to offer leading expertise.
           </p>
         </div>
         

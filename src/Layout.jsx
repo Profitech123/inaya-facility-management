@@ -44,24 +44,40 @@ export default function Layout({ children, currentPageName }) {
               />
             </Link>
 
-            <div className="hidden md:flex items-center gap-8">
-              <Link to={createPageUrl('Home')} className="text-slate-700 hover:text-emerald-600 transition-colors">
+            <div className="hidden md:flex items-center gap-6">
+              <Link to={createPageUrl('Home')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Home
               </Link>
-              <Link to={createPageUrl('About')} className="text-slate-700 hover:text-emerald-600 transition-colors">
-                About
-              </Link>
-              <Link to={createPageUrl('Services')} className="text-slate-700 hover:text-emerald-600 transition-colors">
-                Services
-              </Link>
-              <Link to={createPageUrl('Subscriptions')} className="text-slate-700 hover:text-emerald-600 transition-colors">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                  About
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('About')} className="w-full">Company Overview</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('OurPeople')} className="w-full">Our People</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('BusinessExcellence')} className="w-full">Business Excellence</Link></DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                  Services
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('IntegratedFM')} className="w-full">Integrated FM</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('HardServices')} className="w-full">Hard Services</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('SoftServices')} className="w-full">Soft Services</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('ProjectManagement')} className="w-full">Project Management</Link></DropdownMenuItem>
+                  <DropdownMenuItem asChild><Link to={createPageUrl('Services')} className="w-full">Book a Service</Link></DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Link to={createPageUrl('Subscriptions')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Packages
               </Link>
-              <Link to={createPageUrl('Contact')} className="text-slate-700 hover:text-emerald-600 transition-colors">
+              <Link to={createPageUrl('Contact')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Contact
               </Link>
               {user && (
-                <Link to={createPageUrl('Support')} className="text-slate-700 hover:text-emerald-600 transition-colors">
+                <Link to={createPageUrl('Support')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
                   Support
                 </Link>
               )}
@@ -120,8 +136,14 @@ export default function Layout({ children, currentPageName }) {
           <div className="md:hidden border-t border-slate-200 bg-white">
             <div className="px-6 py-4 space-y-3">
               <Link to={createPageUrl('Home')} className="block text-slate-700 hover:text-emerald-600">Home</Link>
-              <Link to={createPageUrl('About')} className="block text-slate-700 hover:text-emerald-600">About</Link>
-              <Link to={createPageUrl('Services')} className="block text-slate-700 hover:text-emerald-600">Services</Link>
+              <Link to={createPageUrl('About')} className="block text-slate-700 hover:text-emerald-600">About Us</Link>
+              <Link to={createPageUrl('OurPeople')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Our People</Link>
+              <Link to={createPageUrl('BusinessExcellence')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Business Excellence</Link>
+              <Link to={createPageUrl('IntegratedFM')} className="block text-slate-700 hover:text-emerald-600">Integrated FM</Link>
+              <Link to={createPageUrl('HardServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Hard Services</Link>
+              <Link to={createPageUrl('SoftServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Soft Services</Link>
+              <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm">Project Management</Link>
+              <Link to={createPageUrl('Services')} className="block text-slate-700 hover:text-emerald-600">Book a Service</Link>
               <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600">Packages</Link>
               <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600">Contact</Link>
             </div>
@@ -143,17 +165,18 @@ export default function Layout({ children, currentPageName }) {
                 className="h-12 mb-4"
               />
               <p className="text-slate-400 text-sm">
-                Professional facilities management for your home. Part of Belhasa Group.
+                INAYA Facilities Management Services L.L.C · INAYA Technical Services L.L.C · INAYA Security Services L.L.C · INAYA Property L.L.C
               </p>
+              <p className="text-slate-500 text-xs mt-2">A Member of Belhasa Group</p>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Services</h3>
               <div className="space-y-2 text-sm text-slate-400">
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Cleaning Services</Link>
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Pest Control</Link>
-                <Link to={createPageUrl('Services')} className="block hover:text-white">MEP Maintenance</Link>
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Technical Services</Link>
+                <Link to={createPageUrl('IntegratedFM')} className="block hover:text-white">Integrated FM</Link>
+                <Link to={createPageUrl('HardServices')} className="block hover:text-white">Hard Services</Link>
+                <Link to={createPageUrl('SoftServices')} className="block hover:text-white">Soft Services</Link>
+                <Link to={createPageUrl('ProjectManagement')} className="block hover:text-white">Project Management</Link>
               </div>
             </div>
             
@@ -161,18 +184,20 @@ export default function Layout({ children, currentPageName }) {
               <h3 className="font-semibold mb-4">Company</h3>
               <div className="space-y-2 text-sm text-slate-400">
                 <Link to={createPageUrl('About')} className="block hover:text-white">About Us</Link>
+                <Link to={createPageUrl('OurPeople')} className="block hover:text-white">Our People</Link>
+                <Link to={createPageUrl('BusinessExcellence')} className="block hover:text-white">Business Excellence</Link>
                 <Link to={createPageUrl('Contact')} className="block hover:text-white">Contact</Link>
-                <a href="https://inaya.ae" target="_blank" rel="noopener noreferrer" className="block hover:text-white">Our Website</a>
               </div>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-sm text-slate-400">
-                <p>Belhasa HO Building, Office M03</p>
-                <p>Hor Al Anz East, Dubai, UAE</p>
-                <p>Phone: +971 4 882 7001</p>
-                <p>Email: info@inaya.ae</p>
+                <p>28th Street, Belhasa HO Building, Office M03</p>
+                <p>Hor Al Anz East, PO Box 87074, Dubai, UAE</p>
+                <p>T: +971 4 882 7001 · F: +971 4 882 7002</p>
+                <p>Customer Service: +971 4 815 7300</p>
+                <p>info@inaya.ae · BD@inaya.ae</p>
               </div>
             </div>
           </div>
