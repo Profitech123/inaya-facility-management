@@ -80,7 +80,7 @@ export default function BookService() {
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!user?.id && !isAuthChecking,
     initialData: []
   });
 
@@ -95,6 +95,7 @@ export default function BookService() {
         return [];
       }
     },
+    enabled: !!user?.id && !isAuthChecking,
     initialData: []
   });
 
@@ -108,6 +109,7 @@ export default function BookService() {
         return [];
       }
     },
+    enabled: !!user?.id && !isAuthChecking,
     initialData: []
   });
 
