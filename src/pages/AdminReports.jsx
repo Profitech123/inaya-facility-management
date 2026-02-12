@@ -99,7 +99,7 @@ function AdminReportsContent() {
           <h1 className="text-3xl font-bold text-slate-900">Analytics & Reports</h1>
           <p className="text-slate-500">Comprehensive business insights, performance metrics, and exportable reports</p>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 space-y-4">
           <DateRangeFilter
             startDate={startDate}
             endDate={endDate}
@@ -107,6 +107,48 @@ function AdminReportsContent() {
             onEndChange={setEndDate}
             onReset={resetDates}
           />
+          
+          {/* Advanced Filters */}
+          <div className="bg-white border border-slate-200 rounded-lg p-4">
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-700 block mb-2">Filter by Service</label>
+                <select 
+                  multiple 
+                  value={selectedServices} 
+                  onChange={(e) => setSelectedServices(Array.from(e.target.selectedOptions, option => option.value))}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm h-24"
+                >
+                  {services.map(s => (
+                    <option key={s.id} value={s.id}>{s.name}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-slate-500 mt-1">Hold Ctrl/Cmd to select multiple</p>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-slate-700 block mb-2">Technician Status</label>
+                <select 
+                  value={technicianStatus}
+                  onChange={(e) => setTechnicianStatus(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                >
+                  <option value="all">All Technicians</option>
+                  <option value="active">Active Only</option>
+                  <option value="inactive">Inactive Only</option>
+                </select>
+              </div>
+
+              <div className="flex items-end">
+                <button 
+                  onClick={() => { setSelectedServices([]); setTechnicianStatus('all'); }}
+                  className="w-full px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="revenue" className="space-y-6">
@@ -123,7 +165,7 @@ function AdminReportsContent() {
               invoices={invoices}
               subscriptions={subscriptions}
               packages={packages}
-              bookings={bookings}
+              bookings={filteredBookings}
               services={services}
               startDate={startDate}
               endDate={endDate}
@@ -133,7 +175,7 @@ function AdminReportsContent() {
           <TabsContent value="customers">
             <CustomerReport
               subscriptions={subscriptions}
-              bookings={bookings}
+              bookings={filteredBookings}
               startDate={startDate}
               endDate={endDate}
             />
@@ -141,7 +183,7 @@ function AdminReportsContent() {
 
           <TabsContent value="bookings">
             <BookingReport
-              bookings={bookings}
+              bookings={filteredBookings}
               services={services}
               startDate={startDate}
               endDate={endDate}
@@ -150,8 +192,8 @@ function AdminReportsContent() {
 
           <TabsContent value="technicians">
             <TechnicianReport
-              providers={providers}
-              bookings={bookings}
+              providers={filteredProviders}
+              bookings={filteredBookings}
               reviews={reviews}
               startDate={startDate}
               endDate={endDate}
@@ -160,11 +202,11 @@ function AdminReportsContent() {
 
           <TabsContent value="system">
             <SystemHealthReport
-              bookings={bookings}
+              bookings={filteredBookings}
               subscriptions={subscriptions}
               tickets={tickets}
               invoices={invoices}
-              providers={providers}
+              providers={filteredProviders}
               startDate={startDate}
               endDate={endDate}
             />
