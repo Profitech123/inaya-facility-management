@@ -18,10 +18,13 @@ export default function Subscriptions() {
     queryKey: ['subscriptionPackages'],
     queryFn: async () => {
       const allPackages = await base44.entities.SubscriptionPackage.list();
+      console.log('Fetched packages:', allPackages);
       return allPackages.filter(pkg => pkg.is_active === true);
     },
     initialData: []
   });
+
+  console.log('Packages in component:', packages);
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['userSubscriptions'],
