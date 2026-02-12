@@ -158,6 +158,12 @@ export default function BookService() {
     }
   };
 
+  if (isAuthChecking) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+    </div>;
+  }
+
   if (!user || !service) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
