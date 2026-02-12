@@ -21,8 +21,11 @@ export default function BookingReport({ bookings, services, startDate, endDate }
     const total = filtered.length;
     const completed = filtered.filter(b => b.status === 'completed').length;
     const cancelled = filtered.filter(b => b.status === 'cancelled').length;
+    const confirmed = filtered.filter(b => b.status === 'confirmed').length;
+    const pending = filtered.filter(b => b.status === 'pending').length;
     const completionRate = total > 0 ? ((completed / total) * 100) : 0;
     const cancellationRate = total > 0 ? ((cancelled / total) * 100) : 0;
+    const avgValue = total > 0 ? (filtered.reduce((s, b) => s + (b.total_amount || 0), 0) / total) : 0;
 
     // Status breakdown
     const statusData = Object.entries(
