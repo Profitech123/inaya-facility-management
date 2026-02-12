@@ -77,6 +77,7 @@ import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import AdminAuditLogs from './pages/AdminAuditLogs';
 import AdminCSVMigration from './pages/AdminCSVMigration';
+import AdminLiveChat from './pages/AdminLiveChat';
 import __Layout from './Layout.jsx';
 
 
@@ -111,6 +112,7 @@ export const PAGES = {
     "Support": Support,
     "AdminAuditLogs": AdminAuditLogs,
     "AdminCSVMigration": AdminCSVMigration,
+    "AdminLiveChat": AdminLiveChat,
 }
 
 export const pagesConfig = {
