@@ -16,6 +16,8 @@ import AuthGuard from '../components/AuthGuard';
 function AdminBookingsContent() {
   const queryClient = useQueryClient();
   const [refundingId, setRefundingId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [viewMode, setViewMode] = useState('calendar');
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
