@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, Clock, Award } from 'lucide-react';
+import { ArrowRight, Shield, Clock, Award, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="absolute inset-0 opacity-20">
         <img 
           src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1600&q=80" 
-          alt="Dubai Villa"
+          alt="Dubai"
           className="w-full h-full object-cover"
         />
       </div>
@@ -20,7 +20,7 @@ export default function Hero() {
         <div className="max-w-3xl">
           <div className="flex items-center gap-2 mb-6">
             <Shield className="w-5 h-5 text-emerald-400" />
-            <span className="text-emerald-400 font-medium">Part of Belhasa Group</span>
+            <span className="text-emerald-400 font-medium">A Member of Belhasa Group</span>
           </div>
           
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
@@ -29,7 +29,7 @@ export default function Hero() {
           </h1>
           
           <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-            INAYA is the leading Facilities Management company in UAE. We develop, manage and execute FM strategies to maximise the performance and lifecycle of your home.
+            INAYA develops, manages and executes FM strategies to maximise the performance and lifecycle of your property. From residential and commercial through to large-scale retail properties, we offer maintenance, cleaning and specialist services.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -45,29 +45,24 @@ export default function Hero() {
               </Button>
             </Link>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-emerald-400" />
-              <div>
-                <div className="font-semibold">549+ Hectares</div>
-                <div className="text-sm text-slate-400">Managed across UAE</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Clock className="w-8 h-8 text-emerald-400" />
-              <div>
-                <div className="font-semibold">24/7 Service</div>
-                <div className="text-sm text-slate-400">Maintenance & support</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Award className="w-8 h-8 text-emerald-400" />
-              <div>
-                <div className="font-semibold">ISO Certified</div>
-                <div className="text-sm text-slate-400">Excellence assured</div>
-              </div>
-            </div>
+
+          {/* Service Pillars */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { icon: Zap, label: "Integrated FM", link: "IntegratedFM" },
+              { icon: Shield, label: "Hard Services", link: "HardServices" },
+              { icon: Award, label: "Soft Services", link: "SoftServices" },
+              { icon: Clock, label: "24/7 Support", link: "Contact" },
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <Link key={idx} to={createPageUrl(item.link)} 
+                  className="bg-white/10 hover:bg-white/20 rounded-lg p-4 text-center transition-colors">
+                  <Icon className="w-6 h-6 text-emerald-400 mx-auto mb-2" />
+                  <div className="text-sm font-medium">{item.label}</div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
