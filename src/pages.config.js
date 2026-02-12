@@ -47,46 +47,54 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
 import About from './pages/About';
-import Contact from './pages/Contact';
-import Services from './pages/Services';
-import Subscriptions from './pages/Subscriptions';
-import Dashboard from './pages/Dashboard';
-import MyBookings from './pages/MyBookings';
-import MySubscriptions from './pages/MySubscriptions';
-import MyProperties from './pages/MyProperties';
-import BookService from './pages/BookService';
-import SubscribePackage from './pages/SubscribePackage';
+import AdminBookings from './pages/AdminBookings';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminServices from './pages/AdminServices';
-import AdminBookings from './pages/AdminBookings';
 import AdminSubscriptions from './pages/AdminSubscriptions';
-import ProviderPortal from './pages/ProviderPortal';
-import ProviderJobs from './pages/ProviderJobs';
+import BookService from './pages/BookService';
+import Contact from './pages/Contact';
+import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
+import MyBookings from './pages/MyBookings';
+import MyProperties from './pages/MyProperties';
+import MySubscriptions from './pages/MySubscriptions';
 import ProviderJobDetails from './pages/ProviderJobDetails';
+import ProviderJobs from './pages/ProviderJobs';
+import ProviderPortal from './pages/ProviderPortal';
+import Services from './pages/Services';
+import SubscribePackage from './pages/SubscribePackage';
+import Subscriptions from './pages/Subscriptions';
+import PaymentHistory from './pages/PaymentHistory';
+import Support from './pages/Support';
+import AdminReports from './pages/AdminReports';
+import AdminSupport from './pages/AdminSupport';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
     "About": About,
-    "Contact": Contact,
-    "Services": Services,
-    "Subscriptions": Subscriptions,
-    "Dashboard": Dashboard,
-    "MyBookings": MyBookings,
-    "MySubscriptions": MySubscriptions,
-    "MyProperties": MyProperties,
-    "BookService": BookService,
-    "SubscribePackage": SubscribePackage,
+    "AdminBookings": AdminBookings,
     "AdminDashboard": AdminDashboard,
     "AdminServices": AdminServices,
-    "AdminBookings": AdminBookings,
     "AdminSubscriptions": AdminSubscriptions,
-    "ProviderPortal": ProviderPortal,
-    "ProviderJobs": ProviderJobs,
+    "BookService": BookService,
+    "Contact": Contact,
+    "Dashboard": Dashboard,
+    "Home": Home,
+    "MyBookings": MyBookings,
+    "MyProperties": MyProperties,
+    "MySubscriptions": MySubscriptions,
     "ProviderJobDetails": ProviderJobDetails,
+    "ProviderJobs": ProviderJobs,
+    "ProviderPortal": ProviderPortal,
+    "Services": Services,
+    "SubscribePackage": SubscribePackage,
+    "Subscriptions": Subscriptions,
+    "PaymentHistory": PaymentHistory,
+    "Support": Support,
+    "AdminReports": AdminReports,
+    "AdminSupport": AdminSupport,
 }
 
 export const pagesConfig = {

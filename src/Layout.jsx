@@ -59,6 +59,11 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('Contact')} className="text-slate-700 hover:text-emerald-600 transition-colors">
                 Contact
               </Link>
+              {user && (
+                <Link to={createPageUrl('Support')} className="text-slate-700 hover:text-emerald-600 transition-colors">
+                  Support
+                </Link>
+              )}
             </div>
 
             <div className="flex items-center gap-4">
@@ -77,6 +82,20 @@ export default function Layout({ children, currentPageName }) {
                         Dashboard
                       </Link>
                     </DropdownMenuItem>
+                    {user.role !== 'admin' && (
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link to={createPageUrl('PaymentHistory')} className="w-full">
+                            Payment History
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to={createPageUrl('Support')} className="w-full">
+                            Support
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout
