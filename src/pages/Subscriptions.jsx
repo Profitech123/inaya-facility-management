@@ -16,14 +16,20 @@ export default function Subscriptions() {
 
   const { data: packages = [] } = useQuery({
     queryKey: ['subscriptionPackages'],
-    queryFn: () => base44.entities.SubscriptionPackage.filter({ is_active: true }),
+    queryFn: async () => {
+      const allPackages = await base44.entities.SubscriptionPackage.list();
+      return allPackages.filter(pkg => pkg.is_active);
+    },
     initialData: [],
     staleTime: 120000
   });
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['userSubscriptions'],
-    queryFn: () => base44.entities.Subscription.filter({ customer_id: user?.id, status: 'active' }),
+    queryFn: async () => {
+      const allSubs = await base44.entities.Subscription.list();
+      return allSubs.filter(sub => sub.customer_id === user?.id && sub.status === 'active');
+    },
     enabled: !!user,
     initialData: [],
     staleTime: 60000
