@@ -82,6 +82,19 @@ export default function BookService() {
     initialData: []
   });
 
+  const { data: allBookings = [] } = useQuery({
+    queryKey: ['allBookings'],
+    queryFn: async () => {
+      try {
+        return await base44.entities.Booking.list();
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        return [];
+      }
+    },
+    initialData: []
+  });
+
   const createBookingMutation = useMutation({
     mutationFn: (data) => base44.entities.Booking.create(data),
   });
