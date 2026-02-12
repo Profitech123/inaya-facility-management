@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, Settings } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, Settings } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', page: 'AdminDashboard', icon: LayoutDashboard },
   { label: 'Service Requests', page: 'AdminBookings', icon: Zap },
   { label: 'Subscriptions', page: 'AdminSubscriptions', icon: Clock },
   { label: 'Technicians', page: 'AdminTechnicians', icon: Users },
+  { label: 'Analytics', page: 'AdminAnalytics', icon: TrendingUp },
   { label: 'Reports', page: 'AdminReports', icon: BarChart3 },
 ];
 
