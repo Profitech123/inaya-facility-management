@@ -8,7 +8,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6">
           <h1 className="text-5xl font-bold mb-6">About INAYA</h1>
           <p className="text-xl text-slate-300 max-w-3xl">
-            Leading facilities management company in UAE, developing and executing FM strategies to maximize the performance and lifecycle of your property.
+            At INAYA, meaning 'care' in Arabic, we are passionate about the services we provide, and committed to delivering them in a responsible, efficient and environmentally-sound manner.
           </p>
         </div>
       </div>
@@ -17,12 +17,12 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
             <div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-6">Part of Belhasa Group</h2>
+              <h2 className="text-4xl font-bold text-slate-900 mb-6">Managing Portfolios to Enhance Building Performance</h2>
               <p className="text-lg text-slate-600 mb-4">
-                INAYA is backed by the trusted Belhasa Group legacy, bringing over 45 years of excellence to your home. Our comprehensive facilities management services are delivered by a team of over 700 skilled professionals from diverse backgrounds.
+                At INAYA, we are passionate about the services we provide, and committed to delivering them in a responsible, efficient and environmentally-sound manner. We not only maintain your property to exemplary standards, but proactively look for ways to improve its lifecycle, performance and cost-efficiency.
               </p>
               <p className="text-lg text-slate-600">
-                We manage and maintain more than 549 hectares of building blocks across the region, delivering 24/7 maintenance and service excellence.
+                INAYA makes the crucial difference where it matters. We know that while facilities management is about buildings and facilities, it has people at its core.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -51,13 +51,14 @@ export default function About() {
 
           <div className="mb-20">
             <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Our Core Values</h2>
-            <div className="grid md:grid-cols-5 gap-6">
+            <div className="grid md:grid-cols-3 gap-8">
               {[
-                { icon: Heart, title: "Honesty", desc: "Transparent in all interactions" },
-                { icon: Shield, title: "Integrity", desc: "Ethical and trustworthy" },
-                { icon: Target, title: "Accountability", desc: "Responsible for results" },
-                { icon: Award, title: "Reliability", desc: "Consistent excellence" },
-                { icon: Users, title: "Customer Focus", desc: "Your needs first" }
+                { icon: Heart, title: "Care", desc: "INAYA means care in Arabic - it's at our core" },
+                { icon: Shield, title: "Responsibility", desc: "Providing services responsibly and ethically" },
+                { icon: Target, title: "Excellence", desc: "Committed to exemplary standards" },
+                { icon: Award, title: "Sustainability", desc: "Environmentally-sound practices" },
+                { icon: Users, title: "People-Focused", desc: "Buildings with people at the core" },
+                { icon: TrendingUp, title: "Performance", desc: "Maximizing lifecycle and cost-efficiency" }
               ].map((value, idx) => {
                 const Icon = value.icon;
                 return (

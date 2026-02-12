@@ -24,12 +24,12 @@ export default function Hero() {
           </div>
           
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-            Your Home,
-            <span className="block text-emerald-400">Our Care</span>
+            Flexible, Cost Competitive
+            <span className="block text-emerald-400">Solutions, Tailored to Your Needs</span>
           </h1>
           
           <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-            Professional facilities management for your villa or apartment. From cleaning and maintenance to specialized services—instant booking, transparent pricing, 24/7 support.
+            INAYA is the leading Facilities Management company in UAE. We develop, manage and execute FM strategies to maximise the performance and lifecycle of your home.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -48,24 +48,24 @@ export default function Hero() {
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="flex items-center gap-3">
+              <Shield className="w-8 h-8 text-emerald-400" />
+              <div>
+                <div className="font-semibold">549+ Hectares</div>
+                <div className="text-sm text-slate-400">Managed across UAE</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
               <Clock className="w-8 h-8 text-emerald-400" />
               <div>
-                <div className="font-semibold">24/7 Support</div>
-                <div className="text-sm text-slate-400">Always available</div>
+                <div className="font-semibold">24/7 Service</div>
+                <div className="text-sm text-slate-400">Maintenance & support</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <Award className="w-8 h-8 text-emerald-400" />
               <div>
                 <div className="font-semibold">ISO Certified</div>
-                <div className="text-sm text-slate-400">Quality assured</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-emerald-400" />
-              <div>
-                <div className="font-semibold">Trusted Since 1980</div>
-                <div className="text-sm text-slate-400">Belhasa Group</div>
+                <div className="text-sm text-slate-400">Excellence assured</div>
               </div>
             </div>
           </div>

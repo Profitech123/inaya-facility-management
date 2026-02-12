@@ -97,8 +97,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 mb-1">Phone</h3>
-                    <p className="text-slate-600">Main: +971 4 882 7001</p>
+                    <p className="text-slate-600">Toll-Free: 6005-INAYA (6005-46292)</p>
                     <p className="text-slate-600">Customer Service: +971 4 815 7300</p>
+                    <p className="text-slate-600">Main: +971 4 882 7001</p>
                   </div>
                 </div>
 
@@ -108,8 +109,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-slate-900 mb-1">Email</h3>
-                    <p className="text-slate-600">info@inaya.ae</p>
-                    <p className="text-slate-600">BD@inaya.ae</p>
+                    <p className="text-slate-600">General: info@inaya.ae</p>
+                    <p className="text-slate-600">Business: BD@inaya.ae</p>
                   </div>
                 </div>
 
