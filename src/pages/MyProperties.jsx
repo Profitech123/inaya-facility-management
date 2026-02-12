@@ -29,9 +29,17 @@ function MyPropertiesContent() {
   }, []);
 
   const { data: properties = [] } = useQuery({
-    queryKey: ['myProperties', user?.email],
-    queryFn: () => base44.entities.Property.filter({ owner_id: user?.id }),
-    enabled: !!user,
+    queryKey: ['myProperties', user?.id],
+    queryFn: async () => {
+      try {
+        const allProps = await base44.entities.Property.list();
+        return allProps.filter(p => p.owner_id === user?.id);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        return [];
+      }
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 

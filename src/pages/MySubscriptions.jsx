@@ -24,21 +24,43 @@ function MySubscriptionsContent() {
   }, []);
 
   const { data: subscriptions = [] } = useQuery({
-    queryKey: ['mySubscriptions', user?.email],
-    queryFn: () => base44.entities.Subscription.filter({ customer_id: user?.id }, '-created_date'),
-    enabled: !!user,
+    queryKey: ['mySubscriptions', user?.id],
+    queryFn: async () => {
+      try {
+        const allSubs = await base44.entities.Subscription.list('-created_date');
+        return allSubs.filter(s => s.customer_id === user?.id);
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+        return [];
+      }
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 
   const { data: packages = [] } = useQuery({
     queryKey: ['packages'],
-    queryFn: () => base44.entities.SubscriptionPackage.list(),
+    queryFn: async () => {
+      try {
+        return await base44.entities.SubscriptionPackage.list();
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+        return [];
+      }
+    },
     initialData: []
   });
 
   const { data: properties = [] } = useQuery({
     queryKey: ['properties'],
-    queryFn: () => base44.entities.Property.list(),
+    queryFn: async () => {
+      try {
+        return await base44.entities.Property.list();
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        return [];
+      }
+    },
     initialData: []
   });
 

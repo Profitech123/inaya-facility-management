@@ -56,14 +56,30 @@ export default function BookService() {
 
   const { data: properties = [] } = useQuery({
     queryKey: ['myProperties', user?.id],
-    queryFn: () => base44.entities.Property.filter({ owner_id: user.id }),
-    enabled: !!user,
+    queryFn: async () => {
+      try {
+        const allProps = await base44.entities.Property.list();
+        return allProps.filter(p => p.owner_id === user?.id);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        return [];
+      }
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 
   const { data: allAddons = [] } = useQuery({
     queryKey: ['addons'],
-    queryFn: () => base44.entities.ServiceAddon.filter({ is_active: true }),
+    queryFn: async () => {
+      try {
+        const addons = await base44.entities.ServiceAddon.list();
+        return addons.filter(a => a.is_active === true);
+      } catch (error) {
+        console.error('Error fetching addons:', error);
+        return [];
+      }
+    },
     initialData: []
   });
 
