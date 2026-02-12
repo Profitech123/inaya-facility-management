@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import BookingTimeline from '../components/booking/BookingTimeline';
+import { logAuditEvent } from '../components/admin/AuditLogger';
 
 export default function AdminBookings() {
   const queryClient = useQueryClient();
@@ -42,6 +43,17 @@ export default function AdminBookings() {
     updateMutation.mutate({
       id: booking.id,
       data: { ...booking, status: newStatus }
+    }, {
+      onSuccess: () => {
+        logAuditEvent({
+          action: 'booking_status_changed',
+          entity_type: 'Booking',
+          entity_id: booking.id,
+          details: `Booking #${booking.id.slice(0, 8)} status changed`,
+          old_value: booking.status,
+          new_value: newStatus
+        });
+      }
     });
   };
 
@@ -114,6 +126,17 @@ export default function AdminBookings() {
                               ...booking, 
                               assigned_provider_id: val,
                               assigned_provider: provider?.full_name || ''
+                            }
+                          }, {
+                            onSuccess: () => {
+                              logAuditEvent({
+                                action: 'provider_assigned',
+                                entity_type: 'Booking',
+                                entity_id: booking.id,
+                                details: `Provider "${provider?.full_name}" assigned to booking #${booking.id.slice(0, 8)}`,
+                                old_value: booking.assigned_provider || '',
+                                new_value: provider?.full_name || ''
+                              });
                             }
                           });
                         }}
