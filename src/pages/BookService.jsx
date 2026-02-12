@@ -15,6 +15,7 @@ import BookingCalendar from '../components/booking/BookingCalendar';
 import AddonSelector from '../components/booking/AddonSelector';
 import TechnicianSelector from '../components/booking/TechnicianSelector';
 import BookingReviewStep from '../components/booking/BookingReviewStep';
+import AIServiceRecommendation from '../components/booking/AIServiceRecommendation';
 
 export default function BookService() {
   const navigate = useNavigate();
@@ -315,6 +316,9 @@ export default function BookService() {
                     serviceId={serviceId}
                     selectedProviderId={selectedProviderId}
                     onChange={setSelectedProviderId}
+                    selectedDate={bookingData.scheduled_date}
+                    selectedTimeSlot={bookingData.scheduled_time}
+                    allBookings={allBookings}
                   />
 
                   <div>
@@ -328,19 +332,28 @@ export default function BookService() {
                   </div>
 
                   <div className="flex items-center justify-between pt-4">
-                    <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
-                      <ArrowLeft className="w-4 h-4" /> Back
-                    </Button>
-                    <Button
-                      onClick={() => setStep(3)}
-                      className="bg-emerald-600 hover:bg-emerald-700 gap-2"
-                    >
-                      Review Booking <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                     <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
+                       <ArrowLeft className="w-4 h-4" /> Back
+                     </Button>
+                     <Button
+                       onClick={() => setStep(3)}
+                       className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+                     >
+                       Review Booking <ArrowRight className="w-4 h-4" />
+                     </Button>
+                   </div>
+                  </CardContent>
+                  </Card>
+                  )}
+
+                  {/* AI Recommendations after Step 1 property selection */}
+                  {step === 1 && selectedProperty && (
+                  <AIServiceRecommendation
+                  user={user}
+                  currentServiceId={serviceId}
+                  selectedProperty={selectedProperty}
+                  />
+                  )}
 
             {/* STEP 3: Review & Confirm */}
             {step === 3 && (
