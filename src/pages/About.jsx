@@ -1,28 +1,61 @@
 import React from 'react';
-import { Shield, Award, Heart, Users, Target, TrendingUp } from 'lucide-react';
+import { Shield, Award, Heart, Users, Target, TrendingUp, CheckCircle } from 'lucide-react';
+
+const coreValues = [
+  {
+    icon: Heart,
+    title: "Honesty",
+    desc: "We'll always tell the entire truth, be sincere and refrain from withholding important information in relationships of trust. We will always do things that are ethical and beneficial to our stakeholders."
+  },
+  {
+    icon: Shield,
+    title: "Integrity",
+    desc: "We'll firmly adhere to a standard of values. We will only say things that we mean and consistently honour what we say. In doing so, we will become a trustworthy partner to our associates."
+  },
+  {
+    icon: Target,
+    title: "Accountability",
+    desc: "We'll take responsibility for our performance in all our decisions and actions. We will continuously strive to deliver what we promised, owning up to any of our shortcomings."
+  },
+  {
+    icon: Award,
+    title: "Reliability",
+    desc: "We'll be a dependable service provider who can be relied upon to provide the solutions sought, implement the necessary actions and deliver the desired outcomes to our customers."
+  },
+  {
+    icon: Users,
+    title: "Customer Focus",
+    desc: "We'll listen to our customers, understand their needs and continually focus on delivering what they truly value. Our relationships will be built on trust, confidence and loyalty."
+  }
+];
 
 export default function About() {
   return (
     <div className="min-h-screen">
+      {/* Hero */}
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-5xl font-bold mb-6">About INAYA</h1>
+          <h1 className="text-5xl font-bold mb-6">INAYA Facilities Management Services</h1>
           <p className="text-xl text-slate-300 max-w-3xl">
-            At INAYA, meaning 'care' in Arabic, we are passionate about the services we provide, and committed to delivering them in a responsible, efficient and environmentally-sound manner.
+            Part of Belhasa Group, one of the UAE's most established group of companies, we have both the resources and solid financial base to offer our leading expertise.
           </p>
         </div>
       </div>
 
+      {/* Company Overview */}
       <div className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
             <div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-6">Managing Portfolios to Enhance Building Performance</h2>
+              <h2 className="text-4xl font-bold text-slate-900 mb-6">Leading FM Company in UAE</h2>
               <p className="text-lg text-slate-600 mb-4">
-                At INAYA, we are passionate about the services we provide, and committed to delivering them in a responsible, efficient and environmentally-sound manner. We not only maintain your property to exemplary standards, but proactively look for ways to improve its lifecycle, performance and cost-efficiency.
+                INAYA Facilities Management Services develops, manages and executes FM strategies to maximise the performance and lifecycle of client assets. From residential and commercial through to large-scale retail properties, we offer maintenance, cleaning and specialist services with best-in-class service delivery and sustainability performance.
+              </p>
+              <p className="text-lg text-slate-600 mb-4">
+                We understand how buildings are designed and the systems that make them work smoothly for their intended use. Our management team has a solid body of knowledge built from working with some of the most respected FM firms regionally and internationally.
               </p>
               <p className="text-lg text-slate-600">
-                INAYA makes the crucial difference where it matters. We know that while facilities management is about buildings and facilities, it has people at its core.
+                We pride ourselves on our honesty, dependability, accountability and accessibility. The relationships we forge with our clients are meaningful and enduring, integrating people and processes and setting the regional benchmark in service delivery.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -49,17 +82,22 @@ export default function About() {
             </div>
           </div>
 
-          <div className="mb-20">
+          {/* Technical Excellence */}
+          <div className="bg-slate-50 rounded-2xl p-8 md:p-12 mb-20">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Technical Excellence</h3>
+            <p className="text-lg text-slate-600 mb-4">
+              Our on-the-ground technical team stays completely up-to-date with emerging international practices and technologies, and works with clients and end users at every stage to ensure the FM requirements for the assets we manage are met to the last detail.
+            </p>
+            <p className="text-lg text-slate-600">
+              Through our ongoing energy management programmes, we gain complete efficiency from the buildings we maintain, providing our clients with real cost savings in the longer-term. Our business approach is designed around building strong relationships between owners, asset managers and tenants.
+            </p>
+          </div>
+
+          {/* Core Values */}
+          <div>
             <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Our Core Values</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { icon: Heart, title: "Care", desc: "INAYA means care in Arabic - it's at our core" },
-                { icon: Shield, title: "Responsibility", desc: "Providing services responsibly and ethically" },
-                { icon: Target, title: "Excellence", desc: "Committed to exemplary standards" },
-                { icon: Award, title: "Sustainability", desc: "Environmentally-sound practices" },
-                { icon: Users, title: "People-Focused", desc: "Buildings with people at the core" },
-                { icon: TrendingUp, title: "Performance", desc: "Maximizing lifecycle and cost-efficiency" }
-              ].map((value, idx) => {
+            <div className="grid md:grid-cols-5 gap-6">
+              {coreValues.map((value, idx) => {
                 const Icon = value.icon;
                 return (
                   <div key={idx} className="text-center">

@@ -69,6 +69,12 @@ import PaymentHistory from './pages/PaymentHistory';
 import Support from './pages/Support';
 import AdminReports from './pages/AdminReports';
 import AdminSupport from './pages/AdminSupport';
+import IntegratedFM from './pages/IntegratedFM';
+import HardServices from './pages/HardServices';
+import SoftServices from './pages/SoftServices';
+import ProjectManagement from './pages/ProjectManagement';
+import OurPeople from './pages/OurPeople';
+import BusinessExcellence from './pages/BusinessExcellence';
 import __Layout from './Layout.jsx';
 
 
@@ -95,6 +101,12 @@ export const PAGES = {
     "Support": Support,
     "AdminReports": AdminReports,
     "AdminSupport": AdminSupport,
+    "IntegratedFM": IntegratedFM,
+    "HardServices": HardServices,
+    "SoftServices": SoftServices,
+    "ProjectManagement": ProjectManagement,
+    "OurPeople": OurPeople,
+    "BusinessExcellence": BusinessExcellence,
 }
 
 export const pagesConfig = {
