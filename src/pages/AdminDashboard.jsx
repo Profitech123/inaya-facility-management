@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import AuthGuard from '../components/AuthGuard';
+import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,22 @@ function AdminDashboardContent() {
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
+    enabled: !!user,
+    initialData: [],
+    staleTime: 60000
+  });
+
+  const { data: reviews = [] } = useQuery({
+    queryKey: ['adminReviews'],
+    queryFn: () => base44.entities.ProviderReview.list('-created_date', 50),
+    enabled: !!user,
+    initialData: [],
+    staleTime: 60000
+  });
+
+  const { data: tickets = [] } = useQuery({
+    queryKey: ['adminTickets'],
+    queryFn: () => base44.entities.SupportTicket.list('-created_date', 50),
     enabled: !!user,
     initialData: [],
     staleTime: 60000
@@ -105,6 +122,11 @@ function AdminDashboardContent() {
               <p className="text-xs text-slate-500 mt-1">From bookings</p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* AI Feedback Summary */}
+        <div className="mb-8">
+          <AIFeedbackSummarizer reviews={reviews} tickets={tickets} bookings={bookings} />
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">

@@ -6,6 +6,7 @@ import { CheckCircle } from 'lucide-react';
 import PlanCards from '../components/subscriptions/PlanCards';
 import ComparisonTable from '../components/subscriptions/ComparisonTable';
 import PlanManagement from '../components/subscriptions/PlanManagement';
+import AIPackageSuggestion from '../components/subscriptions/AIPackageSuggestion';
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null);
@@ -77,6 +78,11 @@ export default function Subscriptions() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* AI Package Suggestion */}
+      <div className="max-w-6xl mx-auto px-6 pt-10 pb-0">
+        <AIPackageSuggestion packages={packages} />
       </div>
 
       {/* Plan Cards */}
