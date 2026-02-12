@@ -89,6 +89,10 @@ function AdminBookingsContent() {
 
   const getService = (serviceId) => services.find(s => s.id === serviceId);
 
+  const filteredBookings = selectedDate 
+    ? bookings.filter(b => b.scheduled_date === selectedDate.toISOString().split('T')[0])
+    : bookings;
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
@@ -96,7 +100,26 @@ function AdminBookingsContent() {
           <h1 className="text-3xl font-bold text-slate-900">Manage Bookings</h1>
           <p className="text-slate-500">View and manage all service bookings</p>
         </div>
-        <div className="space-y-4">
+
+        <Tabs value={viewMode} onValueChange={setViewMode} className="mb-6">
+          <TabsList>
+            <TabsTrigger value="calendar" className="gap-2">
+              <Calendar className="w-4 h-4" />
+              Calendar View
+            </TabsTrigger>
+            <TabsTrigger value="list">List View</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="calendar" className="mt-6">
+            <AdminBookingCalendar 
+              bookings={bookings} 
+              onDateSelect={setSelectedDate}
+              selectedDate={selectedDate}
+            />
+          </TabsContent>
+
+          <TabsContent value="list" className="mt-6">
+            <div className="space-y-4">
           {bookings.map(booking => {
             const service = getService(booking.service_id);
             
