@@ -52,10 +52,11 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
+      <nav className="bg-white sticky top-0 z-50 border-b border-slate-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link to={createPageUrl('Home')} className="flex items-center gap-2">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to={createPageUrl('Home')} className="flex items-center gap-3 flex-shrink-0">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
                 alt="INAYA Facilities Management" 
@@ -63,12 +64,13 @@ export default function Layout({ children, currentPageName }) {
               />
             </Link>
 
-            <div className="hidden md:flex items-center gap-6">
-              <Link to={createPageUrl('Home')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8 flex-1 justify-center">
+              <Link to={createPageUrl('Home')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Home
               </Link>
               <DropdownMenu>
-                <DropdownMenuTrigger className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                <DropdownMenuTrigger className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
                   About
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -78,7 +80,7 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
-                <DropdownMenuTrigger className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
+                <DropdownMenuTrigger className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium cursor-pointer">
                   Services
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -86,32 +88,33 @@ export default function Layout({ children, currentPageName }) {
                   <DropdownMenuItem asChild><Link to={createPageUrl('HardServices')} className="w-full">Hard Services</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild><Link to={createPageUrl('SoftServices')} className="w-full">Soft Services</Link></DropdownMenuItem>
                   <DropdownMenuItem asChild><Link to={createPageUrl('ProjectManagement')} className="w-full">Project Management</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link to={createPageUrl('Services')} className="w-full">Book a Service</Link></DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Link to={createPageUrl('Subscriptions')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
+              <Link to={createPageUrl('Subscriptions')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Packages
               </Link>
-              <Link to={createPageUrl('Contact')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
+              <Link to={createPageUrl('Contact')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
                 Contact
               </Link>
               {user && (
-                <Link to={createPageUrl('Support')} className="text-slate-700 hover:text-emerald-600 transition-colors text-sm font-medium">
+                <Link to={createPageUrl('Support')} className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-medium">
                   Support
                 </Link>
               )}
-              <Link to={createPageUrl('Services')} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                Book a Service
-              </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* Right Section */}
+            <div className="flex items-center gap-3">
+              <Link to={createPageUrl('Services')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
+                Book a Service
+              </Link>
+
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <User className="w-4 h-4 mr-2" />
-                      {user.full_name || user.email}
+                    <Button variant="outline" size="sm" className="gap-2 border-slate-200">
+                      <User className="w-4 h-4" />
+                      <span className="hidden sm:inline text-slate-700">{user.full_name?.split(' ')[0] || 'Account'}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
@@ -142,34 +145,34 @@ export default function Layout({ children, currentPageName }) {
                         Support
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleLogout}>
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2">
                   <Button 
                     onClick={() => base44.auth.redirectToLogin(window.location.href)} 
                     variant="ghost" 
                     size="sm" 
-                    className="text-slate-700"
+                    className="text-slate-600"
                   >
                     Sign In
                   </Button>
                   <Button 
                     onClick={() => base44.auth.redirectToLogin(window.location.href)} 
                     size="sm" 
-                    className="bg-emerald-600 hover:bg-emerald-700"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   >
                     Create Account
                   </Button>
                 </div>
               )}
               
-              <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                {mobileMenuOpen ? <X /> : <Menu />}
+              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
