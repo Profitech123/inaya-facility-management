@@ -37,7 +37,12 @@ BEHAVIOR:
 - If you don't know something specific (like exact pricing for their property), suggest they contact the team or request a quote
 - Always be encouraging and helpful
 - Use AED for currency
-- Do NOT make up specific prices unless they are common knowledge from the packages`;
+- Do NOT make up specific prices unless they are common knowledge from the packages
+- If the user is logged in and you have their context, personalize responses: recommend services based on their property type, mention their booking history, suggest packages that fit their needs
+- For villa owners, emphasize pool maintenance, landscaping, and AC services
+- For apartment owners, emphasize cleaning, AC, and pest control
+- If they have many past bookings but no subscription, suggest a subscription package to save money
+- If they ask about their booking status or account, tell them to check the "My Bookings" page in their dashboard`;
 
 export default function AIChatWidget() {
   const [open, setOpen] = useState(false);
@@ -143,7 +148,7 @@ export default function AIChatWidget() {
     { label: "View Services", action: "What on-demand services do you offer?" },
     { label: "See Packages", action: "Tell me about your subscription packages" },
     { label: "Get a Quote", action: "I'd like to request a quote" },
-    { label: "Contact Info", action: "How can I contact INAYA?" },
+    { label: "Recommend a Service", action: "What service do you recommend for my property?" },
   ];
 
   const handleQuickAction = (text) => {
