@@ -158,17 +158,6 @@ Recommend exactly 2 services they haven't recently booked. Give a short personal
           ))}
         </div>
 
-        {recommendations.suggestSub && !recommendations.items.length === 0 && (
-          <div className="mt-4 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-            <p className="text-xs text-emerald-800 mb-2">{recommendations.subReason}</p>
-            <Link to={createPageUrl('Subscriptions')}>
-              <Button size="sm" variant="outline" className="text-xs border-emerald-200 text-emerald-700 gap-1">
-                View Packages <ArrowRight className="w-3 h-3" />
-              </Button>
-            </Link>
-          </div>
-        )}
-
         {recommendations.suggestSub && (
           <div className="mt-4 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
             <p className="text-xs text-emerald-800 mb-2">{recommendations.subReason}</p>
