@@ -6,17 +6,13 @@ import { Calendar, Package, DollarSign, Users, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminDashboard() {
+function AdminDashboardContent() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(u => {
-      if (u.role !== 'admin') {
-        window.location.href = createPageUrl('Dashboard');
-      }
-      setUser(u);
-    }).catch(() => window.location.href = createPageUrl('Home'));
+    base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: bookings = [] } = useQuery({
@@ -187,5 +183,13 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminDashboardContent />
+    </AuthGuard>
   );
 }

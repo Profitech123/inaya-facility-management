@@ -6,12 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Package, Home, Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import AuthGuard from '../components/AuthGuard';
 
-export default function Dashboard() {
+function DashboardContent() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = createPageUrl('Home'));
+    base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: bookings = [] } = useQuery({
@@ -157,5 +158,13 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <DashboardContent />
+    </AuthGuard>
   );
 }
