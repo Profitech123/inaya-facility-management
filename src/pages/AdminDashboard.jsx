@@ -147,6 +147,11 @@ export default function AdminDashboard() {
                   Audit Logs
                 </Button>
               </Link>
+              <Link to={createPageUrl('AdminCSVMigration')}>
+                <Button variant="outline" className="w-full justify-start">
+                  CSV Data Migration
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
