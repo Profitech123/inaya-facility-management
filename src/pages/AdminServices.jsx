@@ -30,13 +30,15 @@ function AdminServicesContent() {
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
     queryFn: () => base44.entities.ServiceCategory.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const createMutation = useMutation({
@@ -109,22 +111,17 @@ function AdminServicesContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Manage Services</h1>
-              <p className="text-slate-300">Configure your service catalog</p>
-            </div>
-            <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Service
-            </Button>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Manage Services</h1>
+            <p className="text-slate-500">Configure your service catalog</p>
           </div>
+          <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Service
+          </Button>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
         {showForm && (
           <Card className="mb-8">
             <CardHeader>

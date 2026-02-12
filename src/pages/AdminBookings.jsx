@@ -18,19 +18,22 @@ function AdminBookingsContent() {
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
     queryFn: () => base44.entities.Booking.list('-scheduled_date'),
-    initialData: []
+    initialData: [],
+    staleTime: 30000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
     queryFn: () => base44.entities.Provider.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const updateMutation = useMutation({
@@ -84,14 +87,11 @@ function AdminBookingsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Manage Bookings</h1>
-          <p className="text-slate-300">View and manage all service bookings</p>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Manage Bookings</h1>
+          <p className="text-slate-500">View and manage all service bookings</p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="space-y-4">
           {bookings.map(booking => {
             const service = getService(booking.service_id);

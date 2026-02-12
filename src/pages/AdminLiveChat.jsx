@@ -51,17 +51,14 @@ function AdminLiveChatContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-8">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-3xl font-bold mb-1">Live Chat Support</h1>
-          <p className="text-slate-300 text-sm">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Live Chat Support</h1>
+          <p className="text-slate-500 text-sm">
             {totalUnread > 0 ? `${totalUnread} unread message${totalUnread > 1 ? 's' : ''}` : 'All caught up'}
             {' · '}{activeConvos.length} active conversation{activeConvos.length !== 1 ? 's' : ''}
           </p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-6">
         <Card className="overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
           <div className="flex h-full">
             {/* Sidebar */}

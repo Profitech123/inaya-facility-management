@@ -29,7 +29,8 @@ function AdminAuditLogsContent() {
   const { data: logs = [], isLoading } = useQuery({
     queryKey: ['auditLogs'],
     queryFn: () => base44.entities.AuditLog.list('-created_date', 200),
-    initialData: []
+    initialData: [],
+    staleTime: 30000
   });
 
   const filtered = logs.filter(log => {
@@ -45,14 +46,11 @@ function AdminAuditLogsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Audit Logs</h1>
-          <p className="text-slate-300">Track all administrative actions across the platform.</p>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Audit Logs</h1>
+          <p className="text-slate-500">Track all administrative actions across the platform.</p>
+        </div>
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">

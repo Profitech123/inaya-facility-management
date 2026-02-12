@@ -19,25 +19,29 @@ function AdminSubscriptionsContent() {
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
     queryFn: () => base44.entities.Subscription.list('-created_date'),
-    initialData: []
+    initialData: [],
+    staleTime: 30000
   });
 
   const { data: packages = [] } = useQuery({
     queryKey: ['packages'],
     queryFn: () => base44.entities.SubscriptionPackage.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['allServices'],
     queryFn: () => base44.entities.Service.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const { data: users = [] } = useQuery({
     queryKey: ['allUsers'],
     queryFn: () => base44.entities.User.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const createPkgMutation = useMutation({
@@ -120,14 +124,11 @@ function AdminSubscriptionsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Manage Subscriptions</h1>
-          <p className="text-slate-300">View subscriptions and manage packages</p>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Manage Subscriptions</h1>
+          <p className="text-slate-500">View subscriptions and manage packages</p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Summary Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <Card>

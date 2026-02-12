@@ -25,42 +25,50 @@ function AdminReportsContent() {
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
     queryFn: () => base44.entities.Booking.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
     queryFn: () => base44.entities.Subscription.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: invoices = [] } = useQuery({
     queryKey: ['allInvoices'],
     queryFn: () => base44.entities.Invoice.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
     queryFn: () => base44.entities.Provider.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: tickets = [] } = useQuery({
     queryKey: ['supportTickets'],
     queryFn: () => base44.entities.SupportTicket.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews'],
     queryFn: () => base44.entities.ProviderReview.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
   const { data: packages = [] } = useQuery({
     queryKey: ['packages'],
     queryFn: () => base44.entities.SubscriptionPackage.list(),
-    initialData: []
+    initialData: [],
+    staleTime: 60000
   });
 
   const resetDates = () => {
@@ -71,14 +79,11 @@ function AdminReportsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Analytics & Reports</h1>
-          <p className="text-slate-300">Comprehensive business insights, performance metrics, and exportable reports</p>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Analytics & Reports</h1>
+          <p className="text-slate-500">Comprehensive business insights, performance metrics, and exportable reports</p>
+        </div>
         <div className="mb-6">
           <DateRangeFilter
             startDate={startDate}

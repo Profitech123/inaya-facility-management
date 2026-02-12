@@ -16,7 +16,8 @@ function AdminSupportContent() {
   const { data: tickets = [] } = useQuery({
     queryKey: ['allSupportTickets'],
     queryFn: () => base44.entities.SupportTicket.list('-created_date'),
-    initialData: []
+    initialData: [],
+    staleTime: 30000
   });
 
   const updateTicketMutation = useMutation({
@@ -52,14 +53,11 @@ function AdminSupportContent() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-2">Customer Support</h1>
-          <p className="text-slate-300">Manage support tickets and customer inquiries</p>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">Customer Support</h1>
+          <p className="text-slate-500">Manage support tickets and customer inquiries</p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardHeader>
