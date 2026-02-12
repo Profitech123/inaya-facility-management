@@ -16,6 +16,7 @@ import AddonSelector from '../components/booking/AddonSelector';
 import TechnicianSelector from '../components/booking/TechnicianSelector';
 import BookingReviewStep from '../components/booking/BookingReviewStep';
 import AIServiceRecommendation from '../components/booking/AIServiceRecommendation';
+import BookingConfirmation from '../components/booking/BookingConfirmation';
 
 export default function BookService() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export default function BookService() {
   const [selectedAddonIds, setSelectedAddonIds] = useState([]);
   const [selectedProviderId, setSelectedProviderId] = useState('');
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -144,6 +146,7 @@ export default function BookService() {
         booking_id: newBooking.id
       });
 
+      setConfirmedBooking(newBooking);
       setIsProcessingPayment(false);
       setStep('success');
     } catch (error) {
@@ -173,25 +176,12 @@ export default function BookService() {
   // Success
   if (step === 'success') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
-        <Card className="max-w-md w-full">
-          <CardContent className="text-center py-12">
-            <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Booking Confirmed!</h2>
-            <p className="text-slate-600 mb-6">
-              Your booking has been confirmed and payment processed. We'll send you a confirmation email shortly.
-            </p>
-            <div className="space-y-3">
-              <Button onClick={() => navigate(createPageUrl('MyBookings'))} className="w-full bg-emerald-600 hover:bg-emerald-700">
-                View My Bookings
-              </Button>
-              <Button onClick={() => navigate(createPageUrl('Dashboard'))} variant="outline" className="w-full">
-                Go to Dashboard
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <BookingConfirmation
+        booking={confirmedBooking}
+        service={service}
+        property={selectedProperty}
+        provider={selectedProvider}
+      />
     );
   }
 
