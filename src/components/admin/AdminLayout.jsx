@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import {
   LayoutDashboard, Calendar, Package, Wrench, BarChart3,
   HeadphonesIcon, MessageSquare, FileText, Database, Shield,
-  LogOut, Menu, X, ChevronRight
+  LogOut, Menu, X, ChevronRight, Users
 } from 'lucide-react';
 
 const adminNavItems = [
@@ -18,7 +18,7 @@ const adminNavItems = [
   { label: 'Live Chat', icon: MessageSquare, page: 'AdminLiveChat' },
   { label: 'Audit Logs', icon: FileText, page: 'AdminAuditLogs' },
   { label: 'CSV Migration', icon: Database, page: 'AdminCSVMigration' },
-  { label: 'Technicians', icon: Shield, page: 'AdminProviderDetail' },
+  { label: 'Technicians', icon: Users, page: 'AdminTechnicians' },
 ];
 
 export default function AdminLayout({ children, currentPage }) {

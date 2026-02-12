@@ -22,7 +22,7 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   // Admin pages get their own separate layout — completely hidden from public site
-  const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails' || currentPageName === 'AdminProviderDetail';
+  const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails';
   if (isAdminPage) {
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
   }
