@@ -18,7 +18,17 @@ export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => setUser(null));
+    base44.auth.me()
+      .then(setUser)
+      .catch((error) => {
+        // Expected error when not authenticated
+        if (error?.status === 401) {
+          setUser(null);
+        } else {
+          console.error('Unexpected auth error:', error);
+          setUser(null);
+        }
+      });
   }, []);
 
   // Admin pages get their own separate layout — completely hidden from public site
