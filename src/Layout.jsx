@@ -139,10 +139,19 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenu>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Button onClick={() => base44.auth.redirectToLogin()} variant="ghost" size="sm" className="text-slate-700">
+                  <Button 
+                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-slate-700"
+                  >
                     Sign In
                   </Button>
-                  <Button onClick={() => base44.auth.redirectToLogin()} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                  <Button 
+                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
+                    size="sm" 
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                  >
                     Create Account
                   </Button>
                 </div>
