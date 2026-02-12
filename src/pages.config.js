@@ -83,6 +83,7 @@ import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
+import AdminAnalytics from './pages/AdminAnalytics';
 import __Layout from './Layout.jsx';
 
 
@@ -123,6 +124,7 @@ export const PAGES = {
     "Support": Support,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
+    "AdminAnalytics": AdminAnalytics,
 }
 
 export const pagesConfig = {
