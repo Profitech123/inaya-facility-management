@@ -18,6 +18,7 @@ export default function BookService() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [step, setStep] = useState(1);
   const [serviceId, setServiceId] = useState(null);
   const [bookingData, setBookingData] = useState({
@@ -30,14 +31,22 @@ export default function BookService() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   useEffect(() => {
-    base44.auth.me()
-      .then(setUser)
-      .catch((error) => {
-        // Expected error when not authenticated
+    const checkAuth = async () => {
+      try {
+        const currentUser = await base44.auth.me();
+        setUser(currentUser);
+        setIsAuthChecking(false);
+      } catch (error) {
         if (error?.status === 401) {
           base44.auth.redirectToLogin(window.location.href);
+        } else {
+          setIsAuthChecking(false);
         }
-      });
+      }
+    };
+
+    checkAuth();
+    
     const params = new URLSearchParams(window.location.search);
     setServiceId(params.get('service'));
 
