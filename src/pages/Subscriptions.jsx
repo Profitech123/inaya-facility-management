@@ -17,24 +17,31 @@ export default function Subscriptions() {
   const { data: packages = [] } = useQuery({
     queryKey: ['subscriptionPackages'],
     queryFn: async () => {
-      const allPackages = await base44.entities.SubscriptionPackage.list();
-      console.log('Fetched packages:', allPackages);
-      return allPackages.filter(pkg => pkg.is_active === true);
+      try {
+        const allPackages = await base44.entities.SubscriptionPackage.list();
+        return allPackages.filter(pkg => pkg.is_active === true);
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+        return [];
+      }
     },
     initialData: []
   });
 
-  console.log('Packages in component:', packages);
-
   const { data: subscriptions = [] } = useQuery({
-    queryKey: ['userSubscriptions'],
+    queryKey: ['userSubscriptions', user?.id],
     queryFn: async () => {
-      const allSubs = await base44.entities.Subscription.list();
-      return allSubs.filter(sub => sub.customer_id === user?.id && sub.status === 'active');
+      if (!user?.id) return [];
+      try {
+        const allSubs = await base44.entities.Subscription.list();
+        return allSubs.filter(sub => sub.customer_id === user.id && sub.status === 'active');
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+        return [];
+      }
     },
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !!user?.id,
+    initialData: []
   });
 
   const currentSub = subscriptions[0];
