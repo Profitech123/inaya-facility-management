@@ -21,8 +21,13 @@ export default function AdminLogin() {
       const isAuth = await base44.auth.isAuthenticated();
       if (isAuth) {
         const user = await base44.auth.me();
-        if (user.role === 'admin') {
+        if (user?.role === 'admin') {
           window.location.href = createPageUrl('AdminDashboard');
+          return;
+        }
+        // Customer trying to access admin login — redirect to customer dashboard
+        if (user?.role !== 'admin') {
+          window.location.href = createPageUrl('Dashboard');
           return;
         }
       }
