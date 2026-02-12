@@ -33,7 +33,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <nav className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link to={createPageUrl('Home')} className="flex items-center gap-2">
@@ -155,9 +155,9 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </main>
 
-      <footer className="bg-slate-900 text-white py-12">
+      <footer className="bg-slate-950 text-white py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
@@ -202,7 +202,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           
-          <div className="border-t border-slate-800 pt-8 text-center text-sm text-slate-400">
+          <div className="border-t border-slate-800/60 pt-8 text-center text-sm text-slate-500">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
           </div>
         </div>
