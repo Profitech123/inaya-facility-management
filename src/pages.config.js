@@ -48,7 +48,6 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import About from './pages/About';
-import AdminBookings from './pages/AdminBookings';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
@@ -61,7 +60,6 @@ import Dashboard from './pages/Dashboard';
 import HardServices from './pages/HardServices';
 import Home from './pages/Home';
 import IntegratedFM from './pages/IntegratedFM';
-import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
 import OurPeople from './pages/OurPeople';
@@ -84,7 +82,6 @@ import __Layout from './Layout.jsx';
 
 export const PAGES = {
     "About": About,
-    "AdminBookings": AdminBookings,
     "AdminDashboard": AdminDashboard,
     "AdminReports": AdminReports,
     "AdminServices": AdminServices,
@@ -97,7 +94,6 @@ export const PAGES = {
     "HardServices": HardServices,
     "Home": Home,
     "IntegratedFM": IntegratedFM,
-    "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,
     "OurPeople": OurPeople,
