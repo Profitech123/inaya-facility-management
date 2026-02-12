@@ -9,6 +9,7 @@ import UpcomingServicesCard from '../components/dashboard/UpcomingServicesCard';
 import RecentHistoryCard from '../components/dashboard/RecentHistoryCard';
 import QuickActionsRow from '../components/dashboard/QuickActionsRow';
 import SupportBanner from '../components/dashboard/SupportBanner';
+import DashboardRecommendations from '../components/dashboard/DashboardRecommendations';
 
 function DashboardContent() {
   const [user, setUser] = useState(null);
@@ -112,6 +113,9 @@ function DashboardContent() {
                 <RecentHistoryCard bookings={bookings} services={services} />
               </div>
             </div>
+
+            {/* AI Recommendations */}
+            <DashboardRecommendations user={user} bookings={bookings} />
 
             {/* Quick actions */}
             <QuickActionsRow />
