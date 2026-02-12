@@ -13,6 +13,7 @@ import { Calendar as CalendarIcon, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import AddonSelector from '../components/booking/AddonSelector';
 
 export default function BookService() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function BookService() {
     scheduled_time: '',
     customer_notes: ''
   });
+  const [selectedAddonIds, setSelectedAddonIds] = useState([]);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
@@ -49,6 +51,12 @@ export default function BookService() {
     initialData: []
   });
 
+  const { data: allAddons = [] } = useQuery({
+    queryKey: ['addons'],
+    queryFn: () => base44.entities.ServiceAddon.filter({ is_active: true }),
+    initialData: []
+  });
+
   const createBookingMutation = useMutation({
     mutationFn: (data) => base44.entities.Booking.create(data),
     onSuccess: () => {
@@ -56,6 +64,11 @@ export default function BookService() {
       setStep(3);
     }
   });
+
+  const addonsTotal = allAddons
+    .filter(a => selectedAddonIds.includes(a.id))
+    .reduce((s, a) => s + a.price, 0);
+  const grandTotal = (service?.price || 0) + addonsTotal;
 
   const handleBooking = () => {
     if (!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time) {
@@ -70,7 +83,9 @@ export default function BookService() {
       scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
       scheduled_time: bookingData.scheduled_time,
       customer_notes: bookingData.customer_notes,
-      total_amount: service.price,
+      total_amount: grandTotal,
+      addon_ids: selectedAddonIds,
+      addons_amount: addonsTotal,
       status: 'pending',
       payment_status: 'paid'
     });
@@ -186,6 +201,12 @@ export default function BookService() {
                   </Select>
                 </div>
 
+                <AddonSelector
+                  serviceId={serviceId}
+                  selectedIds={selectedAddonIds}
+                  onChange={setSelectedAddonIds}
+                />
+
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Additional Notes</label>
                   <Textarea
@@ -220,10 +241,17 @@ export default function BookService() {
                   </div>
                 )}
 
+                {addonsTotal > 0 && (
+                  <div>
+                    <div className="text-sm text-slate-600 mb-1">Add-ons</div>
+                    <div className="font-medium text-slate-900">AED {addonsTotal}</div>
+                  </div>
+                )}
+
                 <div className="border-t pt-4">
                   <div className="flex items-center justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>AED {service.price}</span>
+                    <span>AED {grandTotal}</span>
                   </div>
                 </div>
 
