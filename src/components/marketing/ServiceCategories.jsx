@@ -99,7 +99,7 @@ export default function ServiceCategories() {
                     </li>
                   ))}
                 </ul>
-                <Link to={createPageUrl('Services')}>
+                <Link to={createPageUrl('OnDemandServices')}>
                   <Button variant="ghost" className="w-full group/btn hover:bg-slate-50 font-semibold">
                     View Services
                     <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
