@@ -21,6 +21,9 @@ function AdminReportsContent() {
   const defaults = getDefaultRange();
   const [startDate, setStartDate] = useState(defaults.start);
   const [endDate, setEndDate] = useState(defaults.end);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedTechnicians, setSelectedTechnicians] = useState([]);
+  const [technicianStatus, setTechnicianStatus] = useState('all');
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
@@ -76,6 +79,18 @@ function AdminReportsContent() {
     setStartDate(d.start);
     setEndDate(d.end);
   };
+
+  // Filter bookings by selected services
+  const filteredBookings = selectedServices.length > 0 
+    ? bookings.filter(b => selectedServices.includes(b.service_id))
+    : bookings;
+
+  // Filter providers by status
+  const filteredProviders = technicianStatus === 'all'
+    ? providers
+    : technicianStatus === 'active'
+    ? providers.filter(p => p.is_active)
+    : providers.filter(p => !p.is_active);
 
   return (
     <div className="min-h-screen bg-slate-50">
