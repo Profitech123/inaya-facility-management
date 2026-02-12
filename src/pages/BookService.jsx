@@ -119,23 +119,34 @@ export default function BookService() {
 
     setIsProcessingPayment(true);
 
-    // Create booking with dummy payment (testing mode)
-    await createBookingMutation.mutateAsync({
-      service_id: serviceId,
-      customer_id: user.id,
-      property_id: bookingData.property_id,
-      scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
-      scheduled_time: bookingData.scheduled_time,
-      customer_notes: bookingData.customer_notes,
-      total_amount: grandTotal,
-      addon_ids: selectedAddonIds,
-      addons_amount: addonsTotal,
-      status: 'confirmed',
-      payment_status: 'paid'
-    });
+    try {
+      // Create booking with dummy payment (testing mode)
+      const newBooking = await createBookingMutation.mutateAsync({
+        service_id: serviceId,
+        customer_id: user.id,
+        property_id: bookingData.property_id,
+        scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
+        scheduled_time: bookingData.scheduled_time,
+        customer_notes: bookingData.customer_notes,
+        total_amount: grandTotal,
+        addon_ids: selectedAddonIds,
+        addons_amount: addonsTotal,
+        status: 'confirmed',
+        payment_status: 'paid'
+      });
 
-    setIsProcessingPayment(false);
-    setStep(3);
+      // Send confirmation email
+      await base44.functions.invoke('sendBookingConfirmation', { 
+        booking_id: newBooking.id 
+      });
+
+      setIsProcessingPayment(false);
+      setStep(3);
+    } catch (error) {
+      console.error('Booking error:', error);
+      setIsProcessingPayment(false);
+      toast.error('Failed to create booking. Please try again.');
+    }
   };
 
   if (!user || !service) {
