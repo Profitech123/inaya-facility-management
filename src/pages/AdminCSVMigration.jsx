@@ -8,6 +8,7 @@ import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle, Loader2 } from 'luc
 import { toast } from 'sonner';
 import CSVPreviewTable from '../components/admin/CSVPreviewTable';
 import CSVColumnMapper from '../components/admin/CSVColumnMapper';
+import AuthGuard from '../components/AuthGuard';
 
 const ENTITY_OPTIONS = [
   { value: 'Service', label: 'Services', fields: ['name', 'slug', 'category_id', 'description', 'price', 'duration_minutes', 'image_url', 'is_active'] },
@@ -37,7 +38,7 @@ function parseCSV(text) {
   return { headers, rows };
 }
 
-export default function AdminCSVMigration() {
+function AdminCSVMigrationContent() {
   const [selectedEntity, setSelectedEntity] = useState('');
   const [csvData, setCsvData] = useState(null);
   const [mapping, setMapping] = useState({});

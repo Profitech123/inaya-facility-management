@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ClipboardList, Search, User, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import AuthGuard from '../components/AuthGuard';
 
 const ACTION_COLORS = {
   booking_status_changed: 'bg-blue-100 text-blue-800',
@@ -21,7 +22,7 @@ const ACTION_COLORS = {
   package_deleted: 'bg-red-100 text-red-800',
 };
 
-export default function AdminAuditLogs() {
+function AdminAuditLogsContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [entityFilter, setEntityFilter] = useState('all');
 

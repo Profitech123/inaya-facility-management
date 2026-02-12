@@ -8,8 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminSupport() {
+function AdminSupportContent() {
   const queryClient = useQueryClient();
 
   const { data: tickets = [] } = useQuery({

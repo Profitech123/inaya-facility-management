@@ -9,8 +9,9 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import BookingTimeline from '../components/booking/BookingTimeline';
 import { logAuditEvent } from '../components/admin/AuditLogger';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminBookings() {
+function AdminBookingsContent() {
   const queryClient = useQueryClient();
 
   const { data: bookings = [] } = useQuery({

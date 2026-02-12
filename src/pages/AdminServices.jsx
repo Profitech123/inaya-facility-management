@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminServices() {
+function AdminServicesContent() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState(null);

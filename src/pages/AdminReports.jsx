@@ -8,6 +8,7 @@ import CustomerReport from '../components/reports/CustomerReport';
 import BookingReport from '../components/reports/BookingReport';
 import TechnicianReport from '../components/reports/TechnicianReport';
 import SystemHealthReport from '../components/reports/SystemHealthReport';
+import AuthGuard from '../components/AuthGuard';
 
 function getDefaultRange() {
   const end = new Date();
@@ -16,7 +17,7 @@ function getDefaultRange() {
   return { start: start.toISOString().split('T')[0], end: end.toISOString().split('T')[0] };
 }
 
-export default function AdminReports() {
+function AdminReportsContent() {
   const defaults = getDefaultRange();
   const [startDate, setStartDate] = useState(defaults.start);
   const [endDate, setEndDate] = useState(defaults.end);

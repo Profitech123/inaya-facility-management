@@ -9,8 +9,9 @@ import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users 
 import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminSubscriptions() {
+function AdminSubscriptionsContent() {
   const [showPackageForm, setShowPackageForm] = useState(false);
   const [editingPkg, setEditingPkg] = useState(null);
   const queryClient = useQueryClient();

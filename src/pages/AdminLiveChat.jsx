@@ -6,18 +6,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { createPageUrl } from '@/utils';
 import AdminChatList from '../components/chat/AdminChatList';
 import AdminChatWindow from '../components/chat/AdminChatWindow';
+import AuthGuard from '../components/AuthGuard';
 
-export default function AdminLiveChat() {
+function AdminLiveChatContent() {
   const [user, setUser] = useState(null);
   const [selected, setSelected] = useState(null);
   const [tab, setTab] = useState('active');
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    base44.auth.me().then(u => {
-      if (u.role !== 'admin') window.location.href = createPageUrl('Home');
-      setUser(u);
-    }).catch(() => window.location.href = createPageUrl('Home'));
+    base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: conversations = [] } = useQuery({
