@@ -168,3 +168,11 @@ function AdminAuditLogsContent() {
     </div>
   );
 }
+
+export default function AdminAuditLogs() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminAuditLogsContent />
+    </AuthGuard>
+  );
+}

@@ -10,8 +10,9 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import PauseCancelDialog from '../components/subscriptions/PauseCancelDialog';
 import RenewalReminderBanner from '../components/subscriptions/RenewalReminderBanner';
+import AuthGuard from '../components/AuthGuard';
 
-export default function MySubscriptions() {
+function MySubscriptionsContent() {
   const [user, setUser] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState(null);

@@ -10,8 +10,9 @@ import { Badge } from '@/components/ui/badge';
 import { MessageSquare, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { createPageUrl } from '@/utils';
+import AuthGuard from '../components/AuthGuard';
 
-export default function Support() {
+function SupportContent() {
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
   const [showForm, setShowForm] = useState(false);

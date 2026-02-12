@@ -332,3 +332,11 @@ function AdminSubscriptionsContent() {
     </div>
   );
 }
+
+export default function AdminSubscriptions() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminSubscriptionsContent />
+    </AuthGuard>
+  );
+}

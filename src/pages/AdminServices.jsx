@@ -249,3 +249,11 @@ function AdminServicesContent() {
     </div>
   );
 }
+
+export default function AdminServices() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminServicesContent />
+    </AuthGuard>
+  );
+}

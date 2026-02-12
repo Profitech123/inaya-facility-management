@@ -168,3 +168,11 @@ function AdminSupportContent() {
     </div>
   );
 }
+
+export default function AdminSupport() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminSupportContent />
+    </AuthGuard>
+  );
+}

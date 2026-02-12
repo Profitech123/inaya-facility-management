@@ -154,3 +154,11 @@ function AdminReportsContent() {
     </div>
   );
 }
+
+export default function AdminReports() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminReportsContent />
+    </AuthGuard>
+  );
+}

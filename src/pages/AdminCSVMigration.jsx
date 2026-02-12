@@ -266,3 +266,11 @@ function AdminCSVMigrationContent() {
     </div>
   );
 }
+
+export default function AdminCSVMigration() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminCSVMigrationContent />
+    </AuthGuard>
+  );
+}

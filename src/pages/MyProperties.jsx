@@ -8,8 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Home, Plus, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
+import AuthGuard from '../components/AuthGuard';
 
-export default function MyProperties() {
+function MyPropertiesContent() {
   const [user, setUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({

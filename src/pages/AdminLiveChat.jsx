@@ -110,3 +110,11 @@ function AdminLiveChatContent() {
     </div>
   );
 }
+
+export default function AdminLiveChat() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminLiveChatContent />
+    </AuthGuard>
+  );
+}

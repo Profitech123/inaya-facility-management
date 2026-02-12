@@ -6,8 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, DollarSign, Star } from 'lucide-react';
 import ProviderRating from '../components/ProviderRating';
 import BookingTimeline from '../components/booking/BookingTimeline';
+import AuthGuard from '../components/AuthGuard';
 
-export default function MyBookings() {
+function MyBookingsContent() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {

@@ -187,3 +187,11 @@ function AdminBookingsContent() {
     </div>
   );
 }
+
+export default function AdminBookings() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminBookingsContent />
+    </AuthGuard>
+  );
+}

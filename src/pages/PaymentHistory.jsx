@@ -6,8 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Download, DollarSign, FileText } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import AuthGuard from '../components/AuthGuard';
 
-export default function PaymentHistory() {
+function PaymentHistoryContent() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
