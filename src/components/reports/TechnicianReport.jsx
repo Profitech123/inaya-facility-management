@@ -13,6 +13,7 @@ export default function TechnicianReport({ providers, bookings, reviews, startDa
     const providerStats = providers.map(p => {
       const pBookings = filteredBookings.filter(b => b.assigned_provider_id === p.id);
       const completed = pBookings.filter(b => b.status === 'completed');
+      const cancelled = pBookings.filter(b => b.status === 'cancelled');
       const pReviews = reviews.filter(r => r.provider_id === p.id);
       const avgRating = pReviews.length > 0 ? pReviews.reduce((s, r) => s + r.rating, 0) / pReviews.length : p.average_rating;
 
@@ -22,15 +23,26 @@ export default function TechnicianReport({ providers, bookings, reviews, startDa
         .map(b => (new Date(b.completed_at) - new Date(b.started_at)) / (1000 * 60 * 60));
       const avgTime = completionTimes.length > 0 ? completionTimes.reduce((a, b) => a + b, 0) / completionTimes.length : null;
 
+      // Calculate idle time (hours) - estimate based on total days in range
+      const totalDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+      const workingDays = Math.ceil(totalDays * 5 / 7); // Assume 5-day work week
+      const estimatedHoursPerDay = 8;
+      const totalAvailableHours = workingDays * estimatedHoursPerDay;
+      const jobHours = completed.length > 0 ? (completed.length * (avgTime || 4)) : 0;
+      const idleHours = Math.max(0, totalAvailableHours - jobHours);
+
       return {
         name: p.full_name,
         totalJobs: pBookings.length,
         completed: completed.length,
+        cancelled: cancelled.length,
         completionRate: pBookings.length > 0 ? (completed.length / pBookings.length * 100) : 0,
         avgRating,
         avgTime,
+        idleHours: Math.round(idleHours),
         reviewCount: pReviews.length,
         revenue: completed.reduce((s, b) => s + (b.total_amount || 0), 0),
+        isActive: p.is_active,
       };
     }).sort((a, b) => b.completed - a.completed);
 
