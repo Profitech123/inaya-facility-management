@@ -78,13 +78,14 @@ export default function BookingReport({ bookings, services, startDate, endDate }
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { icon: Calendar, label: 'Total Bookings', value: data.total, color: 'text-slate-900' },
-          { icon: CheckCircle, label: 'Completed', value: data.completed, color: 'text-emerald-600' },
-          { icon: Clock, label: 'Completion Rate', value: `${data.completionRate.toFixed(1)}%`, color: 'text-blue-600' },
-          { icon: XCircle, label: 'Cancellation Rate', value: `${data.cancellationRate.toFixed(1)}%`, color: data.cancellationRate > 20 ? 'text-red-600' : 'text-green-600' },
-        ].map((kpi, idx) => {
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+         {[
+           { icon: Calendar, label: 'Total Bookings', value: data.total, color: 'text-slate-900' },
+           { icon: CheckCircle, label: 'Completed', value: data.completed, color: 'text-emerald-600' },
+           { icon: Clock, label: 'Pending', value: data.pending, color: 'text-blue-600' },
+           { icon: XCircle, label: 'Cancellation Rate', value: `${data.cancellationRate.toFixed(1)}%`, color: data.cancellationRate > 20 ? 'text-red-600' : 'text-green-600' },
+           { icon: Calendar, label: 'Avg Value', value: `AED ${Math.round(data.avgValue)}`, color: 'text-purple-600' },
+         ].map((kpi, idx) => {
           const Icon = kpi.icon;
           return (
             <Card key={idx}>
