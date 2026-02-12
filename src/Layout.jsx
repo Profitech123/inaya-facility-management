@@ -33,9 +33,17 @@ export default function Layout({ children, currentPageName }) {
 
   // Admin pages get their own separate layout — completely hidden from public site
   const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails';
+  
+  // If customer tries to access admin page, redirect
+  if (isAdminPage && user && user.role !== 'admin') {
+    window.location.href = createPageUrl('Dashboard');
+    return null;
+  }
+  
   if (isAdminPage) {
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
   }
+  
   const isCustomer = user && user.role !== 'admin';
 
   const handleLogout = () => {
