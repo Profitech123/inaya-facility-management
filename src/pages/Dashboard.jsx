@@ -19,27 +19,57 @@ function DashboardContent() {
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['myBookings', user?.id],
-    queryFn: () => base44.entities.Booking.filter({ customer_id: user?.id }, '-scheduled_date', 10),
-    enabled: !!user,
+    queryFn: async () => {
+      try {
+        const allBookings = await base44.entities.Booking.list('-scheduled_date', 100);
+        return allBookings.filter(b => b.customer_id === user?.id).slice(0, 10);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        return [];
+      }
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['mySubscriptions', user?.id],
-    queryFn: () => base44.entities.Subscription.filter({ customer_id: user?.id, status: 'active' }),
-    enabled: !!user,
+    queryFn: async () => {
+      try {
+        const allSubs = await base44.entities.Subscription.list();
+        return allSubs.filter(s => s.customer_id === user?.id && s.status === 'active');
+      } catch (error) {
+        console.error('Error fetching subscriptions:', error);
+        return [];
+      }
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 
   const { data: packages = [] } = useQuery({
     queryKey: ['subPackages'],
-    queryFn: () => base44.entities.SubscriptionPackage.list(),
+    queryFn: async () => {
+      try {
+        return await base44.entities.SubscriptionPackage.list();
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+        return [];
+      }
+    },
     initialData: []
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
+    queryFn: async () => {
+      try {
+        return await base44.entities.Service.list();
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        return [];
+      }
+    },
     initialData: []
   });
 

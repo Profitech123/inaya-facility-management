@@ -12,16 +12,29 @@ import { createPageUrl } from '@/utils';
 export default function Services() {
   const { data: categories = [] } = useQuery({
     queryKey: ['serviceCategories'],
-    queryFn: () => base44.entities.ServiceCategory.list('display_order'),
-    initialData: [],
-    staleTime: 120000
+    queryFn: async () => {
+      try {
+        return await base44.entities.ServiceCategory.list('display_order');
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+      }
+    },
+    initialData: []
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.filter({ is_active: true }),
-    initialData: [],
-    staleTime: 120000
+    queryFn: async () => {
+      try {
+        const allServices = await base44.entities.Service.list();
+        return allServices.filter(s => s.is_active === true);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        return [];
+      }
+    },
+    initialData: []
   });
 
   const [selectedCategory, setSelectedCategory] = useState('all');
