@@ -118,35 +118,45 @@ export default function TechnicianReport({ providers, bookings, reviews, startDa
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b bg-slate-50">
-                  <th className="text-left p-3 font-medium text-slate-600">Technician</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Jobs</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Completed</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Rate</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Rating</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Avg Time</th>
-                  <th className="text-right p-3 font-medium text-slate-600">Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.providerStats.map((p, idx) => (
-                  <tr key={idx} className="border-b hover:bg-slate-50">
-                    <td className="p-3 font-medium">{p.name}</td>
-                    <td className="p-3 text-right">{p.totalJobs}</td>
-                    <td className="p-3 text-right text-emerald-600 font-medium">{p.completed}</td>
-                    <td className="p-3 text-right">{p.completionRate.toFixed(0)}%</td>
-                    <td className="p-3 text-right">
-                      <span className="inline-flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        {p.avgRating.toFixed(1)}
-                      </span>
-                    </td>
-                    <td className="p-3 text-right">{p.avgTime ? `${p.avgTime.toFixed(1)}h` : '—'}</td>
-                    <td className="p-3 text-right font-medium">AED {p.revenue.toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
+             <thead>
+               <tr className="border-b bg-slate-50">
+                 <th className="text-left p-3 font-medium text-slate-600">Technician</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Total Jobs</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Completed</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Cancelled</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Rate</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Rating</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Avg Time</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Idle Time</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Revenue</th>
+                 <th className="text-right p-3 font-medium text-slate-600">Status</th>
+               </tr>
+             </thead>
+             <tbody>
+               {data.providerStats.map((p, idx) => (
+                 <tr key={idx} className="border-b hover:bg-slate-50">
+                   <td className="p-3 font-medium">{p.name}</td>
+                   <td className="p-3 text-right">{p.totalJobs}</td>
+                   <td className="p-3 text-right text-emerald-600 font-medium">{p.completed}</td>
+                   <td className="p-3 text-right text-red-600">{p.cancelled}</td>
+                   <td className="p-3 text-right">{p.completionRate.toFixed(0)}%</td>
+                   <td className="p-3 text-right">
+                     <span className="inline-flex items-center gap-1">
+                       <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                       {p.avgRating.toFixed(1)}
+                     </span>
+                   </td>
+                   <td className="p-3 text-right">{p.avgTime ? `${p.avgTime.toFixed(1)}h` : '—'}</td>
+                   <td className="p-3 text-right text-orange-600 font-medium">{p.idleHours}h</td>
+                   <td className="p-3 text-right font-medium">AED {p.revenue.toLocaleString()}</td>
+                   <td className="p-3 text-right text-xs">
+                     <span className={`inline-block px-2 py-1 rounded ${p.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'}`}>
+                       {p.isActive ? 'Active' : 'Inactive'}
+                     </span>
+                   </td>
+                 </tr>
+               ))}
+             </tbody>
             </table>
           </div>
         </CardContent>
