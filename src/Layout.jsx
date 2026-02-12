@@ -105,6 +105,12 @@ export default function Layout({ children, currentPageName }) {
                     ) : (
                       <>
                         <DropdownMenuItem asChild>
+                          <Link to={createPageUrl('UserProfile')} className="w-full">
+                            <User className="w-4 h-4 mr-2" />
+                            My Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
                           <Link to={createPageUrl('Dashboard')} className="w-full">
                             <LayoutDashboard className="w-4 h-4 mr-2" />
                             My Account
