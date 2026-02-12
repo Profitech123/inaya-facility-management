@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomerChatWidget from './components/chat/CustomerChatWidget';
+import AdminLayout from './components/admin/AdminLayout';
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -20,13 +21,11 @@ export default function Layout({ children, currentPageName }) {
     base44.auth.me().then(setUser).catch(() => setUser(null));
   }, []);
 
-  // Hide layout chrome entirely on AdminLogin page
-  const isAdminLoginPage = currentPageName === 'AdminLogin';
-  if (isAdminLoginPage) {
-    return <>{children}</>;
-  }
-
+  // Admin pages get their own separate layout — completely hidden from public site
   const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails';
+  if (isAdminPage) {
+    return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
+  }
   const isCustomer = user && user.role !== 'admin';
 
   const handleLogout = () => {
@@ -95,44 +94,33 @@ export default function Layout({ children, currentPageName }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    {user.role === 'admin' ? (
-                      <DropdownMenuItem asChild>
-                        <Link to={createPageUrl('AdminDashboard')} className="w-full">
-                          <LayoutDashboard className="w-4 h-4 mr-2" />
-                          Admin Panel
-                        </Link>
-                      </DropdownMenuItem>
-                    ) : (
-                      <>
-                        <DropdownMenuItem asChild>
-                          <Link to={createPageUrl('UserProfile')} className="w-full">
-                            <User className="w-4 h-4 mr-2" />
-                            My Profile
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link to={createPageUrl('Dashboard')} className="w-full">
-                            <LayoutDashboard className="w-4 h-4 mr-2" />
-                            My Account
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link to={createPageUrl('MyBookings')} className="w-full">
-                            My Bookings
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link to={createPageUrl('PaymentHistory')} className="w-full">
-                            Payment History
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link to={createPageUrl('Support')} className="w-full">
-                            Support
-                          </Link>
-                        </DropdownMenuItem>
-                      </>
-                    )}
+                    <DropdownMenuItem asChild>
+                      <Link to={createPageUrl('UserProfile')} className="w-full">
+                        <User className="w-4 h-4 mr-2" />
+                        My Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={createPageUrl('Dashboard')} className="w-full">
+                        <LayoutDashboard className="w-4 h-4 mr-2" />
+                        My Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={createPageUrl('MyBookings')} className="w-full">
+                        My Bookings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={createPageUrl('PaymentHistory')} className="w-full">
+                        Payment History
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={createPageUrl('Support')} className="w-full">
+                        Support
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout
