@@ -73,7 +73,7 @@ export default function BookingReport({ bookings, services, startDate, endDate }
       return [b.id.slice(0, 8), svc?.name || '', b.scheduled_date, b.scheduled_time || '', b.status, b.total_amount?.toFixed(2) || '0'];
     });
 
-    return { total, completed, completionRate, cancellationRate, statusData, popularServices, popularSlots, bookingsOverTime, exportRows };
+    return { total, completed, confirmed, pending, cancelled, completionRate, cancellationRate, avgValue, statusData, popularServices, popularSlots, bookingsOverTime, exportRows };
   }, [bookings, services, startDate, endDate]);
 
   return (
