@@ -15,6 +15,8 @@ import AuthGuard from '../components/AuthGuard';
 function AdminSubscriptionsContent() {
   const [showPackageForm, setShowPackageForm] = useState(false);
   const [editingPkg, setEditingPkg] = useState(null);
+  const [showSubForm, setShowSubForm] = useState(false);
+  const [editingSub, setEditingSub] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: subscriptions = [] } = useQuery({
@@ -45,6 +47,13 @@ function AdminSubscriptionsContent() {
     staleTime: 60000
   });
 
+  const { data: allProperties = [] } = useQuery({
+    queryKey: ['allProperties'],
+    queryFn: () => base44.entities.Property.list(),
+    initialData: [],
+    staleTime: 60000
+  });
+
   const createPkgMutation = useMutation({
     mutationFn: (data) => base44.entities.SubscriptionPackage.create(data),
     onSuccess: () => {
@@ -71,6 +80,41 @@ function AdminSubscriptionsContent() {
       toast.success('Package deleted');
     }
   });
+
+  const createSubMutation = useMutation({
+    mutationFn: (data) => base44.entities.Subscription.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      setShowSubForm(false);
+      toast.success('Subscription created');
+    }
+  });
+
+  const updateSubMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.Subscription.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      setShowSubForm(false);
+      setEditingSub(null);
+      toast.success('Subscription updated');
+    }
+  });
+
+  const deleteSubMutation = useMutation({
+    mutationFn: (id) => base44.entities.Subscription.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      toast.success('Subscription deleted');
+    }
+  });
+
+  const handleSaveSubscription = (data) => {
+    if (editingSub) {
+      updateSubMutation.mutate({ id: editingSub.id, data });
+    } else {
+      createSubMutation.mutate(data);
+    }
+  };
 
   const handleSavePackage = (data) => {
     if (editingPkg) {
@@ -166,9 +210,12 @@ function AdminSubscriptionsContent() {
 
           {/* Subscriptions Tab */}
           <TabsContent value="subscriptions">
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4 gap-3">
               <Button variant="outline" onClick={sendBulkRenewalReminders}>
                 <Bell className="w-4 h-4 mr-2" /> Send Renewal Reminders
+              </Button>
+              <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => { setEditingSub(null); setShowSubForm(true); }}>
+                <Plus className="w-4 h-4 mr-2" /> Add Subscription
               </Button>
             </div>
 
@@ -251,6 +298,16 @@ function AdminSubscriptionsContent() {
                           </span>
                         </div>
                       )}
+
+                      <div className="flex gap-2 mt-4 pt-4 border-t">
+                        <Button variant="outline" size="sm" onClick={() => { setEditingSub(subscription); setShowSubForm(true); }}>
+                          <Pencil className="w-3 h-3 mr-1" /> Edit
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700"
+                          onClick={() => { if (confirm('Delete this subscription? This cannot be undone.')) deleteSubMutation.mutate(subscription.id); }}>
+                          <Trash2 className="w-3 h-3 mr-1" /> Delete
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 );
@@ -330,6 +387,17 @@ function AdminSubscriptionsContent() {
         pkg={editingPkg}
         services={services}
         isLoading={createPkgMutation.isPending || updatePkgMutation.isPending}
+      />
+
+      <AdminSubscriptionForm
+        open={showSubForm}
+        onClose={() => { setShowSubForm(false); setEditingSub(null); }}
+        onSubmit={handleSaveSubscription}
+        subscription={editingSub}
+        packages={packages}
+        users={users}
+        properties={allProperties}
+        isLoading={createSubMutation.isPending || updateSubMutation.isPending}
       />
     </div>
   );
