@@ -17,16 +17,17 @@ export default function AdminLogin() {
   }, []);
 
   const checkExistingAuth = async () => {
-    const isAuth = await base44.auth.isAuthenticated();
-    if (isAuth) {
-      const user = await base44.auth.me();
-      if (user.role === 'admin') {
-        window.location.href = createPageUrl('AdminDashboard');
-        return;
+    try {
+      const isAuth = await base44.auth.isAuthenticated();
+      if (isAuth) {
+        const user = await base44.auth.me();
+        if (user.role === 'admin') {
+          window.location.href = createPageUrl('AdminDashboard');
+          return;
+        }
       }
-      // Logged in but not admin — show unauthorized
-      setChecking(false);
-      return;
+    } catch (error) {
+      // Expected error when not authenticated
     }
     setChecking(false);
   };
