@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
@@ -33,7 +32,7 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   // Admin pages get their own separate layout — completely hidden from public site
-  const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails';
+  const isAdminPage = currentPageName?.startsWith('Admin');
   
   // If customer tries to access admin page, redirect
   if (isAdminPage && user && user.role !== 'admin') {
