@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Calendar } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BookingTimeline from '../components/booking/BookingTimeline';
+import AdminBookingCalendar from '../components/admin/AdminBookingCalendar';
 import { logAuditEvent } from '../components/admin/AuditLogger';
 import AuthGuard from '../components/AuthGuard';
 
