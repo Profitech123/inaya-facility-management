@@ -151,3 +151,11 @@ function MyBookingsContent() {
     </div>
   );
 }
+
+export default function MyBookings() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <MyBookingsContent />
+    </AuthGuard>
+  );
+}

@@ -211,3 +211,11 @@ function MyPropertiesContent() {
     </div>
   );
 }
+
+export default function MyProperties() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <MyPropertiesContent />
+    </AuthGuard>
+  );
+}

@@ -148,3 +148,11 @@ function PaymentHistoryContent() {
     </div>
   );
 }
+
+export default function PaymentHistory() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <PaymentHistoryContent />
+    </AuthGuard>
+  );
+}

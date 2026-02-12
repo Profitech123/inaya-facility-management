@@ -224,3 +224,11 @@ function MySubscriptionsContent() {
     </div>
   );
 }
+
+export default function MySubscriptions() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <MySubscriptionsContent />
+    </AuthGuard>
+  );
+}

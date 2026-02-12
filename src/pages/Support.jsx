@@ -207,3 +207,11 @@ function SupportContent() {
     </div>
   );
 }
+
+export default function Support() {
+  return (
+    <AuthGuard requiredRole="customer">
+      <SupportContent />
+    </AuthGuard>
+  );
+}
