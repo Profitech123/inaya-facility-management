@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowRight, Search, Clock, Star, Shield, Sparkles, Wrench, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import AIRecommendations from '../components/services/AIRecommendations';
 
 export default function OnDemandServices() {
   const [search, setSearch] = useState('');
@@ -78,6 +79,9 @@ export default function OnDemandServices() {
             className="pl-10 h-12 text-base"
           />
         </div>
+
+        {/* AI Recommendations */}
+        <AIRecommendations allServices={services} categories={categories} />
 
         {filtered.length === 0 ? (
           <div className="text-center py-20">
