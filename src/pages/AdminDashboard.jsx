@@ -132,6 +132,16 @@ export default function AdminDashboard() {
                   Manage Subscriptions
                 </Button>
               </Link>
+              <Link to={createPageUrl('AdminReports')}>
+                <Button variant="outline" className="w-full justify-start">
+                  Analytics & Reports
+                </Button>
+              </Link>
+              <Link to={createPageUrl('AdminSupport')}>
+                <Button variant="outline" className="w-full justify-start">
+                  Customer Support
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
