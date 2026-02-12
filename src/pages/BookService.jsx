@@ -297,8 +297,8 @@ export default function BookService() {
                   disabled={!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time || isProcessingPayment}
                 >
                   {isProcessingPayment ? (
-                    <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redirecting to Payment...</>
-                  ) : 'Proceed to Payment'}
+                    <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Confirming Booking...</>
+                  ) : 'Confirm & Pay (Test Mode)'}
                 </Button>
               </CardContent>
             </Card>
