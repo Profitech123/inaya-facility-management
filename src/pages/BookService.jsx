@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, CheckCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -28,11 +28,21 @@ export default function BookService() {
     customer_notes: ''
   });
   const [selectedAddonIds, setSelectedAddonIds] = useState([]);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
     const params = new URLSearchParams(window.location.search);
     setServiceId(params.get('service'));
+
+    // Handle return from Stripe checkout
+    const paymentStatus = params.get('payment');
+    const bookingId = params.get('booking_id');
+    if (paymentStatus === 'success' && bookingId) {
+      setStep(3);
+    } else if (paymentStatus === 'cancelled' && bookingId) {
+      setStep(4); // cancelled step
+    }
   }, []);
 
   const { data: service } = useQuery({
@@ -59,10 +69,6 @@ export default function BookService() {
 
   const createBookingMutation = useMutation({
     mutationFn: (data) => base44.entities.Booking.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['myBookings']);
-      setStep(3);
-    }
   });
 
   const addonsTotal = allAddons
@@ -70,13 +76,22 @@ export default function BookService() {
     .reduce((s, a) => s + a.price, 0);
   const grandTotal = (service?.price || 0) + addonsTotal;
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time) {
       toast.error('Please fill in all required fields');
       return;
     }
 
-    createBookingMutation.mutate({
+    // Check if running in iframe
+    if (window.self !== window.top) {
+      alert('Payment checkout only works from the published app. Please open the app in a new tab.');
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
+    // Step 1: Create booking with pending payment
+    const booking = await createBookingMutation.mutateAsync({
       service_id: serviceId,
       customer_id: user.id,
       property_id: bookingData.property_id,
@@ -87,8 +102,23 @@ export default function BookService() {
       addon_ids: selectedAddonIds,
       addons_amount: addonsTotal,
       status: 'pending',
-      payment_status: 'paid'
+      payment_status: 'pending'
     });
+
+    // Step 2: Create Stripe checkout session
+    const response = await base44.functions.invoke('createCheckoutSession', {
+      booking_id: booking.id,
+      service_name: service.name,
+      total_amount: grandTotal,
+    });
+
+    // Step 3: Redirect to Stripe
+    if (response.data?.checkout_url) {
+      window.location.href = response.data.checkout_url;
+    } else {
+      toast.error('Failed to create payment session');
+      setIsProcessingPayment(false);
+    }
   };
 
   if (!user || !service) {
@@ -101,13 +131,37 @@ export default function BookService() {
         <Card className="max-w-md">
           <CardContent className="text-center py-12">
             <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Booking Confirmed!</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment Successful!</h2>
             <p className="text-slate-600 mb-6">
-              Your service has been booked successfully. We'll send you a confirmation email shortly.
+              Your booking has been confirmed and payment processed. We'll send you a confirmation email shortly.
             </p>
             <div className="space-y-3">
               <Button onClick={() => navigate(createPageUrl('MyBookings'))} className="w-full bg-emerald-600 hover:bg-emerald-700">
                 View My Bookings
+              </Button>
+              <Button onClick={() => navigate(createPageUrl('Dashboard'))} variant="outline" className="w-full">
+                Go to Dashboard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (step === 4) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="text-center py-12">
+            <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Payment Cancelled</h2>
+            <p className="text-slate-600 mb-6">
+              Your payment was not completed. The booking has not been confirmed. You can try again or return to services.
+            </p>
+            <div className="space-y-3">
+              <Button onClick={() => navigate(createPageUrl('Services'))} className="w-full bg-emerald-600 hover:bg-emerald-700">
+                Browse Services
               </Button>
               <Button onClick={() => navigate(createPageUrl('Dashboard'))} variant="outline" className="w-full">
                 Go to Dashboard
@@ -258,9 +312,11 @@ export default function BookService() {
                 <Button 
                   onClick={handleBooking} 
                   className="w-full bg-emerald-600 hover:bg-emerald-700"
-                  disabled={!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time || createBookingMutation.isPending}
+                  disabled={!bookingData.property_id || !bookingData.scheduled_date || !bookingData.scheduled_time || isProcessingPayment}
                 >
-                  {createBookingMutation.isPending ? 'Processing...' : 'Confirm & Pay'}
+                  {isProcessingPayment ? (
+                    <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redirecting to Payment...</>
+                  ) : 'Proceed to Payment'}
                 </Button>
               </CardContent>
             </Card>

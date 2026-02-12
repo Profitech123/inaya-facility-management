@@ -48,7 +48,11 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import About from './pages/About';
+import AdminAuditLogs from './pages/AdminAuditLogs';
+import AdminCSVMigration from './pages/AdminCSVMigration';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLiveChat from './pages/AdminLiveChat';
+import AdminLogin from './pages/AdminLogin';
 import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
 import AdminSubscriptions from './pages/AdminSubscriptions';
@@ -73,16 +77,16 @@ import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
-import AdminAuditLogs from './pages/AdminAuditLogs';
-import AdminCSVMigration from './pages/AdminCSVMigration';
-import AdminLiveChat from './pages/AdminLiveChat';
-import AdminLogin from './pages/AdminLogin';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "About": About,
+    "AdminAuditLogs": AdminAuditLogs,
+    "AdminCSVMigration": AdminCSVMigration,
     "AdminDashboard": AdminDashboard,
+    "AdminLiveChat": AdminLiveChat,
+    "AdminLogin": AdminLogin,
     "AdminReports": AdminReports,
     "AdminServices": AdminServices,
     "AdminSubscriptions": AdminSubscriptions,
@@ -107,10 +111,6 @@ export const PAGES = {
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
     "Support": Support,
-    "AdminAuditLogs": AdminAuditLogs,
-    "AdminCSVMigration": AdminCSVMigration,
-    "AdminLiveChat": AdminLiveChat,
-    "AdminLogin": AdminLogin,
 }
 
 export const pagesConfig = {
