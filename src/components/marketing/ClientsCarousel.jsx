@@ -22,6 +22,8 @@ const clients = [
   "https://www.inaya.ae/wp-content/uploads/2018/01/client11.jpg",
 ];
 
+const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='144' height='96' fill='%23f1f5f9'%3E%3Crect width='144' height='96'/%3E%3C/svg%3E";
+
 export default function ClientsCarousel() {
   return (
     <div className="py-20 bg-slate-50 overflow-hidden">
@@ -44,14 +46,14 @@ export default function ClientsCarousel() {
         <div className="flex animate-scroll-left gap-6 px-6">
           {[...clients, ...clients].map((src, idx) => (
             <div key={idx} className="flex-shrink-0 w-36 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-              <img src={src} alt="Client" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={src} alt="Client" loading="lazy" decoding="async" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" onError={(e) => { e.target.src = PLACEHOLDER; }} />
             </div>
           ))}
         </div>
         <div className="flex animate-scroll-right gap-6 px-6">
           {[...clients.slice().reverse(), ...clients.slice().reverse()].map((src, idx) => (
             <div key={idx} className="flex-shrink-0 w-36 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-              <img src={src} alt="Client" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={src} alt="Client" loading="lazy" decoding="async" className="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition-all duration-500" onError={(e) => { e.target.src = PLACEHOLDER; }} />
             </div>
           ))}
         </div>

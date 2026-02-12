@@ -11,9 +11,11 @@ export default function Hero() {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1200&q=60"
           alt="Dubai skyline"
           className="w-full h-full object-cover opacity-30"
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40" />
