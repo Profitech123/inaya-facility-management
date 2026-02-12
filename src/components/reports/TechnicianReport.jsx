@@ -57,9 +57,10 @@ export default function TechnicianReport({ providers, bookings, reviews, startDa
     }));
 
     const exportRows = providerStats.map(p => [
-      p.name, p.totalJobs, p.completed, `${p.completionRate.toFixed(1)}%`,
+      p.name, p.totalJobs, p.completed, p.cancelled, `${p.completionRate.toFixed(1)}%`,
       p.avgRating.toFixed(1), p.avgTime ? `${p.avgTime.toFixed(1)}h` : 'N/A',
-      `AED ${p.revenue.toFixed(0)}`
+      `${p.idleHours}h`, `AED ${p.revenue.toFixed(0)}`,
+      p.isActive ? 'Active' : 'Inactive'
     ]);
 
     return { providerStats, totalTechnicians, avgRatingAll, totalJobsCompleted, chartData, exportRows };
