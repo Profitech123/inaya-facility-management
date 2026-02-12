@@ -93,7 +93,7 @@ export default function TechnicianReport({ providers, bookings, reviews, startDa
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Technician Performance Comparison</CardTitle>
-          <ExportButtons title="Technician_Performance" headers={['Name', 'Total Jobs', 'Completed', 'Completion Rate', 'Avg Rating', 'Avg Time', 'Revenue']} rows={data.exportRows} />
+          <ExportButtons title="Technician_Performance" headers={['Name', 'Total Jobs', 'Completed', 'Cancelled', 'Completion Rate', 'Avg Rating', 'Avg Time', 'Idle Time', 'Revenue', 'Status']} rows={data.exportRows} />
         </CardHeader>
         <CardContent>
           {data.chartData.length === 0 ? (
