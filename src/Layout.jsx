@@ -37,10 +37,11 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">I</span>
-              </div>
-              <span className="text-2xl font-bold text-slate-900">INAYA</span>
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
+                alt="INAYA Facilities Management" 
+                className="h-10"
+              />
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
@@ -136,12 +137,11 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">I</span>
-                </div>
-                <span className="text-xl font-bold">INAYA</span>
-              </div>
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
+                alt="INAYA Facilities Management" 
+                className="h-12 mb-4"
+              />
               <p className="text-slate-400 text-sm">
                 Professional facilities management for your home. Part of Belhasa Group.
               </p>
@@ -150,9 +150,10 @@ export default function Layout({ children, currentPageName }) {
             <div>
               <h3 className="font-semibold mb-4">Services</h3>
               <div className="space-y-2 text-sm text-slate-400">
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Soft Services</Link>
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Hard Services</Link>
-                <Link to={createPageUrl('Services')} className="block hover:text-white">Specialized Services</Link>
+                <Link to={createPageUrl('Services')} className="block hover:text-white">Cleaning Services</Link>
+                <Link to={createPageUrl('Services')} className="block hover:text-white">Pest Control</Link>
+                <Link to={createPageUrl('Services')} className="block hover:text-white">MEP Maintenance</Link>
+                <Link to={createPageUrl('Services')} className="block hover:text-white">Technical Services</Link>
               </div>
             </div>
             
@@ -161,6 +162,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="space-y-2 text-sm text-slate-400">
                 <Link to={createPageUrl('About')} className="block hover:text-white">About Us</Link>
                 <Link to={createPageUrl('Contact')} className="block hover:text-white">Contact</Link>
+                <a href="https://inaya.ae" target="_blank" rel="noopener noreferrer" className="block hover:text-white">Our Website</a>
               </div>
             </div>
             
@@ -168,7 +170,7 @@ export default function Layout({ children, currentPageName }) {
               <h3 className="font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-sm text-slate-400">
                 <p>Belhasa HO Building, Office M03</p>
-                <p>Hor Al Anz East, Dubai</p>
+                <p>Hor Al Anz East, Dubai, UAE</p>
                 <p>Phone: +971 4 882 7001</p>
                 <p>Email: info@inaya.ae</p>
               </div>
