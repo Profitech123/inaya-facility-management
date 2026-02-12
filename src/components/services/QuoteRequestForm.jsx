@@ -27,10 +27,10 @@ export default function QuoteRequestForm({ serviceName = "General Inquiry" }) {
           <p><strong>Message:</strong><br/>${form.message}</p>
         `
       });
-      toast.success('Quote request sent! We'll get back to you within 24 hours.');
+      toast.success("Quote request sent! We'll get back to you within 24 hours.");
       setForm({ name: '', email: '', phone: '', message: '' });
     } catch {
-      toast.success('Quote request received! We'll contact you shortly.');
+      toast.success("Quote request received! We'll contact you shortly.");
       setForm({ name: '', email: '', phone: '', message: '' });
     }
     setSending(false);
