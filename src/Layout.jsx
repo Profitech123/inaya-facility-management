@@ -20,13 +20,14 @@ export default function Layout({ children, currentPageName }) {
     base44.auth.me().then(setUser).catch(() => setUser(null));
   }, []);
 
-  const publicPages = ['Home', 'About', 'Services', 'Subscriptions', 'Contact'];
-  const customerPages = ['Dashboard', 'MyBookings', 'MySubscriptions', 'MyProperties'];
-  const adminPages = ['AdminDashboard', 'AdminServices', 'AdminBookings', 'AdminSubscriptions'];
+  // Hide layout chrome entirely on AdminLogin page
+  const isAdminLoginPage = currentPageName === 'AdminLogin';
+  if (isAdminLoginPage) {
+    return <>{children}</>;
+  }
 
-  const isPublicPage = publicPages.includes(currentPageName);
-  const isCustomerPage = customerPages.includes(currentPageName);
-  const isAdminPage = adminPages.includes(currentPageName);
+  const isAdminPage = currentPageName?.startsWith('Admin') || currentPageName === 'ProviderPortal' || currentPageName === 'ProviderJobs' || currentPageName === 'ProviderJobDetails';
+  const isCustomer = user && user.role !== 'admin';
 
   const handleLogout = () => {
     base44.auth.logout();
@@ -94,14 +95,26 @@ export default function Layout({ children, currentPageName }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link to={createPageUrl(user.role === 'admin' ? 'AdminDashboard' : 'Dashboard')} className="w-full">
-                        <LayoutDashboard className="w-4 h-4 mr-2" />
-                        Dashboard
-                      </Link>
-                    </DropdownMenuItem>
-                    {user.role !== 'admin' && (
+                    {user.role === 'admin' ? (
+                      <DropdownMenuItem asChild>
+                        <Link to={createPageUrl('AdminDashboard')} className="w-full">
+                          <LayoutDashboard className="w-4 h-4 mr-2" />
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    ) : (
                       <>
+                        <DropdownMenuItem asChild>
+                          <Link to={createPageUrl('Dashboard')} className="w-full">
+                            <LayoutDashboard className="w-4 h-4 mr-2" />
+                            My Account
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to={createPageUrl('MyBookings')} className="w-full">
+                            My Bookings
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <Link to={createPageUrl('PaymentHistory')} className="w-full">
                             Payment History
@@ -121,9 +134,14 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button onClick={() => base44.auth.redirectToLogin()} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
-                  Login
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button onClick={() => base44.auth.redirectToLogin()} variant="ghost" size="sm" className="text-slate-700">
+                    Sign In
+                  </Button>
+                  <Button onClick={() => base44.auth.redirectToLogin()} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                    Create Account
+                  </Button>
+                </div>
               )}
               
               <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
