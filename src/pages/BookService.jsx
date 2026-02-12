@@ -30,7 +30,14 @@ export default function BookService() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
+    base44.auth.me()
+      .then(setUser)
+      .catch((error) => {
+        // Expected error when not authenticated
+        if (error?.status === 401) {
+          base44.auth.redirectToLogin(window.location.href);
+        }
+      });
     const params = new URLSearchParams(window.location.search);
     setServiceId(params.get('service'));
 
