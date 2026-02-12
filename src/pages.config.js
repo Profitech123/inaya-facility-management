@@ -84,6 +84,7 @@ import Support from './pages/Support';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
 import AdminAnalytics from './pages/AdminAnalytics';
+import AdminTechSchedule from './pages/AdminTechSchedule';
 import __Layout from './Layout.jsx';
 
 
@@ -125,6 +126,7 @@ export const PAGES = {
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
     "AdminAnalytics": AdminAnalytics,
+    "AdminTechSchedule": AdminTechSchedule,
 }
 
 export const pagesConfig = {
