@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ function MyPropertiesContent() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = '/');
+    clientAuth.me().then(setUser).catch(() => window.location.href = '/');
   }, []);
 
   const { data: properties = [] } = useQuery({

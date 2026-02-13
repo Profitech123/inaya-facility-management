@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPageUrl } from './utils';
-import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
 import {
@@ -21,15 +21,9 @@ export default function Layout({ children, currentPageName }) {
   const location = useLocation();
 
   useEffect(() => {
-    base44.auth.me()
+    clientAuth.me()
       .then(setUser)
-      .catch((error) => {
-        if (error?.status === 401) {
-          setUser(null);
-        } else {
-          setUser(null);
-        }
-      });
+      .catch(() => setUser(null));
   }, []);
 
   // Admin pages get their own separate layout
@@ -40,10 +34,7 @@ export default function Layout({ children, currentPageName }) {
   }
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem('base44_access_token');
-      localStorage.removeItem('token');
-    } catch {}
+    clientAuth.logout();
     setUser(null);
     window.location.href = '/';
   };

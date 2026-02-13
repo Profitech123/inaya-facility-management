@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ export default function SubscribePackage() {
   const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => { window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`; });
+    clientAuth.me().then(setUser).catch(() => { window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`; });
     const params = new URLSearchParams(window.location.search);
     setPackageId(params.get('package'));
   }, []);

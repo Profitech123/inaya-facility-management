@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +34,7 @@ export default function PackageBuilder() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    base44.auth.me()
+    clientAuth.me()
       .then(u => { setUser(u); setAuthChecking(false); })
       .catch(() => {
         window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;

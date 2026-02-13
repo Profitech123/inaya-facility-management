@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import AuthGuard from '../components/AuthGuard';
 import ProfileInfoCard from '../components/profile/ProfileInfoCard';
 import ProfileBookingsCard from '../components/profile/ProfileBookingsCard';
@@ -10,7 +10,7 @@ function UserProfileContent() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const loadUser = () => {
-    base44.auth.me().then(u => {
+    clientAuth.me().then(u => {
       setUser(u);
       setRefreshKey(k => k + 1);
     });

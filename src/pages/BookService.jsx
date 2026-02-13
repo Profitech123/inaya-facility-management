@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,7 +39,7 @@ export default function BookService() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const currentUser = await base44.auth.me();
+        const currentUser = await clientAuth.me();
         setUser(currentUser);
         setIsAuthChecking(false);
       } catch (error) {

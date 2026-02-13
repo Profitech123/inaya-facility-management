@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Puzzle, ArrowRight } from 'lucide-react';
@@ -15,7 +16,7 @@ export default function Subscriptions() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    clientAuth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: packages = [] } = useQuery({

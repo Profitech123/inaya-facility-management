@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery } from '@tanstack/react-query';
 import AuthGuard from '../components/AuthGuard';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar';
@@ -17,7 +18,7 @@ function DashboardContent() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    clientAuth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: bookings = [] } = useQuery({

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { createPageUrl } from '@/utils';
 
 /**
  * AuthGuard - protects pages by role
- * @param {string} requiredRole - "admin" | "customer" | "any" (any authenticated user)
+ * @param {string} requiredRole - "admin" | "customer" | "any"
  * @param {React.ReactNode} children
  */
 export default function AuthGuard({ requiredRole = 'any', children }) {
@@ -27,9 +27,9 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
       return;
     }
 
-    // Customer/any auth uses Base44 SDK
+    // Customer/any auth uses clientAuth
     try {
-      const user = await base44.auth.me();
+      const user = await clientAuth.me();
       if (user) {
         setState('authorized');
       } else {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,7 +15,7 @@ export default function AIRecommendations({ allServices = [], categories = [] })
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => setUser(null));
+    clientAuth.me().then(setUser).catch(() => setUser(null));
   }, []);
 
   const { data: bookings = [] } = useQuery({

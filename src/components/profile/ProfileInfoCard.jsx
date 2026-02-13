@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import clientAuth from '@/lib/clientAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,7 @@ export default function ProfileInfoCard({ user, onUpdate }) {
 
   const handleSave = async () => {
     setSaving(true);
-    await base44.auth.updateMe(formData);
+    await clientAuth.updateMe(formData);
     toast.success('Profile updated successfully');
     setSaving(false);
     setEditing(false);
@@ -31,8 +31,9 @@ export default function ProfileInfoCard({ user, onUpdate }) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingPhoto(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    await base44.auth.updateMe({ profile_image: file_url });
+    // Create a local URL for the uploaded file
+    const file_url = URL.createObjectURL(file);
+    await clientAuth.updateMe({ profile_image: file_url });
     toast.success('Profile picture updated');
     setUploadingPhoto(false);
     onUpdate?.();
