@@ -11,8 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import CustomerChatWidget from './components/chat/CustomerChatWidget';
-import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 import WhatsAppButton from './components/WhatsAppButton';
 import MobileStickyCTA from './components/MobileStickyCTA';
@@ -219,7 +217,6 @@ export default function Layout({ children, currentPageName }) {
 
       <WhatsAppButton />
       <MobileStickyCTA />
-      <AIChatWidget />
 
       <footer className="bg-slate-950 text-white py-16 mb-16 lg:mb-0">
         <div className="max-w-7xl mx-auto px-6">
