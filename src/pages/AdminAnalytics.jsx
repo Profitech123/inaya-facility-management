@@ -9,6 +9,10 @@ import PopularServicesChart from '../components/analytics/PopularServicesChart';
 import CustomerAcquisitionChart from '../components/analytics/CustomerAcquisitionChart';
 import TechnicianPerformanceChart from '../components/analytics/TechnicianPerformanceChart';
 import SubscriptionGrowthChart from '../components/analytics/SubscriptionGrowthChart';
+import CustomerLifetimeValue from '../components/analytics/CustomerLifetimeValue';
+import CohortRetentionChart from '../components/analytics/CohortRetentionChart';
+import DemandPrediction from '../components/analytics/DemandPrediction';
+import TechnicianUtilization from '../components/analytics/TechnicianUtilization';
 import { Loader2 } from 'lucide-react';
 
 function getDefaultRange() {
@@ -142,6 +146,31 @@ function AdminAnalyticsContent() {
                 packages={packages}
                 startDate={startDate}
                 endDate={endDate}
+              />
+            </div>
+
+            {/* CLV + Cohort Retention */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <CustomerLifetimeValue
+                bookings={bookings}
+                subscriptions={subscriptions}
+              />
+              <CohortRetentionChart
+                bookings={bookings}
+              />
+            </div>
+
+            {/* Demand Prediction + Technician Utilization */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <DemandPrediction
+                bookings={bookings}
+                services={services}
+                providers={providers}
+              />
+              <TechnicianUtilization
+                providers={providers}
+                bookings={bookings}
+                services={services}
               />
             </div>
           </div>
