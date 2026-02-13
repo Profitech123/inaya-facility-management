@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowRight, Sparkles, Wrench, Settings } from 'lucide-react';
+import { ArrowRight, Sparkles, Wrench, Settings, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { STATIC_CATEGORIES, STATIC_SERVICES } from '@/data/services';
 
 export default function Services() {
   const { data: categories = [] } = useQuery({
@@ -39,14 +40,21 @@ export default function Services() {
 
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Fallback to static data when API returns empty
+  const displayCategories = categories.length > 0 ? categories : STATIC_CATEGORIES;
+  const displayServices = services.length > 0 ? services : STATIC_SERVICES;
+
   const filteredServices = selectedCategory === 'all' 
-    ? services 
-    : services.filter(s => s.category_id === selectedCategory);
+    ? displayServices 
+    : displayServices.filter(s => s.category_id === selectedCategory);
 
   const categoryIcons = {
     'soft-services': Sparkles,
     'hard-services': Wrench,
-    'specialized-services': Settings
+    'specialized-services': Settings,
+    'cat-soft-services': Sparkles,
+    'cat-hard-services': Wrench,
+    'cat-specialized-services': Settings
   };
 
   return (
@@ -65,7 +73,7 @@ export default function Services() {
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-4">
               <TabsTrigger value="all">All Services</TabsTrigger>
-              {categories.slice(0, 3).map(cat => (
+              {displayCategories.slice(0, 3).map(cat => (
                 <TabsTrigger key={cat.id} value={cat.id}>
                   {cat.name.split(' ')[0]}
                 </TabsTrigger>
@@ -73,65 +81,58 @@ export default function Services() {
             </TabsList>
           </Tabs>
 
-          {filteredServices.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-slate-600 text-lg mb-4">No services available yet.</p>
-              <p className="text-slate-500">Check back soon or contact us for custom requests.</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-6">
-              {filteredServices.map(service => {
-                const category = categories.find(c => c.id === service.category_id);
-                const Icon = categoryIcons[category?.slug] || Sparkles;
-                
-                return (
-                  <Card key={service.id} className="hover:shadow-xl transition-shadow">
-                    <CardHeader>
-                      {service.image_url && (
-                        <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
-                          <img src={service.image_url} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
-                        </div>
-                      )}
-                      <div className="flex items-start justify-between mb-2">
-                        <CardTitle className="text-xl">{service.name}</CardTitle>
-                        <Icon className="w-5 h-5 text-emerald-600" />
+          <div className="grid md:grid-cols-3 gap-6">
+            {filteredServices.map(service => {
+              const category = displayCategories.find(c => c.id === service.category_id);
+              const Icon = categoryIcons[category?.slug] || categoryIcons[category?.id] || Sparkles;
+              
+              return (
+                <Card key={service.id} className="hover:shadow-xl transition-shadow">
+                  <CardHeader>
+                    {service.image_url && (
+                      <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
+                        <img src={service.image_url} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
                       </div>
-                      {category && (
-                        <Badge variant="outline" className="w-fit">{category.name}</Badge>
-                      )}
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-slate-600 mb-4">{service.description}</p>
-                      
-                      {service.features && service.features.length > 0 && (
-                        <ul className="space-y-1 mb-4">
-                          {service.features.slice(0, 3).map((feature, idx) => (
-                            <li key={idx} className="text-sm text-slate-700 flex items-center">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      
-                      <div className="flex items-center justify-between pt-4 border-t">
-                        <div>
-                          <div className="text-2xl font-bold text-slate-900">AED {service.price}</div>
-                          <div className="text-sm text-slate-500">Starting from</div>
-                        </div>
-                        <Link to={createPageUrl('BookService') + '?service=' + service.id}>
-                          <Button className="bg-emerald-600 hover:bg-emerald-700">
-                            Book Now
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </Link>
+                    )}
+                    <div className="flex items-start justify-between mb-2">
+                      <CardTitle className="text-xl">{service.name}</CardTitle>
+                      <Icon className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    {category && (
+                      <Badge variant="outline" className="w-fit">{category.name}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-600 mb-4">{service.description}</p>
+                    
+                    {service.features && service.features.length > 0 && (
+                      <ul className="space-y-1 mb-4">
+                        {service.features.slice(0, 3).map((feature, idx) => (
+                          <li key={idx} className="text-sm text-slate-700 flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    
+                    <div className="flex items-center justify-between pt-4 border-t">
+                      <div>
+                        <div className="text-2xl font-bold text-slate-900">AED {service.price}</div>
+                        <div className="text-sm text-slate-500">Starting from</div>
                       </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+                      <Link to={createPageUrl('BookService') + '?service=' + service.id}>
+                        <Button className="bg-emerald-600 hover:bg-emerald-700">
+                          Book Now
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -7,9 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Database, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
+import { STATIC_CATEGORIES, STATIC_SERVICES } from '@/data/services';
 
 function AdminServicesContent() {
   const queryClient = useQueryClient();
@@ -67,6 +68,67 @@ function AdminServicesContent() {
     }
   });
 
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeedAll = async () => {
+    if (!confirm('This will create all service categories and services from the template. Existing entries with the same name will be skipped. Continue?')) return;
+    
+    setSeeding(true);
+    try {
+      // First, seed categories
+      const existingCatNames = new Set(categories.map(c => c.name.toLowerCase()));
+      let catsCreated = 0;
+      const categoryIdMap = {};
+      
+      for (const cat of STATIC_CATEGORIES) {
+        if (existingCatNames.has(cat.name.toLowerCase())) {
+          const existing = categories.find(c => c.name.toLowerCase() === cat.name.toLowerCase());
+          categoryIdMap[cat.id] = existing.id;
+          continue;
+        }
+        const created = await base44.entities.ServiceCategory.create({
+          name: cat.name,
+          slug: cat.slug,
+          description: cat.description,
+          display_order: cat.display_order,
+          is_active: true
+        });
+        categoryIdMap[cat.id] = created.id;
+        catsCreated++;
+      }
+
+      // Then seed services
+      const existingServiceNames = new Set(services.map(s => s.name.toLowerCase()));
+      let svcsCreated = 0;
+
+      for (const svc of STATIC_SERVICES) {
+        if (existingServiceNames.has(svc.name.toLowerCase())) continue;
+        await base44.entities.Service.create({
+          name: svc.name,
+          slug: svc.slug,
+          category_id: categoryIdMap[svc.category_id] || svc.category_id,
+          description: svc.description,
+          price: svc.price,
+          duration_minutes: svc.duration_minutes,
+          features: svc.features,
+          is_active: true,
+          available_for_subscription: svc.available_for_subscription,
+          image_url: ''
+        });
+        svcsCreated++;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      toast.success(`Seeded ${catsCreated} categories and ${svcsCreated} services`);
+    } catch (error) {
+      console.error('Seed error:', error);
+      toast.error('Failed to seed data: ' + (error.message || 'Unknown error'));
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -117,10 +179,21 @@ function AdminServicesContent() {
             <h1 className="text-3xl font-bold text-slate-900">Manage Services</h1>
             <p className="text-slate-500">Configure your service catalog</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Service
-          </Button>
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              onClick={handleSeedAll} 
+              disabled={seeding}
+              className="gap-2"
+            >
+              {seeding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Database className="w-4 h-4" />}
+              {seeding ? 'Seeding...' : 'Seed All Services'}
+            </Button>
+            <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Service
+            </Button>
+          </div>
         </div>
         {showForm && (
           <Card className="mb-8">

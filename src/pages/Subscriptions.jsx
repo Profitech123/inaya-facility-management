@@ -11,6 +11,7 @@ import PlanCards from '../components/subscriptions/PlanCards';
 import ComparisonTable from '../components/subscriptions/ComparisonTable';
 import PlanManagement from '../components/subscriptions/PlanManagement';
 import AIPackageSuggestion from '../components/subscriptions/AIPackageSuggestion';
+import { STATIC_PACKAGES } from '@/data/services';
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null);
@@ -49,8 +50,11 @@ export default function Subscriptions() {
     initialData: []
   });
 
+  // Fallback to static data when API returns empty
+  const displayPackages = packages.length > 0 ? packages : STATIC_PACKAGES;
+
   const currentSub = subscriptions[0];
-  const currentPkg = currentSub ? packages.find(p => p.id === currentSub.package_id) : null;
+  const currentPkg = currentSub ? displayPackages.find(p => p.id === currentSub.package_id) : null;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -106,29 +110,20 @@ export default function Subscriptions() {
 
       {/* AI Package Suggestion */}
       <div className="max-w-6xl mx-auto px-6 pt-8 pb-0">
-        <AIPackageSuggestion packages={packages} />
+        <AIPackageSuggestion packages={displayPackages} />
       </div>
 
       {/* Plan Cards */}
       <div className="max-w-6xl mx-auto px-6 py-14">
-        {packages.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-slate-500 text-lg mb-2">Subscription packages coming soon!</p>
-            <p className="text-slate-400">We're preparing exclusive plans for homeowners.</p>
-          </div>
-        ) : (
-          <PlanCards packages={packages} currentPkgId={currentPkg?.id} />
-        )}
+        <PlanCards packages={displayPackages} currentPkgId={currentPkg?.id} />
       </div>
 
       {/* Comparison Table */}
-      {packages.length > 0 && (
-        <div className="bg-white border-y border-slate-200">
-          <div className="max-w-6xl mx-auto px-6 py-14">
-            <ComparisonTable packages={packages} />
-          </div>
+      <div className="bg-white border-y border-slate-200">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <ComparisonTable packages={displayPackages} />
         </div>
-      )}
+      </div>
 
       {/* Plan Management / FAQ */}
       <div className="max-w-6xl mx-auto px-6 py-14">

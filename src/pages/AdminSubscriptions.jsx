@@ -5,12 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users } from 'lucide-react';
+import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users, Database, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
 import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
 import AuthGuard from '../components/AuthGuard';
+import { STATIC_PACKAGES } from '@/data/services';
 
 function AdminSubscriptionsContent() {
   const [showPackageForm, setShowPackageForm] = useState(false);
@@ -107,6 +108,46 @@ function AdminSubscriptionsContent() {
       toast.success('Subscription deleted');
     }
   });
+
+  const [seedingPackages, setSeedingPackages] = useState(false);
+
+  const handleSeedPackages = async () => {
+    if (!confirm('This will create all subscription packages from the template. Existing packages with the same name will be skipped. Continue?')) return;
+    
+    setSeedingPackages(true);
+    try {
+      const existingNames = new Set(packages.map(p => p.name.toLowerCase()));
+      let created = 0;
+
+      for (const pkg of STATIC_PACKAGES) {
+        if (existingNames.has(pkg.name.toLowerCase())) continue;
+        await base44.entities.SubscriptionPackage.create({
+          name: pkg.name,
+          slug: pkg.slug,
+          description: pkg.description,
+          monthly_price: pkg.monthly_price,
+          duration_months: pkg.duration_months,
+          package_type: pkg.package_type,
+          property_type: pkg.property_type,
+          popular: pkg.popular,
+          is_active: true,
+          setup_fee: pkg.setup_fee,
+          discount_percentage: pkg.discount_percentage,
+          services: pkg.services,
+          features: pkg.features
+        });
+        created++;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['packages'] });
+      toast.success(`Seeded ${created} subscription package(s)`);
+    } catch (error) {
+      console.error('Seed error:', error);
+      toast.error('Failed to seed packages: ' + (error.message || 'Unknown error'));
+    } finally {
+      setSeedingPackages(false);
+    }
+  };
 
   const handleSaveSubscription = (data) => {
     if (editingSub) {
@@ -320,7 +361,16 @@ function AdminSubscriptionsContent() {
 
           {/* Packages Tab */}
           <TabsContent value="packages">
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4 gap-3">
+              <Button 
+                variant="outline" 
+                onClick={handleSeedPackages} 
+                disabled={seedingPackages}
+                className="gap-2"
+              >
+                {seedingPackages ? <Loader2 className="w-4 h-4 animate-spin" /> : <Database className="w-4 h-4" />}
+                {seedingPackages ? 'Seeding...' : 'Seed All Packages'}
+              </Button>
               <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => { setEditingPkg(null); setShowPackageForm(true); }}>
                 <Plus className="w-4 h-4 mr-2" /> Create Package
               </Button>

@@ -9,6 +9,7 @@ import { ArrowRight, Search, Clock, Star, Shield, Sparkles, Wrench, Settings } f
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AIRecommendations from '../components/services/AIRecommendations';
+import { STATIC_CATEGORIES, STATIC_SERVICES } from '@/data/services';
 
 export default function OnDemandServices() {
   const [search, setSearch] = useState('');
@@ -28,7 +29,11 @@ export default function OnDemandServices() {
     initialData: []
   });
 
-  const filtered = services.filter(s =>
+  // Fallback to static data when API returns empty
+  const displayCategories = categories.length > 0 ? categories : STATIC_CATEGORIES;
+  const displayServices = services.length > 0 ? services : STATIC_SERVICES;
+
+  const filtered = displayServices.filter(s =>
     s.name?.toLowerCase().includes(search.toLowerCase()) ||
     s.description?.toLowerCase().includes(search.toLowerCase())
   );
@@ -36,7 +41,10 @@ export default function OnDemandServices() {
   const categoryIcons = {
     'soft-services': Sparkles,
     'hard-services': Wrench,
-    'specialized-services': Settings
+    'specialized-services': Settings,
+    'cat-soft-services': Sparkles,
+    'cat-hard-services': Wrench,
+    'cat-specialized-services': Settings
   };
 
   return (
@@ -81,7 +89,7 @@ export default function OnDemandServices() {
         </div>
 
         {/* AI Recommendations */}
-        <AIRecommendations allServices={services} categories={categories} />
+        <AIRecommendations allServices={displayServices} categories={displayCategories} />
 
         {filtered.length === 0 ? (
           <div className="text-center py-20">
@@ -91,8 +99,8 @@ export default function OnDemandServices() {
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map(service => {
-              const category = categories.find(c => c.id === service.category_id);
-              const Icon = categoryIcons[category?.slug] || Sparkles;
+              const category = displayCategories.find(c => c.id === service.category_id);
+              const Icon = categoryIcons[category?.slug] || categoryIcons[category?.id] || Sparkles;
 
               return (
                 <Card key={service.id} className="group hover:shadow-xl transition-all hover:-translate-y-1 overflow-hidden">
