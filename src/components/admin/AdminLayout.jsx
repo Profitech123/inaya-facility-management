@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, Settings } from 'lucide-react';
 
@@ -18,8 +17,17 @@ const navItems = [
 export default function AdminLayout({ children, currentPage }) {
   const [sidebarOpen, setMobileMenuOpen] = useState(false);
 
+  // Check admin session on mount
+  useEffect(() => {
+    const adminToken = sessionStorage.getItem('inaya_admin_session');
+    if (adminToken !== 'authenticated') {
+      window.location.href = createPageUrl('AdminLogin');
+    }
+  }, []);
+
   const handleLogout = () => {
-    base44.auth.logout();
+    sessionStorage.removeItem('inaya_admin_session');
+    window.location.href = createPageUrl('AdminLogin');
   };
 
   return (

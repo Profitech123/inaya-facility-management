@@ -8,43 +8,38 @@ import { createPageUrl } from '@/utils';
  * @param {React.ReactNode} children
  */
 export default function AuthGuard({ requiredRole = 'any', children }) {
-  const [state, setState] = useState('loading'); // loading | authorized | redirecting
+  const [state, setState] = useState('loading');
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
-    const isAuth = await base44.auth.isAuthenticated();
-    if (!isAuth) {
-      // Not logged in — redirect to login, then back to current page
+    // Admin pages use sessionStorage auth
+    if (requiredRole === 'admin') {
+      const adminToken = sessionStorage.getItem('inaya_admin_session');
+      if (adminToken === 'authenticated') {
+        setState('authorized');
+      } else {
+        setState('redirecting');
+        window.location.href = createPageUrl('AdminLogin');
+      }
+      return;
+    }
+
+    // Customer/any auth uses Base44 SDK
+    try {
+      const user = await base44.auth.me();
+      if (user) {
+        setState('authorized');
+      } else {
+        setState('redirecting');
+        window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+      }
+    } catch {
       setState('redirecting');
       window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
-      return;
     }
-
-    const user = await base44.auth.me();
-
-    if (requiredRole === 'any') {
-      setState('authorized');
-      return;
-    }
-
-    if (requiredRole === 'admin' && user.role !== 'admin') {
-      // Customer trying to access admin page
-      setState('redirecting');
-      window.location.href = createPageUrl('Dashboard');
-      return;
-    }
-
-    if (requiredRole === 'customer' && user.role === 'admin') {
-      // Admin trying to access customer page
-      setState('redirecting');
-      window.location.href = createPageUrl('AdminDashboard');
-      return;
-    }
-
-    setState('authorized');
   };
 
   if (state === 'loading' || state === 'redirecting') {

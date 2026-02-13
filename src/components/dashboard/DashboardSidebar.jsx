@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { LayoutDashboard, Package, Clock, CalendarDays, Settings, LogOut } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
@@ -53,7 +52,7 @@ export default function DashboardSidebar({ currentPage }) {
       {/* Logout */}
       <div className="p-3 border-t border-slate-100">
         <button
-          onClick={() => base44.auth.logout()}
+          onClick={() => { try { localStorage.removeItem('base44_access_token'); localStorage.removeItem('token'); } catch {} window.location.href = '/'; }}
           className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all w-full"
         >
           <LogOut className="w-4.5 h-4.5" />

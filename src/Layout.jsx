@@ -35,11 +35,6 @@ export default function Layout({ children, currentPageName }) {
   // Admin pages get their own separate layout
   const isAdminPage = currentPageName?.startsWith('Admin');
   
-  if (isAdminPage && user && user.role !== 'admin') {
-    window.location.href = createPageUrl('Dashboard');
-    return null;
-  }
-  
   if (isAdminPage) {
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
   }

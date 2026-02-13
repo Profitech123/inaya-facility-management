@@ -28,15 +28,13 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
+  // Handle authentication errors (only block on user_not_registered)
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
     }
+    // For auth_required or other errors, let the app load publicly
+    // Protected pages handle their own auth via AuthGuard
   }
 
   // Render the main app
