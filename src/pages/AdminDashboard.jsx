@@ -13,6 +13,8 @@ import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
 import DashboardRevenueByService from '../components/admin/DashboardRevenueByService';
 import DashboardMiniSubscriptions from '../components/admin/DashboardMiniSubscriptions';
 import DashboardTechPerformance from '../components/admin/DashboardTechPerformance';
+import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
+import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
@@ -94,6 +96,11 @@ function AdminDashboardContent() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
           <p className="text-slate-500">Business overview and critical alerts</p>
+        </div>
+
+        {/* Onboarding Checklist */}
+        <div className="mb-8">
+          <OnboardingChecklist userRole="admin" />
         </div>
 
         {/* KPI Cards */}
@@ -216,6 +223,7 @@ export default function AdminDashboard() {
   return (
     <AuthGuard requiredRole="admin">
       <AdminDashboardContent />
+      <OnboardingTooltip role="admin" />
     </AuthGuard>
   );
 }

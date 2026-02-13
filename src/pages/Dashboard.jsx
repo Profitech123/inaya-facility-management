@@ -10,6 +10,8 @@ import RecentHistoryCard from '../components/dashboard/RecentHistoryCard';
 import QuickActionsRow from '../components/dashboard/QuickActionsRow';
 import SupportBanner from '../components/dashboard/SupportBanner';
 import DashboardRecommendations from '../components/dashboard/DashboardRecommendations';
+import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
+import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function DashboardContent() {
   const [user, setUser] = useState(null);
@@ -96,6 +98,9 @@ function DashboardContent() {
           <DashboardHeader user={user} />
 
           <div className="space-y-6">
+            {/* Onboarding Checklist */}
+            <OnboardingChecklist userRole="customer" />
+
             {/* Hero subscription card */}
             <SubscriptionHeroCard
               subscription={activeSub}
@@ -133,6 +138,7 @@ export default function Dashboard() {
   return (
     <AuthGuard requiredRole="customer">
       <DashboardContent />
+      <OnboardingTooltip role="customer" />
     </AuthGuard>
   );
 }
