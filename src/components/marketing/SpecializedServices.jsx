@@ -9,6 +9,7 @@ const services = [
     description: "Cleaning, repairs & gas top-up",
     iconBg: "bg-sky-50",
     iconColor: "text-sky-600",
+    image: "/images/service-ac.jpg",
   },
   {
     icon: Wrench,
@@ -16,6 +17,7 @@ const services = [
     description: "Mechanical, Electrical, Plumbing",
     iconBg: "bg-amber-50",
     iconColor: "text-amber-600",
+    image: "/images/service-electrical.jpg",
   },
   {
     icon: HardHat,
@@ -23,6 +25,7 @@ const services = [
     description: "Painting, carpentry & masonry",
     iconBg: "bg-emerald-50",
     iconColor: "text-emerald-600",
+    image: "/images/service-cleaning.jpg",
   },
 ];
 
@@ -59,14 +62,24 @@ export default function SpecializedServices() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 border border-slate-100"
+                className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-slate-100 group"
               >
-                <div className={`w-14 h-14 ${service.iconBg} ${service.iconColor} rounded-xl flex items-center justify-center text-2xl`}>
-                  <Icon className="w-6 h-6" />
+                <div className="h-44 overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900">{service.title}</h3>
-                  <p className="text-sm text-slate-500 mt-1">{service.description}</p>
+                <div className="p-6 flex items-center gap-4">
+                  <div className={`w-12 h-12 ${service.iconBg} ${service.iconColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-slate-900">{service.title}</h3>
+                    <p className="text-sm text-slate-500 mt-1">{service.description}</p>
+                  </div>
                 </div>
               </motion.div>
             );

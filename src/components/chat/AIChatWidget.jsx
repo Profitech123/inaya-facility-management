@@ -199,7 +199,7 @@ export default function AIChatWidget() {
       {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-[9999] bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-xl shadow-emerald-600/30 flex items-center justify-center transition-all hover:scale-105"
+        className="fixed bottom-[88px] lg:bottom-6 right-6 z-[9999] bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-xl shadow-emerald-600/30 flex items-center justify-center transition-all hover:scale-105"
       >
         {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </button>
@@ -212,7 +212,7 @@ export default function AIChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-[9999] w-[380px] max-w-[calc(100vw-48px)] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+            className="fixed bottom-[152px] lg:bottom-24 right-6 z-[9999] w-[380px] max-w-[calc(100vw-48px)] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
             style={{ height: '520px' }}
           >
             {/* Header */}
