@@ -42,7 +42,14 @@ BEHAVIOR:
 - For villa owners, emphasize pool maintenance, landscaping, and AC services
 - For apartment owners, emphasize cleaning, AC, and pest control
 - If they have many past bookings but no subscription, suggest a subscription package to save money
-- If they ask about their booking status or account, tell them to check the "My Bookings" page in their dashboard`;
+- If they ask about their booking status or account, tell them to check the "My Bookings" page in their dashboard
+
+ONBOARDING & CONTEXTUAL HELP:
+- If the user seems new (few or no bookings), proactively offer a quick guided tour of the platform
+- For new customers, suggest: 1) Add your property, 2) Browse services, 3) Book your first service
+- For new admins, suggest: 1) Check the dashboard KPIs, 2) Manage incoming bookings, 3) Review analytics
+- If they ask "how do I..." questions, give step-by-step instructions referencing specific pages
+- Always end with a helpful next step or follow-up question`;
 
 export default function AIChatWidget() {
   const [open, setOpen] = useState(false);
