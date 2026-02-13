@@ -48,6 +48,7 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import About from './pages/About';
+import AdminAnalytics from './pages/AdminAnalytics';
 import AdminAuditLogs from './pages/AdminAuditLogs';
 import AdminBookings from './pages/AdminBookings';
 import AdminCSVMigration from './pages/AdminCSVMigration';
@@ -59,6 +60,7 @@ import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminSupport from './pages/AdminSupport';
+import AdminTechSchedule from './pages/AdminTechSchedule';
 import AdminTechnicians from './pages/AdminTechnicians';
 import BookService from './pages/BookService';
 import BusinessExcellence from './pages/BusinessExcellence';
@@ -73,6 +75,7 @@ import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
 import OnDemandServices from './pages/OnDemandServices';
 import OurPeople from './pages/OurPeople';
+import PackageBuilder from './pages/PackageBuilder';
 import PaymentHistory from './pages/PaymentHistory';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProjectManagement from './pages/ProjectManagement';
@@ -83,14 +86,12 @@ import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import AdminAnalytics from './pages/AdminAnalytics';
-import AdminTechSchedule from './pages/AdminTechSchedule';
-import PackageBuilder from './pages/PackageBuilder';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "About": About,
+    "AdminAnalytics": AdminAnalytics,
     "AdminAuditLogs": AdminAuditLogs,
     "AdminBookings": AdminBookings,
     "AdminCSVMigration": AdminCSVMigration,
@@ -102,6 +103,7 @@ export const PAGES = {
     "AdminServices": AdminServices,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminSupport": AdminSupport,
+    "AdminTechSchedule": AdminTechSchedule,
     "AdminTechnicians": AdminTechnicians,
     "BookService": BookService,
     "BusinessExcellence": BusinessExcellence,
@@ -116,6 +118,7 @@ export const PAGES = {
     "MySubscriptions": MySubscriptions,
     "OnDemandServices": OnDemandServices,
     "OurPeople": OurPeople,
+    "PackageBuilder": PackageBuilder,
     "PaymentHistory": PaymentHistory,
     "PrivacyPolicy": PrivacyPolicy,
     "ProjectManagement": ProjectManagement,
@@ -126,9 +129,6 @@ export const PAGES = {
     "Support": Support,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "AdminAnalytics": AdminAnalytics,
-    "AdminTechSchedule": AdminTechSchedule,
-    "PackageBuilder": PackageBuilder,
 }
 
 export const pagesConfig = {

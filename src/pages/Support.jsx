@@ -7,10 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { MessageSquare, Plus, X } from 'lucide-react';
+import { MessageSquare, Plus, X, Sparkles, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
+import SmartFAQSuggestions from '../components/support/SmartFAQSuggestions';
+import { classifyTicket } from '../components/support/AITicketClassifier';
 
 function SupportContent() {
   const queryClient = useQueryClient();
@@ -22,6 +24,8 @@ function SupportContent() {
     category: 'general',
     priority: 'medium'
   });
+  const [classifying, setClassifying] = useState(false);
+  const [aiClassification, setAiClassification] = useState(null);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => window.location.href = createPageUrl('Home'));
@@ -44,14 +48,24 @@ function SupportContent() {
     }
   });
 
-  const handleSubmit = (e) => {
+  const handleClassifyAndSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.subject.trim() || !formData.description.trim()) return;
+
+    setClassifying(true);
+    const classification = await classifyTicket(formData.subject, formData.description);
+    setAiClassification(classification);
+
     const ticketNumber = 'TKT-' + Date.now().toString().slice(-8);
     createTicketMutation.mutate({
       ...formData,
+      category: classification.category,
+      priority: classification.priority,
       ticket_number: ticketNumber,
       customer_id: user.id
     });
+    setClassifying(false);
+    setAiClassification(null);
   };
 
   if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -80,7 +94,7 @@ function SupportContent() {
               <CardTitle>Create Support Ticket</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleClassifyAndSubmit} className="space-y-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Subject</label>
                   <Input
@@ -89,39 +103,6 @@ function SupportContent() {
                     placeholder="Brief description of your issue"
                     required
                   />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Category</label>
-                    <Select value={formData.category} onValueChange={(val) => setFormData({ ...formData, category: val })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="billing">Billing</SelectItem>
-                        <SelectItem value="service_quality">Service Quality</SelectItem>
-                        <SelectItem value="scheduling">Scheduling</SelectItem>
-                        <SelectItem value="technical">Technical</SelectItem>
-                        <SelectItem value="general">General</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Priority</label>
-                    <Select value={formData.priority} onValueChange={(val) => setFormData({ ...formData, priority: val })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                        <SelectItem value="urgent">Urgent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </div>
 
                 <div>
@@ -135,8 +116,30 @@ function SupportContent() {
                   />
                 </div>
 
-                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-                  Submit Ticket
+                {/* AI FAQ Suggestions — appears as user types */}
+                <SmartFAQSuggestions
+                  subject={formData.subject}
+                  description={formData.description}
+                />
+
+                <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                    <span className="text-xs font-medium text-slate-600">AI will automatically categorize and prioritize your ticket</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400">Category and priority are assigned based on your description for faster routing.</p>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+                  disabled={classifying}
+                >
+                  {classifying ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Classifying & Submitting...</>
+                  ) : (
+                    'Submit Ticket'
+                  )}
                 </Button>
               </form>
             </CardContent>
