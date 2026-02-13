@@ -1,106 +1,114 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, Clock, Award, Zap, ChevronDown } from 'lucide-react';
+import { ArrowRight, Star, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 
 export default function Hero() {
   return (
-    <div className="relative bg-slate-50 overflow-hidden">
-      {/* Hero Content */}
-      <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Content */}
-          <div>
+    <section className="relative bg-white overflow-hidden py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Content */}
+          <div className="flex flex-col gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2"
             >
-              <span className="inline-block text-emerald-600 text-sm font-bold tracking-widest mb-6 uppercase">
-                Professional FM Solutions
+              <span className="w-8 h-0.5 bg-emerald-500" />
+              <span className="text-emerald-500 font-bold text-sm tracking-wide uppercase">
+                Premium Facility Management
               </span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight"
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight text-balance"
             >
-              Your Home,
-              <br />
-              <span className="text-emerald-500">Perfectly</span>
-              <br />
-              Maintained.
+              Professional Property Maintenance for{' '}
+              <span className="text-emerald-500">Your Home.</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-lg text-slate-600 mb-8 leading-relaxed max-w-xl"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg text-slate-500 max-w-lg leading-relaxed"
             >
-              Professional home maintenance services in Dubai. Professional home management services & expert maintenance to protect your property.
+              Subscription and One-off facility management services in Dubai. We handle the repairs so you can enjoy your home worry-free.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 mb-12"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 pt-2"
             >
               <Link to={createPageUrl('Subscriptions')}>
-                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-8 h-12 shadow-lg transition-all hover:-translate-y-0.5">
+                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 h-auto rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all hover:-translate-y-0.5 w-full sm:w-auto">
                   Explore Packages
                 </Button>
               </Link>
               <Link to={createPageUrl('OnDemandServices')}>
-                <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100 text-base px-8 h-12">
+                <Button size="lg" variant="outline" className="bg-white hover:bg-slate-50 text-slate-700 border-slate-200 px-8 py-4 h-auto rounded-xl font-bold transition-all hover:border-slate-300 w-full sm:w-auto">
                   Book a Service
                 </Button>
               </Link>
             </motion.div>
 
-            {/* Trust Indicators */}
+            {/* Social Proof */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="flex flex-wrap gap-6 text-sm text-slate-600"
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex items-center gap-4 pt-4"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>Trusted by 1000+ homeowners</span>
+              <div className="flex -space-x-2 mr-3">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center">
+                    <Users className="w-3 h-3 text-slate-500" />
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>Member of Belhasa Group</span>
+              <div className="text-sm">
+                <p className="font-bold text-slate-900">Trusted by 5,000+</p>
+                <p className="text-slate-500">Dubai households</p>
               </div>
             </motion.div>
           </div>
 
-          {/* Right Side - Image */}
+          {/* Right Column: Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="bg-gradient-to-br from-slate-200 to-slate-100 rounded-2xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80"
-                alt="Professional maintenance technician"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
+            <div className="absolute -inset-4 bg-emerald-500/10 rounded-3xl transform rotate-2" />
+            <img
+              alt="AC Maintenance Technician"
+              className="relative rounded-2xl shadow-2xl w-full object-cover h-[500px]"
+              src="/images/hero-technician.jpg"
+              loading="eager"
+            />
+            {/* Floating Badge */}
+            <div className="absolute bottom-8 left-8 bg-white p-4 rounded-xl shadow-lg flex items-center gap-3">
+              <div className="bg-emerald-50 p-2 rounded-lg text-emerald-500">
+                <Star className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-900 text-lg">4.9/5</p>
+                <p className="text-xs text-slate-500">Customer Rating</p>
+              </div>
             </div>
-            {/* Decorative shape behind image */}
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-100 rounded-full blur-xl opacity-60 -z-10" />
           </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
