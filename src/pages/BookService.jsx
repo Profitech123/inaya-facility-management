@@ -43,7 +43,7 @@ export default function BookService() {
         setIsAuthChecking(false);
       } catch (error) {
         if (error?.status === 401) {
-          base44.auth.redirectToLogin(window.location.href);
+          window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`;
         } else {
           setIsAuthChecking(false);
         }

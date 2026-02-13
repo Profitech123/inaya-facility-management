@@ -51,28 +51,16 @@ export const AuthProvider = ({ children }) => {
         // Handle app-level errors
         if (appError.status === 403 && appError.data?.extra_data?.reason) {
           const reason = appError.data.extra_data.reason;
-          if (reason === 'auth_required') {
-            setAuthError({
-              type: 'auth_required',
-              message: 'Authentication required'
-            });
-          } else if (reason === 'user_not_registered') {
+          if (reason === 'user_not_registered') {
             setAuthError({
               type: 'user_not_registered',
               message: 'User not registered for this app'
             });
-          } else {
-            setAuthError({
-              type: reason,
-              message: appError.message
-            });
           }
-        } else {
-          setAuthError({
-            type: 'unknown',
-            message: appError.message || 'Failed to load app'
-          });
+          // For auth_required or other reasons, don't set authError - let the app load publicly
+          // Individual pages handle auth checks via AuthGuard
         }
+        // For network errors or other issues, still let the app load
         setIsLoadingPublicSettings(false);
         setIsLoadingAuth(false);
       }
@@ -100,12 +88,12 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setIsAuthenticated(false);
       
-      // If user auth fails, it might be an expired token
+      // If user auth fails with expired token, just clear it - don't block the app
       if (error.status === 401 || error.status === 403) {
-        setAuthError({
-          type: 'auth_required',
-          message: 'Authentication required'
-        });
+        try {
+          localStorage.removeItem('base44_access_token');
+          localStorage.removeItem('token');
+        } catch {}
       }
     }
   };
@@ -114,18 +102,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     
+    // Clear tokens locally
+    try {
+      localStorage.removeItem('base44_access_token');
+      localStorage.removeItem('token');
+    } catch {}
+    
     if (shouldRedirect) {
-      // Use the SDK's logout method which handles token cleanup and redirect
-      base44.auth.logout(window.location.href);
-    } else {
-      // Just remove the token without redirect
-      base44.auth.logout();
+      window.location.href = '/';
     }
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
   };
 
   return (

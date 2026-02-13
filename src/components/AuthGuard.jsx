@@ -19,7 +19,7 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
     if (!isAuth) {
       // Not logged in — redirect to login, then back to current page
       setState('redirecting');
-      base44.auth.redirectToLogin(window.location.href);
+      window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
 

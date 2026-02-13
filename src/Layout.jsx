@@ -45,7 +45,12 @@ export default function Layout({ children, currentPageName }) {
   }
 
   const handleLogout = () => {
-    base44.auth.logout();
+    try {
+      localStorage.removeItem('base44_access_token');
+      localStorage.removeItem('token');
+    } catch {}
+    setUser(null);
+    window.location.href = '/';
   };
 
   const isActivePage = (pageName) => currentPageName === pageName;
@@ -148,21 +153,16 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenu>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-slate-600"
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
-                    size="sm" 
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                  >
-                    Create Account
-                  </Button>
+                  <Link to={`${createPageUrl('Login')}?returnUrl=${encodeURIComponent(window.location.pathname)}`}>
+                    <Button variant="ghost" size="sm" className="text-slate-600">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to={`${createPageUrl('Login')}?returnUrl=${encodeURIComponent(window.location.pathname)}&mode=register`}>
+                    <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                      Create Account
+                    </Button>
+                  </Link>
                 </div>
               )}
               
@@ -191,9 +191,11 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
               {!user && (
                 <div className="pt-3 border-t space-y-2">
-                  <Button onClick={() => base44.auth.redirectToLogin(window.location.href)} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                    Sign In / Create Account
-                  </Button>
+                  <Link to={`${createPageUrl('Login')}?returnUrl=${encodeURIComponent(window.location.pathname)}`} onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                      Sign In / Create Account
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>

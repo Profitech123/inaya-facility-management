@@ -70,6 +70,7 @@ import FAQ from './pages/FAQ';
 import HardServices from './pages/HardServices';
 import Home from './pages/Home';
 import IntegratedFM from './pages/IntegratedFM';
+import Login from './pages/Login';
 import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
@@ -113,6 +114,7 @@ export const PAGES = {
     "HardServices": HardServices,
     "Home": Home,
     "IntegratedFM": IntegratedFM,
+    "Login": Login,
     "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,

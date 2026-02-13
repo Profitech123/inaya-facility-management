@@ -39,7 +39,7 @@ export default function AdminLogin() {
 
   const handleLogin = () => {
     // After login, come back to this page which will redirect admin to dashboard
-    base44.auth.redirectToLogin(window.location.href);
+    window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
   };
 
   if (checking) {

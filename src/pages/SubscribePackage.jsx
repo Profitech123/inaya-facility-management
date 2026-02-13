@@ -19,7 +19,7 @@ export default function SubscribePackage() {
   const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin(window.location.href));
+    base44.auth.me().then(setUser).catch(() => { window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`; });
     const params = new URLSearchParams(window.location.search);
     setPackageId(params.get('package'));
   }, []);

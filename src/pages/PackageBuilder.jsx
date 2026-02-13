@@ -36,7 +36,7 @@ export default function PackageBuilder() {
     base44.auth.me()
       .then(u => { setUser(u); setAuthChecking(false); })
       .catch(() => {
-        base44.auth.redirectToLogin(window.location.href);
+        window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
       });
   }, []);
 
