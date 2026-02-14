@@ -24,15 +24,7 @@ export default defineConfig({
       strict: false
     }
   },
-  optimizeDeps: {
-    entries: ['./src/main.jsx'],
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@tanstack/react-query'
-    ]
-  },
+
   build: {
     target: 'esnext',
     commonjsOptions: {
