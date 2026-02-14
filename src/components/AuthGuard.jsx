@@ -8,52 +8,58 @@ import { createPageUrl } from '@/utils';
  * @param {React.ReactNode} children
  */
 export default function AuthGuard({ requiredRole = 'any', children }) {
-  const [state, setState] = useState('loading');
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    // Admin pages use sessionStorage auth
-    if (requiredRole === 'admin') {
-      const adminToken = sessionStorage.getItem('inaya_admin_session');
-      if (adminToken === 'authenticated') {
-        setState('authorized');
-      } else {
-        setState('redirecting');
-        window.location.href = createPageUrl('AdminLogin');
+    let mounted = true;
+    
+    const checkAuth = async () => {
+      // Admin pages use sessionStorage auth
+      if (requiredRole === 'admin') {
+        const adminToken = sessionStorage.getItem('inaya_admin_session');
+        if (adminToken === 'authenticated') {
+          if (mounted) {
+            setIsAuthorized(true);
+            setIsChecking(false);
+          }
+        } else {
+          window.location.href = createPageUrl('AdminLogin');
+        }
+        return;
       }
-      return;
-    }
 
-    // Customer/any auth uses clientAuth
-    try {
-      const user = await clientAuth.me();
-      if (user) {
-        setState('authorized');
-      } else {
-        setState('redirecting');
+      // Customer/any auth uses clientAuth
+      try {
+        const user = await clientAuth.me();
+        if (user && mounted) {
+          setIsAuthorized(true);
+          setIsChecking(false);
+        } else {
+          window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+        }
+      } catch {
         window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
       }
-    } catch {
-      setState('redirecting');
-      window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
-    }
-  };
+    };
 
-  if (state === 'loading' || state === 'redirecting') {
+    checkAuth();
+
+    return () => {
+      mounted = false;
+    };
+  }, [requiredRole]);
+
+  if (isChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-slate-500">
-            {state === 'redirecting' ? 'Redirecting...' : 'Loading...'}
-          </p>
+          <p className="text-sm text-slate-500">Loading...</p>
         </div>
       </div>
     );
   }
 
-  return children;
+  return isAuthorized ? children : null;
 }
