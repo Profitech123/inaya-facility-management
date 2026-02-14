@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BookingTimeline from '../components/booking/BookingTimeline';
 import AdminBookingCalendar from '../components/admin/AdminBookingCalendar';
 import { logAuditEvent } from '../components/admin/AuditLogger';
-import AuthGuard from '../components/AuthGuard';
+import StableAdminWrapper from '../components/StableAdminWrapper';
 
 function AdminBookingsContent() {
   const queryClient = useQueryClient();
@@ -307,8 +307,8 @@ function AdminBookingsContent() {
 
 export default function AdminBookings() {
   return (
-    <AuthGuard requiredRole="admin">
+    <StableAdminWrapper>
       <AdminBookingsContent />
-    </AuthGuard>
+    </StableAdminWrapper>
   );
 }

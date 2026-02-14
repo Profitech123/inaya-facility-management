@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Database, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import AuthGuard from '../components/AuthGuard';
+import StableAdminWrapper from '../components/StableAdminWrapper';
 import { STATIC_CATEGORIES, STATIC_SERVICES } from '@/data/services';
 
 function AdminServicesContent() {
@@ -322,8 +322,8 @@ function AdminServicesContent() {
 
 export default function AdminServices() {
   return (
-    <AuthGuard requiredRole="admin">
+    <StableAdminWrapper>
       <AdminServicesContent />
-    </AuthGuard>
+    </StableAdminWrapper>
   );
 }

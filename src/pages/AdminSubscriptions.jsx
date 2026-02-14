@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
 import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
-import AuthGuard from '../components/AuthGuard';
+import StableAdminWrapper from '../components/StableAdminWrapper';
 import { STATIC_PACKAGES } from '@/data/services';
 
 function AdminSubscriptionsContent() {
@@ -455,8 +455,8 @@ function AdminSubscriptionsContent() {
 
 export default function AdminSubscriptions() {
   return (
-    <AuthGuard requiredRole="admin">
+    <StableAdminWrapper>
       <AdminSubscriptionsContent />
-    </AuthGuard>
+    </StableAdminWrapper>
   );
 }

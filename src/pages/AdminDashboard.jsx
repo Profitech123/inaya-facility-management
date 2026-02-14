@@ -7,7 +7,7 @@ import { Calendar, Package, DollarSign, Users, TrendingUp, Repeat } from 'lucide
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import AuthGuard from '@/components/AuthGuard';
+import StableAdminWrapper from '@/components/StableAdminWrapper';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 import AdminNotifications from '../components/admin/AdminNotifications';
 import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
@@ -252,9 +252,9 @@ function AdminDashboardContent() {
 
 export default function AdminDashboard() {
   return (
-    <AuthGuard requiredRole="admin">
+    <StableAdminWrapper>
       <AdminDashboardContent />
       <OnboardingTooltip role="admin" />
-    </AuthGuard>
+    </StableAdminWrapper>
   );
 }
