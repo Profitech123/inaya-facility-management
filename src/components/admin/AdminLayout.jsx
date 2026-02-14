@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { List, X } from 'lucide-react';
-import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, TrendingUp as PhTrendingUp, ChartBar, SignOut } from '@phosphor-icons/react';
+import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, TrendUp, ChartBar, SignOut } from '@phosphor-icons/react';
 
 const navItems = [
   { label: 'Dashboard', page: 'AdminDashboard', icon: SquaresFour },
@@ -12,7 +12,7 @@ const navItems = [
   { label: 'Subscriptions', page: 'AdminSubscriptions', icon: Timer },
   { label: 'Technicians', page: 'AdminTechnicians', icon: UsersThree },
   { label: 'Tech Schedules', page: 'AdminTechSchedule', icon: CalendarDots },
-  { label: 'Analytics', page: 'AdminAnalytics', icon: PhTrendingUp },
+  { label: 'Analytics', page: 'AdminAnalytics', icon: TrendUp },
   { label: 'Reports', page: 'AdminReports', icon: ChartBar },
 ];
 

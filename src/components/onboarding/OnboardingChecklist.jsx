@@ -4,12 +4,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle as PhCheckCircle, Circle as PhCircle, CaretDown, CaretUp, X as PhX, Sparkle, MagnifyingGlass, House, CalendarPlus, Package as PhPackage, ClipboardText, SquaresFour, CalendarCheck, Lifebuoy, TrendingUp as PhTrendingUp, UsersThree } from '@phosphor-icons/react';
+import { CheckCircle as PhCheckCircle, Circle as PhCircle, CaretDown, CaretUp, X as PhX, Sparkle, MagnifyingGlass, House, CalendarPlus, Package as PhPackage, ClipboardText, SquaresFour, CalendarCheck, Lifebuoy, TrendUp, UsersThree } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CUSTOMER_STEPS, ADMIN_STEPS } from './onboardingConfig';
 
-const ICON_MAP = { Search: MagnifyingGlass, Home: House, CalendarPlus, Package: PhPackage, ClipboardList: ClipboardText, LayoutDashboard: SquaresFour, CalendarCheck, LifeBuoy: Lifebuoy, TrendingUp: PhTrendingUp, Users: UsersThree };
+const ICON_MAP = { Search: MagnifyingGlass, Home: House, CalendarPlus, Package: PhPackage, ClipboardList: ClipboardText, LayoutDashboard: SquaresFour, CalendarCheck, LifeBuoy: Lifebuoy, TrendingUp: TrendUp, Users: UsersThree };
 
 export default function OnboardingChecklist({ userRole }) {
   const [expanded, setExpanded] = useState(true);
