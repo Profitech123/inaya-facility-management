@@ -40,8 +40,19 @@ export default function TechnicianSelector({ serviceId, selectedProviderId, onCh
     initialData: []
   });
 
-  // Match providers whose specialization array overlaps with the category name
+  const { data: blockouts = [] } = useQuery({
+    queryKey: ['blockouts-for-tech'],
+    queryFn: () => base44.entities.TechBlockout.list(),
+    initialData: []
+  });
+
+  // Match providers by assigned services or specialization
   const relevantProviders = providers.filter(p => {
+    // If technician has assigned_service_ids, check if current service is in the list
+    if (p.assigned_service_ids?.length > 0 && serviceId) {
+      return p.assigned_service_ids.includes(serviceId);
+    }
+    // Fallback to specialization matching
     if (!p.specialization || p.specialization.length === 0) return true;
     if (!category) return true;
     return p.specialization.some(s =>
@@ -64,10 +75,19 @@ export default function TechnicianSelector({ serviceId, selectedProviderId, onCh
         ? provBookings.filter(b => b.scheduled_date && isSameDay(new Date(b.scheduled_date), selectedDate))
         : [];
 
+      // Check block-outs for this provider on selected date
+      const provBlockouts = blockouts.filter(b => b.provider_id === p.id);
+      const isBlockedOut = selectedDate
+        ? provBlockouts.some(b =>
+            b.date && isSameDay(new Date(b.date), selectedDate) &&
+            (b.time_slot === 'all_day' || b.time_slot === selectedTimeSlot)
+          )
+        : false;
+
       // Is the specific slot taken?
       const slotTaken = selectedTimeSlot
-        ? dayBookings.some(b => b.scheduled_time === selectedTimeSlot)
-        : false;
+        ? dayBookings.some(b => b.scheduled_time === selectedTimeSlot) || isBlockedOut
+        : isBlockedOut;
 
       const dayCount = dayBookings.length;
 
@@ -87,7 +107,7 @@ export default function TechnicianSelector({ serviceId, selectedProviderId, onCh
       };
     });
     return map;
-  }, [relevantProviders, allBookings, selectedDate, selectedTimeSlot, reviews]);
+  }, [relevantProviders, allBookings, selectedDate, selectedTimeSlot, reviews, blockouts]);
 
   // Sort: available first, then by rating
   const sortedProviders = useMemo(() => {
