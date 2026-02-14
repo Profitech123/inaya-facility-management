@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, Settings } from 'lucide-react';
+import { List, X } from 'lucide-react';
+import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, TrendingUp as PhTrendingUp, ChartBar, SignOut } from '@phosphor-icons/react';
 
 const navItems = [
-  { label: 'Dashboard', page: 'AdminDashboard', icon: LayoutDashboard },
-  { label: 'Service Requests', page: 'AdminBookings', icon: Zap },
-  { label: 'Subscriptions', page: 'AdminSubscriptions', icon: Clock },
-  { label: 'Technicians', page: 'AdminTechnicians', icon: Users },
-  { label: 'Tech Schedules', page: 'AdminTechSchedule', icon: CalendarDays },
-  { label: 'Analytics', page: 'AdminAnalytics', icon: TrendingUp },
-  { label: 'Reports', page: 'AdminReports', icon: BarChart3 },
+  { label: 'Dashboard', page: 'AdminDashboard', icon: SquaresFour },
+  { label: 'Service Requests', page: 'AdminBookings', icon: Lightning },
+  { label: 'Subscriptions', page: 'AdminSubscriptions', icon: Timer },
+  { label: 'Technicians', page: 'AdminTechnicians', icon: UsersThree },
+  { label: 'Tech Schedules', page: 'AdminTechSchedule', icon: CalendarDots },
+  { label: 'Analytics', page: 'AdminAnalytics', icon: PhTrendingUp },
+  { label: 'Reports', page: 'AdminReports', icon: ChartBar },
 ];
 
 export default function AdminLayout({ children, currentPage }) {
@@ -51,7 +52,7 @@ export default function AdminLayout({ children, currentPage }) {
                 }`}
                 title={item.label}
               >
-                <Icon className="w-5 h-5 flex-shrink-0" />
+                <Icon className="w-5 h-5 flex-shrink-0" weight={isActive ? "fill" : "duotone"} />
                 {sidebarOpen && <span className="text-sm font-medium">{item.label}</span>}
               </Link>
             );
@@ -65,14 +66,14 @@ export default function AdminLayout({ children, currentPage }) {
             className="w-full flex items-center justify-center p-2 hover:bg-slate-100 rounded-lg transition-colors"
             title={sidebarOpen ? 'Collapse' : 'Expand'}
           >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {sidebarOpen ? <X className="w-5 h-5" /> : <List className="w-5 h-5" />}
           </button>
           <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Logout"
           >
-            <LogOut className="w-5 h-5" />
+            <SignOut className="w-5 h-5" weight="duotone" />
             {sidebarOpen && <span className="text-xs font-medium ml-2">Logout</span>}
           </button>
         </div>

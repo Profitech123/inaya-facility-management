@@ -4,12 +4,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Circle, ChevronDown, ChevronUp, X, Sparkles, Search, Home, CalendarPlus, Package, ClipboardList, LayoutDashboard, CalendarCheck, LifeBuoy, TrendingUp, Users } from 'lucide-react';
+import { CheckCircle as PhCheckCircle, Circle as PhCircle, CaretDown, CaretUp, X as PhX, Sparkle, MagnifyingGlass, House, CalendarPlus, Package as PhPackage, ClipboardText, SquaresFour, CalendarCheck, Lifebuoy, TrendingUp as PhTrendingUp, UsersThree } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CUSTOMER_STEPS, ADMIN_STEPS } from './onboardingConfig';
 
-const ICON_MAP = { Search, Home, CalendarPlus, Package, ClipboardList, LayoutDashboard, CalendarCheck, LifeBuoy, TrendingUp, Users };
+const ICON_MAP = { Search: MagnifyingGlass, Home: House, CalendarPlus, Package: PhPackage, ClipboardList: ClipboardText, LayoutDashboard: SquaresFour, CalendarCheck, LifeBuoy: Lifebuoy, TrendingUp: PhTrendingUp, Users: UsersThree };
 
 export default function OnboardingChecklist({ userRole }) {
   const [expanded, setExpanded] = useState(true);
@@ -88,7 +88,7 @@ export default function OnboardingChecklist({ userRole }) {
       >
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-emerald-600" />
+            <Sparkle className="w-5 h-5 text-emerald-600" weight="duotone" />
           </div>
           <div>
             <h3 className="font-semibold text-sm text-slate-800">
@@ -106,9 +106,9 @@ export default function OnboardingChecklist({ userRole }) {
             className="p-1 hover:bg-slate-200 rounded transition-colors"
             title="Dismiss onboarding"
           >
-            <X className="w-4 h-4 text-slate-400" />
+            <PhX className="w-4 h-4 text-slate-400" />
           </button>
-          {expanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+          {expanded ? <CaretUp className="w-4 h-4 text-slate-400" weight="bold" /> : <CaretDown className="w-4 h-4 text-slate-400" weight="bold" />}
         </div>
       </div>
 
@@ -138,9 +138,9 @@ export default function OnboardingChecklist({ userRole }) {
                       className="flex-shrink-0"
                     >
                       {isDone ? (
-                        <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                        <PhCheckCircle className="w-5 h-5 text-emerald-500" weight="duotone" />
                       ) : (
-                        <Circle className="w-5 h-5 text-slate-300 hover:text-emerald-400 transition-colors" />
+                        <PhCircle className="w-5 h-5 text-slate-300 hover:text-emerald-400 transition-colors" />
                       )}
                     </button>
                     <div className="flex-1 min-w-0">

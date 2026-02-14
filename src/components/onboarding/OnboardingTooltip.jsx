@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Lightbulb } from 'lucide-react';
+import { X as PhX, Lightbulb } from '@phosphor-icons/react';
 
 const TIPS = {
   customer: [
@@ -58,13 +58,13 @@ export default function OnboardingTooltip({ role = 'customer' }) {
       >
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Lightbulb className="w-4 h-4" />
+            <Lightbulb className="w-4 h-4" weight="duotone" />
           </div>
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
               <h4 className="font-semibold text-sm">{currentTip.title}</h4>
               <button onClick={handleDismiss} className="hover:bg-white/20 rounded p-0.5 transition-colors">
-                <X className="w-3.5 h-3.5" />
+                <PhX className="w-3.5 h-3.5" />
               </button>
             </div>
             <p className="text-xs text-emerald-100 leading-relaxed">{currentTip.message}</p>

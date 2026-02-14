@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell } from 'lucide-react';
+import { BellRinging } from '@phosphor-icons/react';
 
 export default function DashboardHeader({ user }) {
   const initials = (user?.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
@@ -11,7 +11,7 @@ export default function DashboardHeader({ user }) {
       </h1>
       <div className="flex items-center gap-4">
         <button className="relative p-2 rounded-full hover:bg-slate-100 transition-colors">
-          <Bell className="w-5 h-5 text-slate-500" />
+          <BellRinging className="w-5 h-5 text-slate-500" weight="duotone" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
         </button>
         <div className="flex items-center gap-3">

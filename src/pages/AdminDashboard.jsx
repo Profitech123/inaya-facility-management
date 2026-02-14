@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Package, DollarSign, Users, TrendingUp, Repeat } from 'lucide-react';
+import { CalendarDots, Package as PhPackage, CurrencyCircleDollar, UsersThree, TrendingUp as PhTrendingUp, ArrowsClockwise } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -82,12 +82,12 @@ function AdminDashboardContent() {
   if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   const kpis = [
-    { label: 'Total Revenue', value: `AED ${totalRevenue.toLocaleString()}`, sub: 'From paid bookings', icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Monthly Recurring', value: `AED ${monthlyRecurring.toLocaleString()}`, sub: `${subscriptions.filter(s => s.status === 'active').length} active subs`, icon: Repeat, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Total Bookings', value: bookings.length, sub: `${bookings.filter(b => b.status === 'pending').length} pending`, icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Customers', value: uniqueCustomers, sub: `${completedJobs} jobs done`, icon: Users, color: 'text-amber-600', bg: 'bg-amber-50' },
-    { label: 'Services', value: services.length, sub: `${services.filter(s => s.is_active).length} active`, icon: TrendingUp, color: 'text-rose-600', bg: 'bg-rose-50' },
-    { label: 'Avg Booking', value: `AED ${avgBookingValue}`, sub: 'Per paid booking', icon: Package, color: 'text-teal-600', bg: 'bg-teal-50' },
+    { label: 'Total Revenue', value: `AED ${totalRevenue.toLocaleString()}`, sub: 'From paid bookings', icon: CurrencyCircleDollar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Monthly Recurring', value: `AED ${monthlyRecurring.toLocaleString()}`, sub: `${subscriptions.filter(s => s.status === 'active').length} active subs`, icon: ArrowsClockwise, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Total Bookings', value: bookings.length, sub: `${bookings.filter(b => b.status === 'pending').length} pending`, icon: CalendarDots, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Customers', value: uniqueCustomers, sub: `${completedJobs} jobs done`, icon: UsersThree, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: 'Services', value: services.length, sub: `${services.filter(s => s.is_active).length} active`, icon: PhTrendingUp, color: 'text-rose-600', bg: 'bg-rose-50' },
+    { label: 'Avg Booking', value: `AED ${avgBookingValue}`, sub: 'Per paid booking', icon: PhPackage, color: 'text-teal-600', bg: 'bg-teal-50' },
   ];
 
   return (
@@ -112,7 +112,7 @@ function AdminDashboardContent() {
                 <CardContent className="pt-5 pb-4">
                   <div className="flex items-center gap-2 mb-3">
                     <div className={`w-9 h-9 rounded-lg ${kpi.bg} flex items-center justify-center`}>
-                      <Icon className={`w-4 h-4 ${kpi.color}`} />
+                      <Icon className={`w-4 h-4 ${kpi.color}`} weight="duotone" />
                     </div>
                   </div>
                   <div className={`text-2xl font-bold ${kpi.color}`}>{kpi.value}</div>

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { LayoutDashboard, Package, Clock, CalendarDays, Settings, LogOut } from 'lucide-react';
+import { SquaresFour, Package as PhPackage, ClockCounterClockwise, CalendarDots, GearSix, SignOut } from '@phosphor-icons/react';
 import { base44 } from '@/api/base44Client';
 
 const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
-  { label: 'My Subscriptions', icon: Package, page: 'MySubscriptions' },
-  { label: 'Service History', icon: Clock, page: 'MyBookings' },
-  { label: 'Bookings', icon: CalendarDays, page: 'MyBookings' },
-  { label: 'Settings', icon: Settings, page: 'UserProfile' },
+  { label: 'Dashboard', icon: SquaresFour, page: 'Dashboard' },
+  { label: 'My Subscriptions', icon: PhPackage, page: 'MySubscriptions' },
+  { label: 'Service History', icon: ClockCounterClockwise, page: 'MyBookings' },
+  { label: 'Bookings', icon: CalendarDots, page: 'MyBookings' },
+  { label: 'Settings', icon: GearSix, page: 'UserProfile' },
 ];
 
 export default function DashboardSidebar({ currentPage }) {
@@ -43,7 +43,7 @@ export default function DashboardSidebar({ currentPage }) {
                   : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
               }`}
             >
-              <Icon className="w-4.5 h-4.5" />
+              <Icon className="w-[18px] h-[18px]" weight={isActive ? "fill" : "duotone"} />
               {item.label}
             </Link>
           );
@@ -56,7 +56,7 @@ export default function DashboardSidebar({ currentPage }) {
           onClick={() => base44.auth.logout()}
           className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all w-full"
         >
-          <LogOut className="w-4.5 h-4.5" />
+          <SignOut className="w-[18px] h-[18px]" weight="duotone" />
           Logout
         </button>
       </div>
