@@ -4,8 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Pencil, Save, X, Camera, Loader2 } from 'lucide-react';
+import { Pencil, Save, X, Camera, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+
+const PHONE_REGEX = /^\+?[0-9\s\-()]{7,20}$/;
+
+function validatePhone(phone) {
+  if (!phone || phone.trim() === '') return 'Phone number is required';
+  const cleaned = phone.replace(/[\s\-()]/g, '');
+  if (cleaned.length < 7) return 'Phone number is too short (min 7 digits)';
+  if (cleaned.length > 15) return 'Phone number is too long (max 15 digits)';
+  if (!PHONE_REGEX.test(phone)) return 'Invalid phone format. Use digits, spaces, dashes, or start with +';
+  return null;
+}
 
 export default function ProfileInfoCard({ user, onUpdate }) {
   const [editing, setEditing] = useState(false);
@@ -17,8 +28,15 @@ export default function ProfileInfoCard({ user, onUpdate }) {
     city: user?.city || '',
     preferred_language: user?.preferred_language || 'english'
   });
+  const [phoneError, setPhoneError] = useState(null);
 
   const handleSave = async () => {
+    const phoneErr = validatePhone(formData.phone);
+    if (phoneErr) {
+      setPhoneError(phoneErr);
+      return;
+    }
+    setPhoneError(null);
     setSaving(true);
     await base44.auth.updateMe(formData);
     toast.success('Profile updated successfully');
@@ -82,8 +100,21 @@ export default function ProfileInfoCard({ user, onUpdate }) {
         {editing ? (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
-              <Input value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} placeholder="+971 50 000 0000" />
+              <label className="block text-sm font-medium text-slate-700 mb-1">Phone *</label>
+              <Input
+                value={formData.phone}
+                onChange={e => {
+                  setFormData({...formData, phone: e.target.value});
+                  if (phoneError) setPhoneError(null);
+                }}
+                placeholder="+971 50 000 0000"
+                className={phoneError ? 'border-red-400 focus-visible:ring-red-400' : ''}
+              />
+              {phoneError && (
+                <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> {phoneError}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
