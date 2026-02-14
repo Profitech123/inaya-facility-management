@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import AuthGuard from '../components/AuthGuard';
 import DateRangeFilter from '../components/reports/DateRangeFilter';
-import AnalyticsKPICards from '../components/analytics/AnalyticsKPICards';
+import EnhancedKPICards from '../components/analytics/EnhancedKPICards';
 import RevenueOverTimeChart from '../components/analytics/RevenueOverTimeChart';
 import PopularServicesChart from '../components/analytics/PopularServicesChart';
 import CustomerAcquisitionChart from '../components/analytics/CustomerAcquisitionChart';
@@ -13,6 +13,9 @@ import CustomerLifetimeValue from '../components/analytics/CustomerLifetimeValue
 import CohortRetentionChart from '../components/analytics/CohortRetentionChart';
 import DemandPrediction from '../components/analytics/DemandPrediction';
 import TechnicianUtilization from '../components/analytics/TechnicianUtilization';
+import ChurnRateChart from '../components/analytics/ChurnRateChart';
+import ServiceCompletionTimeChart from '../components/analytics/ServiceCompletionTimeChart';
+import AnalyticsExportPanel from '../components/analytics/AnalyticsExportPanel';
 import { Loader2 } from 'lucide-react';
 
 function getDefaultRange() {
@@ -79,8 +82,16 @@ function AdminAnalyticsContent() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Analytics Dashboard</h1>
-            <p className="text-slate-500 text-sm">Comprehensive business metrics and performance insights</p>
+            <p className="text-slate-500 text-sm">Comprehensive business metrics, KPIs, and performance insights</p>
           </div>
+          <AnalyticsExportPanel
+            bookings={bookings}
+            subscriptions={subscriptions}
+            providers={providers}
+            services={services}
+            startDate={startDate}
+            endDate={endDate}
+          />
         </div>
 
         {/* Date Range */}
@@ -100,12 +111,15 @@ function AdminAnalyticsContent() {
           </div>
         ) : (
           <div className="space-y-6">
-            {/* KPIs */}
-            <AnalyticsKPICards
+            {/* Enhanced KPIs with CLV, Churn, Completion Time, Utilization */}
+            <EnhancedKPICards
               bookings={bookings}
               subscriptions={subscriptions}
               providers={providers}
               users={users}
+              services={services}
+              startDate={startDate}
+              endDate={endDate}
             />
 
             {/* Revenue Over Time - full width */}
@@ -115,6 +129,21 @@ function AdminAnalyticsContent() {
               startDate={startDate}
               endDate={endDate}
             />
+
+            {/* Churn Analysis + Service Completion Time - two cols */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <ChurnRateChart
+                subscriptions={subscriptions}
+                startDate={startDate}
+                endDate={endDate}
+              />
+              <ServiceCompletionTimeChart
+                bookings={bookings}
+                services={services}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </div>
 
             {/* Popular Services + Customer Acquisition - two cols */}
             <div className="grid lg:grid-cols-2 gap-6">
