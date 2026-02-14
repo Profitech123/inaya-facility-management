@@ -41,7 +41,18 @@ export default function UpcomingServicesCard({ bookings, services }) {
       </CardHeader>
       <CardContent className="space-y-3">
         {upcoming.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-sm">No upcoming services</div>
+          <div className="flex flex-col items-center text-center py-10">
+            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
+              <Calendar className="w-6 h-6 text-slate-400" strokeWidth={1.5} />
+            </div>
+            <p className="text-sm font-medium text-slate-700 mb-1">No upcoming services</p>
+            <p className="text-xs text-slate-400 mb-4 max-w-[200px]">Schedule your next maintenance visit to keep your home in top shape.</p>
+            <Link to={createPageUrl('OnDemandServices')}>
+              <button className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                Book a Service →
+              </button>
+            </Link>
+          </div>
         ) : (
           upcoming.map(booking => {
             const name = getServiceName(booking.service_id);

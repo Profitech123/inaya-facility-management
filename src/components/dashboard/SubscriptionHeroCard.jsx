@@ -28,8 +28,8 @@ export default function SubscriptionHeroCard({ subscription, packageData, nextBo
             <Wrench className="absolute top-8 right-8 w-32 h-32 text-white" />
           </div>
           <div className="relative">
-            <div className="text-emerald-200 text-xs font-semibold uppercase tracking-wider mb-1">Active Plan</div>
-            <div className="text-white text-2xl font-bold">{packageData?.name || subscription?.package_id ? 'Subscription Plan' : 'No Active Plan'}</div>
+            <div className="text-emerald-200 text-xs font-semibold uppercase tracking-wider mb-1">{subscription ? 'Active Plan' : 'Get Started'}</div>
+            <div className="text-white text-2xl font-bold">{packageData?.name || (subscription ? 'Subscription Plan' : 'No Active Plan')}</div>
           </div>
         </div>
 
@@ -60,11 +60,26 @@ export default function SubscriptionHeroCard({ subscription, packageData, nextBo
                 <span>Includes {includedServices.join(', ')}</span>
               </div>
             )}
-            <Link to={createPageUrl('MySubscriptions')}>
-              <Button className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-6">
-                View Details
-              </Button>
-            </Link>
+            {subscription ? (
+              <Link to={createPageUrl('MySubscriptions')}>
+                <Button className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-6">
+                  View Details
+                </Button>
+              </Link>
+            ) : (
+              <div className="flex gap-2">
+                <Link to={createPageUrl('Subscriptions')}>
+                  <Button className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-6">
+                    Browse Packages
+                  </Button>
+                </Link>
+                <Link to={createPageUrl('OnDemandServices')}>
+                  <Button variant="outline" className="rounded-full px-6">
+                    Book One-Off
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

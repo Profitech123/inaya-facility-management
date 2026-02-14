@@ -20,7 +20,13 @@ export default function RecentHistoryCard({ bookings, services }) {
       </CardHeader>
       <CardContent className="space-y-3">
         {completed.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-sm">No completed services yet</div>
+          <div className="flex flex-col items-center text-center py-10">
+            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
+              <Clock className="w-6 h-6 text-slate-400" strokeWidth={1.5} />
+            </div>
+            <p className="text-sm font-medium text-slate-700 mb-1">No history yet</p>
+            <p className="text-xs text-slate-400 max-w-[200px]">Your completed services will appear here for easy reference.</p>
+          </div>
         ) : (
           <>
             {completed.map(booking => {
