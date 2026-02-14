@@ -10,12 +10,16 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
 import AddTechnicianDialog from '../components/admin/AddTechnicianDialog';
+import AssignServicesDialog from '../components/admin/AssignServicesDialog';
+import BlockoutManager from '../components/admin/BlockoutManager';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function AdminTechniciansContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [assignServicesProvider, setAssignServicesProvider] = useState(null);
+  const [blockoutProvider, setBlockoutProvider] = useState(null);
 
   const { data: providers = [], isLoading } = useQuery({
     queryKey: ['providers'],
@@ -29,6 +33,13 @@ function AdminTechniciansContent() {
     queryFn: () => base44.entities.Booking.list(),
     initialData: [],
     staleTime: 30000
+  });
+
+  const { data: services = [] } = useQuery({
+    queryKey: ['services'],
+    queryFn: () => base44.entities.Service.list(),
+    initialData: [],
+    staleTime: 60000
   });
 
   if (isLoading) {
@@ -166,7 +177,8 @@ function AdminTechniciansContent() {
                         <th className="p-4 text-left font-semibold text-slate-700">Specialty</th>
                         <th className="p-4 text-left font-semibold text-slate-700">Current Status</th>
                         <th className="p-4 text-left font-semibold text-slate-700">Performance Rating</th>
-                        <th className="p-4 text-left font-semibold text-slate-700">Today's Schedule</th>
+                        <th className="p-4 text-left font-semibold text-slate-700">Assigned Services</th>
+                        <th className="p-4 text-left font-semibold text-slate-700">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -199,8 +211,30 @@ function AdminTechniciansContent() {
                               ))}
                             </div>
                           </td>
-                          <td className="p-4 text-slate-600 text-xs">
-                            Today's 10:00<br />1:10 AM - 01:30
+                          <td className="p-4 text-xs text-slate-600">
+                            {provider.assigned_service_ids?.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {provider.assigned_service_ids.slice(0, 2).map(sid => {
+                                  const svc = services.find(s => s.id === sid);
+                                  return svc ? <Badge key={sid} variant="outline" className="text-[10px]">{svc.name}</Badge> : null;
+                                })}
+                                {provider.assigned_service_ids.length > 2 && (
+                                  <Badge variant="outline" className="text-[10px]">+{provider.assigned_service_ids.length - 2}</Badge>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-slate-400">None assigned</span>
+                            )}
+                          </td>
+                          <td className="p-4">
+                            <div className="flex gap-1">
+                              <Button size="sm" variant="outline" className="text-xs h-7 px-2" onClick={(e) => { e.stopPropagation(); setAssignServicesProvider(provider); }}>
+                                Services
+                              </Button>
+                              <Button size="sm" variant="outline" className="text-xs h-7 px-2" onClick={(e) => { e.stopPropagation(); setBlockoutProvider(provider); }}>
+                                Schedule
+                              </Button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -236,6 +270,8 @@ function AdminTechniciansContent() {
           </div>
         </div>
         <AddTechnicianDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} />
+        <AssignServicesDialog open={!!assignServicesProvider} onClose={() => setAssignServicesProvider(null)} provider={assignServicesProvider} />
+        <BlockoutManager open={!!blockoutProvider} onClose={() => setBlockoutProvider(null)} provider={blockoutProvider} />
       </div>
     </div>
   );
