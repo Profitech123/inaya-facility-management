@@ -16,25 +16,41 @@ export default defineConfig({
       overlay: false
     },
     watch: {
-      usePolling: false
+      ignored: ['**/node_modules/**', '**/.git/**']
     }
   },
   optimizeDeps: {
-    entries: ['./src/main.jsx'],
     include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@tanstack/react-query',
       '@radix-ui/react-progress',
       '@radix-ui/react-tabs',
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
       '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
       '@radix-ui/react-label',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+      '@radix-ui/react-popover',
       '@radix-ui/react-slot'
     ],
-    exclude: ['@base44/vite-plugin']
+    exclude: [],
+    esbuildOptions: {
+      target: 'esnext'
+    }
+  },
+  build: {
+    target: 'esnext',
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true
+    }
   },
   plugins: [
     base44({
