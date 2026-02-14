@@ -30,13 +30,18 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
 
+    console.log('[v0] Admin login attempt:', { username });
+
     // Simulate a small delay for UX
     await new Promise(r => setTimeout(r, 500));
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      console.log('[v0] Admin login successful, setting session');
       sessionStorage.setItem('inaya_admin_session', 'authenticated');
+      console.log('[v0] Session set, redirecting to AdminDashboard');
       window.location.href = createPageUrl('AdminDashboard');
     } else {
+      console.log('[v0] Admin login failed: Invalid credentials');
       setError('Invalid username or password.');
       setLoading(false);
     }
@@ -59,7 +64,14 @@ export default function AdminLogin() {
               <Shield className="w-7 h-7 text-emerald-400" />
             </div>
             <h1 className="text-xl font-bold text-white mb-1">Admin Portal</h1>
-            <p className="text-slate-400 text-sm">INAYA Facilities Management -- Staff Access</p>
+            <p className="text-slate-400 text-sm">INAYA Facilities Management - Staff Access</p>
+          </div>
+
+          {/* Development credentials display */}
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 mb-4">
+            <p className="text-emerald-300 text-xs font-medium mb-1">Demo Credentials:</p>
+            <p className="text-emerald-400 text-xs font-mono">admin@inaya.ae</p>
+            <p className="text-emerald-400 text-xs font-mono">Inaya@2026</p>
           </div>
 
           {error && (
