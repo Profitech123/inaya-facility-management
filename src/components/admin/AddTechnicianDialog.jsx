@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { X, Loader2 } from 'lucide-react';
+import { X, Loader2, Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 const SPECIALIZATIONS = [
@@ -22,6 +22,16 @@ export default function AddTechnicianDialog({ open, onClose }) {
     email: '',
     phone: '',
     specialization: [],
+    assigned_service_ids: [],
+  });
+
+  const { data: services = [] } = useQuery({
+    queryKey: ['all-services'],
+    queryFn: async () => {
+      const list = await base44.entities.Service.list();
+      return list.filter(s => s.is_active !== false);
+    },
+    initialData: []
   });
 
   const createMutation = useMutation({
@@ -29,7 +39,7 @@ export default function AddTechnicianDialog({ open, onClose }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['providers'] });
       toast.success('Technician added successfully');
-      setForm({ full_name: '', email: '', phone: '', specialization: [] });
+      setForm({ full_name: '', email: '', phone: '', specialization: [], assigned_service_ids: [] });
       onClose();
     },
   });
@@ -112,6 +122,38 @@ export default function AddTechnicianDialog({ open, onClose }) {
               ))}
             </div>
           </div>
+          {services.length > 0 && (
+            <div>
+              <Label>Assign Services (optional)</Label>
+              <div className="max-h-32 overflow-y-auto mt-2 space-y-1 border rounded-lg p-2">
+                {services.map(svc => {
+                  const isSelected = form.assigned_service_ids.includes(svc.id);
+                  return (
+                    <button
+                      key={svc.id}
+                      type="button"
+                      onClick={() => setForm(prev => ({
+                        ...prev,
+                        assigned_service_ids: isSelected
+                          ? prev.assigned_service_ids.filter(id => id !== svc.id)
+                          : [...prev.assigned_service_ids, svc.id]
+                      }))}
+                      className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs text-left transition-colors ${
+                        isSelected ? 'bg-emerald-50 text-emerald-700' : 'hover:bg-slate-50 text-slate-600'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
+                        isSelected ? 'bg-emerald-600 border-emerald-600' : 'border-slate-300'
+                      }`}>
+                        {isSelected && <Check className="w-2.5 h-2.5 text-white" />}
+                      </div>
+                      {svc.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
             <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={createMutation.isPending}>
