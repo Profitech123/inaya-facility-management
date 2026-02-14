@@ -17,9 +17,14 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
   const checkAuth = async () => {
     const isAuth = await base44.auth.isAuthenticated();
     if (!isAuth) {
-      // Not logged in — redirect to login, then back to current page
       setState('redirecting');
-      base44.auth.redirectToLogin(window.location.href);
+      if (requiredRole === 'admin') {
+        // Unauthenticated admin access → send to AdminLogin
+        window.location.href = createPageUrl('AdminLogin');
+      } else {
+        // Regular user → send to platform login, then back to Customer Dashboard
+        base44.auth.redirectToLogin(createPageUrl('Dashboard'));
+      }
       return;
     }
 
@@ -31,14 +36,12 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
     }
 
     if (requiredRole === 'admin' && user.role !== 'admin') {
-      // Customer trying to access admin page
       setState('redirecting');
       window.location.href = createPageUrl('Dashboard');
       return;
     }
 
     if (requiredRole === 'customer' && user.role === 'admin') {
-      // Admin trying to access customer page
       setState('redirecting');
       window.location.href = createPageUrl('AdminDashboard');
       return;

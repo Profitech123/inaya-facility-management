@@ -129,14 +129,6 @@ export default function Layout({ children, currentPageName }) {
                         My Account
                       </Link>
                     </DropdownMenuItem>
-                    {user.role === 'admin' && (
-                      <DropdownMenuItem asChild>
-                        <Link to={createPageUrl('AdminDashboard')} className="w-full">
-                          <LayoutDashboard className="w-4 h-4 mr-2" />
-                          Admin Panel
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
                     <DropdownMenuItem asChild>
                       <Link to={createPageUrl('MyBookings')} className="w-full">My Bookings</Link>
                     </DropdownMenuItem>
@@ -155,7 +147,7 @@ export default function Layout({ children, currentPageName }) {
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
                   <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
+                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
                     variant="ghost" 
                     size="sm" 
                     className="text-slate-600"
@@ -163,7 +155,7 @@ export default function Layout({ children, currentPageName }) {
                     Sign In
                   </Button>
                   <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
+                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
                     size="sm" 
                     className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   >
@@ -201,7 +193,7 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('Contact')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
               {!user && (
                 <div className="pt-3 border-t space-y-2">
-                  <Button onClick={() => base44.auth.redirectToLogin(window.location.href)} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                  <Button onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                     Sign In / Create Account
                   </Button>
                 </div>
