@@ -19,9 +19,21 @@ import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {
-    clientAuth.me().then(setUser).catch(() => {});
+    let mounted = true;
+    clientAuth.me()
+      .then(u => {
+        if (mounted) {
+          setUser(u);
+          setIsLoadingUser(false);
+        }
+      })
+      .catch(() => {
+        if (mounted) setIsLoadingUser(false);
+      });
+    return () => { mounted = false; };
   }, []);
 
   const { data: bookings = [] } = useQuery({
@@ -80,7 +92,13 @@ function AdminDashboardContent() {
     ? Math.round(totalRevenue / bookings.filter(b => b.payment_status === 'paid').length)
     : 0;
 
-  if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (isLoadingUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   const kpis = [
     { label: 'Total Revenue', value: `AED ${totalRevenue.toLocaleString()}`, sub: 'From paid bookings', icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },

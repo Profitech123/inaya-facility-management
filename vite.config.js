@@ -14,17 +14,27 @@ export default defineConfig({
   server: {
     hmr: {
       overlay: false
+    },
+    watch: {
+      usePolling: false
     }
   },
   optimizeDeps: {
+    entries: ['./src/main.jsx'],
     include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query',
       '@radix-ui/react-progress',
       '@radix-ui/react-tabs',
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
-      '@radix-ui/react-dropdown-menu'
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-label',
+      '@radix-ui/react-slot'
     ],
-    force: false
+    exclude: ['@base44/vite-plugin']
   },
   plugins: [
     base44({
