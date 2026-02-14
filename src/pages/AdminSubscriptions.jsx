@@ -5,11 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users } from 'lucide-react';
+import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users, Play, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
 import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
+import ScheduledServicesList from '../components/admin/ScheduledServicesList';
 import AuthGuard from '../components/AuthGuard';
 
 function AdminSubscriptionsContent() {
@@ -17,6 +18,7 @@ function AdminSubscriptionsContent() {
   const [editingPkg, setEditingPkg] = useState(null);
   const [showSubForm, setShowSubForm] = useState(false);
   const [editingSub, setEditingSub] = useState(null);
+  const [runningScheduler, setRunningScheduler] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: subscriptions = [] } = useQuery({
@@ -162,6 +164,20 @@ function AdminSubscriptionsContent() {
     toast.success(`Sent reminders to ${expiringSoon.length} customer(s)`);
   };
 
+  const runSchedulerNow = async () => {
+    setRunningScheduler(true);
+    try {
+      const res = await base44.functions.invoke('scheduleSubscriptionServices', {});
+      const data = res.data;
+      toast.success(`Scheduler ran: ${data.created} created, ${data.reassigned} reassigned, ${data.notified} notified`);
+      queryClient.invalidateQueries({ queryKey: ['scheduledServices'] });
+    } catch (err) {
+      toast.error('Scheduler failed: ' + (err.message || 'Unknown error'));
+    } finally {
+      setRunningScheduler(false);
+    }
+  };
+
   const activeSubs = subscriptions.filter(s => s.status === 'active');
   const pausedSubs = subscriptions.filter(s => s.status === 'paused');
   const cancelledSubs = subscriptions.filter(s => s.status === 'cancelled');
@@ -206,6 +222,7 @@ function AdminSubscriptionsContent() {
           <TabsList className="mb-6">
             <TabsTrigger value="subscriptions">Subscriptions ({subscriptions.length})</TabsTrigger>
             <TabsTrigger value="packages">Packages ({packages.length})</TabsTrigger>
+            <TabsTrigger value="scheduled">Scheduled Services</TabsTrigger>
           </TabsList>
 
           {/* Subscriptions Tab */}
@@ -316,6 +333,21 @@ function AdminSubscriptionsContent() {
                 <Card><CardContent className="py-12 text-center text-slate-500">No subscriptions yet</CardContent></Card>
               )}
             </div>
+          </TabsContent>
+
+          {/* Scheduled Services Tab */}
+          <TabsContent value="scheduled">
+            <div className="flex justify-end mb-4">
+              <Button
+                variant="outline"
+                onClick={runSchedulerNow}
+                disabled={runningScheduler}
+              >
+                {runningScheduler ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Play className="w-4 h-4 mr-2" />}
+                {runningScheduler ? 'Running...' : 'Run Scheduler Now'}
+              </Button>
+            </div>
+            <ScheduledServicesList />
           </TabsContent>
 
           {/* Packages Tab */}
