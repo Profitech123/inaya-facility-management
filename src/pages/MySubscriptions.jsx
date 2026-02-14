@@ -131,12 +131,22 @@ function MySubscriptionsContent() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {subscriptions.length === 0 ? (
           <Card>
-            <CardContent className="text-center py-16">
-              <Package className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <p className="text-slate-600 text-lg mb-4">No active subscriptions</p>
-              <Link to={createPageUrl('Subscriptions')}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Packages</Button>
-              </Link>
+            <CardContent className="flex flex-col items-center justify-center text-center py-16 px-6">
+              <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-5">
+                <Package className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-2">No active subscriptions</h3>
+              <p className="text-slate-500 mb-2 max-w-sm leading-relaxed">
+                Subscribe to a maintenance package and save up to 20% on regular home services. Choose a plan that fits your property.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                <Link to={createPageUrl('Subscriptions')}>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Packages</Button>
+                </Link>
+                <Link to={createPageUrl('PackageBuilder')}>
+                  <Button variant="outline">Build Custom Package</Button>
+                </Link>
+              </div>
             </CardContent>
           </Card>
         ) : (

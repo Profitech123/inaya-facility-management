@@ -70,13 +70,22 @@ function MyBookingsContent() {
       <div className="max-w-5xl mx-auto px-6 py-10">
         {bookings.length === 0 ? (
           <Card>
-            <CardContent className="text-center py-16">
-              <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-700 mb-2">No bookings yet</h3>
-              <p className="text-slate-500 mb-6">Book your first service to get started.</p>
-              <Link to={createPageUrl('Services')}>
-                <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Services</Button>
-              </Link>
+            <CardContent className="flex flex-col items-center justify-center text-center py-16 px-6">
+              <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-5">
+                <Calendar className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-2">No bookings yet</h3>
+              <p className="text-slate-500 mb-2 max-w-sm leading-relaxed">
+                You haven't booked any services yet. Browse our catalogue and schedule your first home maintenance visit in minutes.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                <Link to={createPageUrl('OnDemandServices')}>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Services</Button>
+                </Link>
+                <Link to={createPageUrl('Subscriptions')}>
+                  <Button variant="outline">View Packages</Button>
+                </Link>
+              </div>
             </CardContent>
           </Card>
         ) : (

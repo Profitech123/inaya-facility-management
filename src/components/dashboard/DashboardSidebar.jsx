@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { SquaresFour, Package as PhPackage, ClockCounterClockwise, CalendarDots, GearSix, SignOut } from '@phosphor-icons/react';
+import { SquaresFour, Package as PhPackage, CalendarDots, GearSix, SignOut } from '@phosphor-icons/react';
 import { base44 } from '@/api/base44Client';
 
 const navItems = [
   { label: 'Dashboard', icon: SquaresFour, page: 'Dashboard' },
   { label: 'My Subscriptions', icon: PhPackage, page: 'MySubscriptions' },
-  { label: 'Service History', icon: ClockCounterClockwise, page: 'MyBookings' },
-  { label: 'Bookings', icon: CalendarDots, page: 'MyBookings' },
+  { label: 'My Bookings', icon: CalendarDots, page: 'MyBookings' },
   { label: 'Settings', icon: GearSix, page: 'UserProfile' },
 ];
 

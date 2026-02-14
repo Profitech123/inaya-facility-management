@@ -182,7 +182,11 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('HardServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Hard Services</Link>
               <Link to={createPageUrl('SoftServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Soft Services</Link>
               <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Project Management</Link>
-              <Link to={createPageUrl('OnDemandServices')} className="block text-emerald-600 font-semibold" onClick={() => setMobileMenuOpen(false)}>On-Demand Services</Link>
+              <Link to={createPageUrl('OnDemandServices')} className="block" onClick={() => setMobileMenuOpen(false)}>
+                <span className="inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold w-full justify-center shadow-sm">
+                  Book a Service
+                </span>
+              </Link>
               <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Packages</Link>
               <Link to={createPageUrl('PackageBuilder')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Custom Builder</Link>
               <Link to={createPageUrl('FAQ')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
