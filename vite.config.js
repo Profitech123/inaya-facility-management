@@ -6,6 +6,7 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   logLevel: 'error', // Suppress warnings, only show errors
+  cacheDir: 'node_modules/.vite',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
@@ -24,7 +25,13 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    disabled: true
+    entries: ['./src/main.jsx'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query'
+    ]
   },
   build: {
     target: 'esnext',
