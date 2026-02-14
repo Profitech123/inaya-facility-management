@@ -30,18 +30,13 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
 
-    console.log('[v0] Admin login attempt:', { username });
-
     // Simulate a small delay for UX
     await new Promise(r => setTimeout(r, 500));
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      console.log('[v0] Admin login successful, setting session');
       sessionStorage.setItem('inaya_admin_session', 'authenticated');
-      console.log('[v0] Session set, redirecting to AdminDashboard');
       window.location.href = createPageUrl('AdminDashboard');
     } else {
-      console.log('[v0] Admin login failed: Invalid credentials');
       setError('Invalid username or password.');
       setLoading(false);
     }

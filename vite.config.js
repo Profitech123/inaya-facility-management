@@ -11,6 +11,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
+  server: {
+    hmr: {
+      overlay: false
+    }
+  },
   optimizeDeps: {
     include: [
       '@radix-ui/react-progress',
@@ -18,7 +23,8 @@ export default defineConfig({
       '@radix-ui/react-dialog',
       '@radix-ui/react-select',
       '@radix-ui/react-dropdown-menu'
-    ]
+    ],
+    force: false
   },
   plugins: [
     base44({

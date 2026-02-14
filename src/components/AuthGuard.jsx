@@ -8,8 +8,17 @@ import { createPageUrl } from '@/utils';
  * @param {React.ReactNode} children
  */
 export default function AuthGuard({ requiredRole = 'any', children }) {
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  // Initialize with cached auth status to prevent flicker
+  const getInitialAuthState = () => {
+    if (requiredRole === 'admin') {
+      return sessionStorage.getItem('inaya_admin_session') === 'authenticated';
+    }
+    // For customer auth, assume authorized initially to prevent flicker
+    return true;
+  };
+
+  const [isAuthorized, setIsAuthorized] = useState(getInitialAuthState);
+  const [isChecking, setIsChecking] = useState(!getInitialAuthState());
 
   useEffect(() => {
     let mounted = true;
@@ -24,6 +33,7 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
             setIsChecking(false);
           }
         } else {
+          // Not authorized, redirect immediately
           window.location.href = createPageUrl('AdminLogin');
         }
         return;
@@ -35,11 +45,13 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
         if (user && mounted) {
           setIsAuthorized(true);
           setIsChecking(false);
-        } else {
+        } else if (mounted) {
           window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
         }
       } catch {
-        window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+        if (mounted) {
+          window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+        }
       }
     };
 
@@ -50,7 +62,8 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
     };
   }, [requiredRole]);
 
-  if (isChecking) {
+  // Show content immediately if we have cached auth, otherwise show loading
+  if (isChecking && !isAuthorized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
