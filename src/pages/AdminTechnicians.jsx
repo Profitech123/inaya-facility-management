@@ -9,11 +9,13 @@ import { Star, Search, Filter, Users, Briefcase, AlertCircle, User } from 'lucid
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
+import AddTechnicianDialog from '../components/admin/AddTechnicianDialog';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function AdminTechniciansContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   const { data: providers = [], isLoading } = useQuery({
     queryKey: ['providers'],
@@ -76,8 +78,8 @@ function AdminTechniciansContent() {
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Technicians Directory and Performance</h1>
           </div>
-          <Button className="bg-emerald-500 hover:bg-emerald-600 text-white gap-2">
-            + Quick actions
+          <Button onClick={() => setShowAddDialog(true)} className="bg-emerald-500 hover:bg-emerald-600 text-white gap-2">
+            + Add Technician
           </Button>
         </div>
 
@@ -233,6 +235,7 @@ function AdminTechniciansContent() {
             </Card>
           </div>
         </div>
+        <AddTechnicianDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} />
       </div>
     </div>
   );
