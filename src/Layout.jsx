@@ -129,6 +129,14 @@ export default function Layout({ children, currentPageName }) {
                         My Account
                       </Link>
                     </DropdownMenuItem>
+                    {user.role === 'admin' && (
+                      <DropdownMenuItem asChild>
+                        <Link to={createPageUrl('AdminDashboard')} className="w-full">
+                          <LayoutDashboard className="w-4 h-4 mr-2" />
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem asChild>
                       <Link to={createPageUrl('MyBookings')} className="w-full">My Bookings</Link>
                     </DropdownMenuItem>

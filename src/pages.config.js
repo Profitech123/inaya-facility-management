@@ -84,9 +84,9 @@ import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
 import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
+import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import TechnicianProfile from './pages/TechnicianProfile';
 import __Layout from './Layout.jsx';
 
 
@@ -128,9 +128,9 @@ export const PAGES = {
     "SubscribePackage": SubscribePackage,
     "Subscriptions": Subscriptions,
     "Support": Support,
+    "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "TechnicianProfile": TechnicianProfile,
 }
 
 export const pagesConfig = {
