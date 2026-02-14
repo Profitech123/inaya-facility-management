@@ -5,11 +5,18 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  root: path.resolve(__dirname),
   logLevel: 'error', // Suppress warnings, only show errors
-  cacheDir: 'node_modules/.vite',
+  cacheDir: path.resolve(__dirname, 'node_modules/.vite'),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
+    }
+  },
+  optimizeDeps: {
+    force: true,
+    esbuildOptions: {
+      target: 'esnext'
     }
   },
   server: {
