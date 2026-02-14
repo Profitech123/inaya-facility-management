@@ -19,7 +19,7 @@ const STATUS_COLORS = {
   cancelled: 'bg-red-100 text-red-700 border-red-200',
 };
 
-export default function TechnicianScheduleCalendar({ providers, bookings, services, onBookingClick }) {
+export default function TechnicianScheduleCalendar({ providers, bookings, services, onBookingClick, blockouts = [] }) {
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 0 }));
   const [selectedProviderId, setSelectedProviderId] = useState('all');
 
@@ -142,13 +142,28 @@ export default function TechnicianScheduleCalendar({ providers, bookings, servic
                       {weekDays.map(day => {
                         const cellBookings = getBookingsForCell(provider.id, day, slot);
                         const isToday = isSameDay(day, new Date());
+                        const isBlocked = blockouts.some(b =>
+                          b.provider_id === provider.id &&
+                          b.date && isSameDay(new Date(b.date), day) &&
+                          (b.time_slot === 'all_day' || b.time_slot === slot)
+                        );
+                        const blockReason = isBlocked
+                          ? blockouts.find(b => b.provider_id === provider.id && b.date && isSameDay(new Date(b.date), day) && (b.time_slot === 'all_day' || b.time_slot === slot))?.reason
+                          : null;
                         return (
                           <td key={day.toString()} className={cn(
                             "p-1 border-b border-l",
                             isToday && "bg-emerald-50/50",
-                            cellBookings.length === 0 && "bg-slate-50/50"
+                            isBlocked && "bg-red-50/60",
+                            cellBookings.length === 0 && !isBlocked && "bg-slate-50/50"
                           )}>
-                            {cellBookings.length > 0 ? (
+                            {isBlocked ? (
+                              <div className="h-10 flex items-center justify-center">
+                                <span className="text-[10px] text-red-500 font-medium px-1.5 py-0.5 bg-red-100 rounded border border-red-200">
+                                  🚫 {blockReason || 'Blocked'}
+                                </span>
+                              </div>
+                            ) : cellBookings.length > 0 ? (
                               <div className="space-y-1">
                                 {cellBookings.map(b => {
                                   const svc = services.find(s => s.id === b.service_id);
