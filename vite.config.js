@@ -24,13 +24,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    disabled: false,
-    noDiscovery: true,
-    include: [],
-    exclude: [],
-    esbuildOptions: {
-      target: 'esnext'
-    }
+    disabled: true
   },
   build: {
     target: 'esnext',
