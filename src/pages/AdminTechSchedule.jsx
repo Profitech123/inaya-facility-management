@@ -30,6 +30,13 @@ function AdminTechScheduleContent() {
     staleTime: 60000
   });
 
+  const { data: blockouts = [] } = useQuery({
+    queryKey: ['all-blockouts'],
+    queryFn: () => base44.entities.TechBlockout.list(),
+    initialData: [],
+    staleTime: 30000
+  });
+
   if (lp || lb) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -50,6 +57,7 @@ function AdminTechScheduleContent() {
           providers={providers}
           bookings={bookings}
           services={services}
+          blockouts={blockouts}
         />
       </div>
     </div>
