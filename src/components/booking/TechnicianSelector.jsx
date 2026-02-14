@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Star, User, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Star, User, CheckCircle, Clock, AlertCircle, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { isSameDay, format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 export default function TechnicianSelector({ serviceId, selectedProviderId, onChange, selectedDate, selectedTimeSlot, allBookings = [] }) {
   const { data: providers = [], isLoading } = useQuery({
@@ -205,6 +207,15 @@ export default function TechnicianSelector({ serviceId, selectedProviderId, onCh
                   )}
                   {avail.totalJobs > 0 && (
                     <span>{avail.totalJobs} jobs done</span>
+                  )}
+                  {avail.reviewCount > 0 && (
+                    <Link
+                      to={createPageUrl('TechnicianProfile') + '?id=' + provider.id}
+                      onClick={e => e.stopPropagation()}
+                      className="text-emerald-600 hover:underline flex items-center gap-0.5"
+                    >
+                      <ExternalLink className="w-3 h-3" /> Reviews
+                    </Link>
                   )}
                   {hasScheduleInfo && avail.dayCount > 0 && isAvailable && (
                     <span className="flex items-center gap-0.5 text-amber-500">
