@@ -16,7 +16,11 @@ export default defineConfig({
       overlay: false
     },
     watch: {
+      usePolling: false,
       ignored: ['**/node_modules/**', '**/.git/**']
+    },
+    fs: {
+      strict: false
     }
   },
   optimizeDeps: {

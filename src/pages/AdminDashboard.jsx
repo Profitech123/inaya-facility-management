@@ -7,7 +7,7 @@ import { Calendar, Package, DollarSign, Users, TrendingUp, Repeat } from 'lucide
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import StableAdminWrapper from '../components/StableAdminWrapper';
+import AuthGuard from '@/components/AuthGuard';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 import AdminNotifications from '../components/admin/AdminNotifications';
 import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
@@ -39,49 +39,61 @@ function AdminDashboardContent() {
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
     queryFn: () => base44.entities.Booking.list('-created_date', 200),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 30000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
     queryFn: () => base44.entities.Subscription.list(),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: () => base44.entities.Service.list(),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
     queryFn: () => base44.entities.Provider.list(),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const { data: reviews = [] } = useQuery({
     queryKey: ['adminReviews'],
     queryFn: () => base44.entities.ProviderReview.list('-created_date', 50),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const { data: tickets = [] } = useQuery({
     queryKey: ['adminTickets'],
     queryFn: () => base44.entities.SupportTicket.list('-created_date', 50),
-    enabled: !!user,
-    initialData: [],
-    staleTime: 60000
+    enabled: !isLoadingUser,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const totalRevenue = bookings.reduce((sum, b) => sum + (b.payment_status === 'paid' ? b.total_amount : 0), 0);
