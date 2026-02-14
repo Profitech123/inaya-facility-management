@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Star, Search, Filter, Users, Briefcase, AlertCircle, User } from 'lucide-react';
+import { Star, Search, Filter, Users, Briefcase, AlertCircle, User, ExternalLink, Copy } from 'lucide-react';
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
@@ -79,6 +80,18 @@ function AdminTechniciansContent() {
     if (!provider.is_active) return <Badge className="bg-slate-100 text-slate-700">Off-duty</Badge>;
     if (Math.random() > 0.5) return <Badge className="bg-emerald-100 text-emerald-700">Live</Badge>;
     return <Badge className="bg-blue-100 text-blue-700">Available</Badge>;
+  };
+
+  const getOnboardingBadge = (provider) => {
+    if (provider.onboarding_status === 'completed') return null;
+    if (provider.onboarding_status === 'in_progress') return <Badge className="bg-amber-100 text-amber-700 text-[10px]">Onboarding</Badge>;
+    return <Badge className="bg-red-100 text-red-700 text-[10px]">Not Onboarded</Badge>;
+  };
+
+  const copyOnboardingLink = (providerId) => {
+    const url = `${window.location.origin}${createPageUrl('ProviderOnboarding')}?id=${providerId}`;
+    navigator.clipboard.writeText(url);
+    toast.success('Onboarding link copied to clipboard');
   };
 
   return (
@@ -198,6 +211,7 @@ function AdminTechniciansContent() {
                                 <span className="font-medium text-slate-900">{provider.full_name}</span>
                               </div>
                             </Link>
+                            {getOnboardingBadge(provider)}
                           </td>
                           <td className="p-4 text-slate-700">{provider.specialization?.[0] || 'N/A'}</td>
                           <td className="p-4">{getStatusBadge(provider)}</td>
@@ -234,6 +248,11 @@ function AdminTechniciansContent() {
                               <Button size="sm" variant="outline" className="text-xs h-7 px-2" onClick={(e) => { e.stopPropagation(); setBlockoutProvider(provider); }}>
                                 Schedule
                               </Button>
+                              {provider.onboarding_status !== 'completed' && (
+                                <Button size="sm" variant="outline" className="text-xs h-7 px-2 text-violet-600" onClick={(e) => { e.stopPropagation(); copyOnboardingLink(provider.id); }}>
+                                  <Copy className="w-3 h-3 mr-1" /> Onboard
+                                </Button>
+                              )}
                             </div>
                           </td>
                         </tr>
