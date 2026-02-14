@@ -87,6 +87,7 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
+import ProviderOnboarding from './pages/ProviderOnboarding';
 import __Layout from './Layout.jsx';
 
 
@@ -131,6 +132,7 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
+    "ProviderOnboarding": ProviderOnboarding,
 }
 
 export const pagesConfig = {
