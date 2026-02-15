@@ -15,27 +15,38 @@ export default function AdminLogin() {
 
   const checkExistingAuth = async () => {
     try {
+      console.log('[v0] AdminLogin - Checking authentication...');
       const isAuth = await base44.auth.isAuthenticated();
+      console.log('[v0] AdminLogin - isAuthenticated:', isAuth);
+      
       if (isAuth) {
         const user = await base44.auth.me();
+        console.log('[v0] AdminLogin - User data:', user);
+        console.log('[v0] AdminLogin - User role:', user?.role);
+        
         if (user?.role === 'admin') {
+          console.log('[v0] AdminLogin - Admin user detected, redirecting to dashboard');
           window.location.href = createPageUrl('AdminDashboard');
           return;
         }
         // Non-admin user tried admin login — show access denied
+        console.log('[v0] AdminLogin - Non-admin user detected, showing access denied');
         setDenied(true);
         setChecking(false);
         return;
       }
+      console.log('[v0] AdminLogin - User not authenticated');
     } catch (error) {
-      // Not authenticated
+      console.error('[v0] AdminLogin - Auth check error:', error);
     }
     setChecking(false);
   };
 
   const handleLogin = () => {
     // After platform login, return to AdminLogin — checkExistingAuth will route admin to dashboard
-    base44.auth.redirectToLogin(createPageUrl('AdminLogin'));
+    const returnUrl = createPageUrl('AdminLogin');
+    console.log('[v0] AdminLogin - Redirecting to login with return URL:', returnUrl);
+    base44.auth.redirectToLogin(returnUrl);
   };
 
   if (checking) {
@@ -58,12 +69,19 @@ export default function AdminLogin() {
             <p className="text-slate-400 text-sm mb-6">
               Your account does not have admin privileges. Please contact your administrator if you believe this is an error.
             </p>
-            <Link to={createPageUrl('Dashboard')}>
-              <Button variant="outline" className="w-full border-slate-700 text-slate-300 hover:bg-slate-800">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Go to My Dashboard
-              </Button>
-            </Link>
+            <div className="space-y-2">
+              <Link to={createPageUrl('AdminUserDebug')}>
+                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 mb-2">
+                  View Debug Info
+                </Button>
+              </Link>
+              <Link to={createPageUrl('Dashboard')}>
+                <Button variant="outline" className="w-full border-slate-700 text-slate-300 hover:bg-slate-800">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Go to My Dashboard
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -88,10 +106,15 @@ export default function AdminLogin() {
           </p>
           <Button 
             onClick={handleLogin} 
-            className="w-full bg-emerald-600 hover:bg-emerald-700 h-11"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 h-11 mb-3"
           >
             Staff Sign In
           </Button>
+          <Link to={createPageUrl('AdminUserDebug')}>
+            <Button variant="ghost" className="w-full text-slate-400 hover:text-slate-300 hover:bg-slate-800 h-9 text-xs">
+              Troubleshoot Access Issues
+            </Button>
+          </Link>
           <p className="text-slate-600 text-xs mt-5">
             This page is restricted to authorized personnel only.
           </p>
