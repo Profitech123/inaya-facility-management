@@ -34,8 +34,8 @@ export default function AdminLogin() {
   };
 
   const handleLogin = () => {
-    // After platform login, return here — checkExistingAuth will route admin to dashboard
-    base44.auth.redirectToLogin(window.location.href);
+    // After platform login, return to AdminLogin — checkExistingAuth will route admin to dashboard
+    base44.auth.redirectToLogin(createPageUrl('AdminLogin'));
   };
 
   if (checking) {
