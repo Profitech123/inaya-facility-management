@@ -65,6 +65,7 @@ import AdminTechnicians from './pages/AdminTechnicians';
 import BookService from './pages/BookService';
 import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
+import CustomerLogin from './pages/CustomerLogin';
 import Dashboard from './pages/Dashboard';
 import FAQ from './pages/FAQ';
 import HardServices from './pages/HardServices';
@@ -110,6 +111,8 @@ export const PAGES = {
     "BookService": BookService,
     "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
+    "CustomerLogin": CustomerLogin,
+    "login": CustomerLogin,
     "Dashboard": Dashboard,
     "FAQ": FAQ,
     "HardServices": HardServices,
