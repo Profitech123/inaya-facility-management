@@ -217,6 +217,17 @@ function AdminReportsContent() {
             />
           </TabsContent>
 
+          <TabsContent value="feedback">
+            <CustomerFeedbackReport
+              reviews={reviews}
+              providers={filteredProviders}
+              bookings={filteredBookings}
+              services={services}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </TabsContent>
+
           <TabsContent value="system">
             <SystemHealthReport
               bookings={filteredBookings}
@@ -224,6 +235,19 @@ function AdminReportsContent() {
               tickets={tickets}
               invoices={invoices}
               providers={filteredProviders}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </TabsContent>
+
+          <TabsContent value="custom">
+            <CustomReportBuilder
+              bookings={filteredBookings}
+              subscriptions={subscriptions}
+              invoices={invoices}
+              providers={filteredProviders}
+              reviews={reviews}
+              services={services}
               startDate={startDate}
               endDate={endDate}
             />
