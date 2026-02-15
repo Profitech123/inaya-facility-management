@@ -154,13 +154,27 @@ function AdminReportsContent() {
           </div>
         </div>
 
+        {/* Full combined report export */}
+        <FullReportExport
+          bookings={filteredBookings}
+          subscriptions={subscriptions}
+          invoices={invoices}
+          providers={filteredProviders}
+          reviews={reviews}
+          services={services}
+          startDate={startDate}
+          endDate={endDate}
+        />
+
         <Tabs defaultValue="revenue" className="space-y-6">
-          <TabsList className="grid w-full max-w-3xl grid-cols-5">
+          <TabsList className="grid w-full max-w-5xl grid-cols-7">
             <TabsTrigger value="revenue">Revenue</TabsTrigger>
             <TabsTrigger value="customers">Customers</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="technicians">Technicians</TabsTrigger>
-            <TabsTrigger value="system">System Health</TabsTrigger>
+            <TabsTrigger value="feedback">Feedback</TabsTrigger>
+            <TabsTrigger value="system">System</TabsTrigger>
+            <TabsTrigger value="custom">Custom</TabsTrigger>
           </TabsList>
 
           <TabsContent value="revenue">
