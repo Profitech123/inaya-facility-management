@@ -8,6 +8,9 @@ import CustomerReport from '../components/reports/CustomerReport';
 import BookingReport from '../components/reports/BookingReport';
 import TechnicianReport from '../components/reports/TechnicianReport';
 import SystemHealthReport from '../components/reports/SystemHealthReport';
+import CustomerFeedbackReport from '../components/reports/CustomerFeedbackReport';
+import CustomReportBuilder from '../components/reports/CustomReportBuilder';
+import FullReportExport from '../components/reports/FullReportExport';
 import AuthGuard from '../components/AuthGuard';
 
 function getDefaultRange() {
