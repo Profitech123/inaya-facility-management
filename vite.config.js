@@ -13,12 +13,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
-  optimizeDeps: {
-    force: true,
-    esbuildOptions: {
-      target: 'esnext'
-    }
-  },
+
   server: {
     hmr: {
       overlay: false
