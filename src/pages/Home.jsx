@@ -2,7 +2,9 @@ import React, { lazy, Suspense } from 'react';
 import Hero from '../components/marketing/Hero';
 
 const FeaturesRow = lazy(() => import('../components/marketing/FeaturesRow'));
+const ServiceCategories = lazy(() => import('../components/marketing/ServiceCategories'));
 const SpecializedServices = lazy(() => import('../components/marketing/SpecializedServices'));
+const HowItWorks = lazy(() => import('../components/marketing/HowItWorks'));
 const BeforeAfterGallery = lazy(() => import('../components/marketing/BeforeAfterGallery'));
 const PricingSection = lazy(() => import('../components/marketing/PricingSection'));
 const PricingCalculator = lazy(() => import('../components/marketing/PricingCalculator'));
@@ -20,7 +22,9 @@ export default function Home() {
       <Hero />
       <Suspense fallback={<div className="h-20" />}>
         <FeaturesRow />
+        <ServiceCategories />
         <SpecializedServices />
+        <HowItWorks />
         <BeforeAfterGallery />
         <PricingSection />
         <PricingCalculator />
