@@ -16,7 +16,11 @@ import TechnicianUtilization from '../components/analytics/TechnicianUtilization
 import ChurnRateChart from '../components/analytics/ChurnRateChart';
 import ServiceCompletionTimeChart from '../components/analytics/ServiceCompletionTimeChart';
 import AnalyticsExportPanel from '../components/analytics/AnalyticsExportPanel';
-import { Loader2 } from 'lucide-react';
+import AIDemandPredictor from '../components/analytics/AIDemandPredictor';
+import AIProviderInsights from '../components/analytics/AIProviderInsights';
+import AIFinancialForecasting from '../components/analytics/AIFinancialForecasting';
+import { Loader2, Brain } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 function getDefaultRange() {
   const end = new Date();
