@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Briefcase, Clock } from 'lucide-react';
 import moment from 'moment';
 
-export default function ProviderDashboardHeader({ provider, todayCount, activeCount }) {
+export default function ProviderDashboardHeader({ provider, todayCount, activeCount, completedCount = 0 }) {
   const greeting = moment().hour() < 12 ? 'Good Morning' : moment().hour() < 17 ? 'Good Afternoon' : 'Good Evening';
 
   return (
@@ -43,6 +43,10 @@ export default function ProviderDashboardHeader({ provider, todayCount, activeCo
           <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2.5 text-center border border-white/10">
             <p className="text-2xl font-bold text-amber-400">{activeCount}</p>
             <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Active</p>
+          </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2.5 text-center border border-white/10">
+            <p className="text-2xl font-bold text-blue-400">{completedCount}</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Completed</p>
           </div>
         </div>
       </div>

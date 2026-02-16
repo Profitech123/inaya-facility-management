@@ -107,6 +107,7 @@ function ProviderDashboardContent() {
 
   const todayCount = bookings.filter(b => moment(b.scheduled_date).isSame(moment(), 'day') && !['completed', 'cancelled'].includes(b.status)).length;
   const activeCount = bookings.filter(b => ['confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status)).length;
+  const completedCount = bookings.filter(b => b.status === 'completed').length;
 
   if (providerLoading) {
     return (
@@ -164,7 +165,7 @@ function ProviderDashboardContent() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <ProviderDashboardHeader provider={provider} todayCount={todayCount} activeCount={activeCount} />
+        <ProviderDashboardHeader provider={provider} todayCount={todayCount} activeCount={activeCount} completedCount={completedCount} />
 
         <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); setSelectedBooking(null); }}>
           <TabsList className="bg-white border border-slate-200 p-1 h-auto flex-wrap">

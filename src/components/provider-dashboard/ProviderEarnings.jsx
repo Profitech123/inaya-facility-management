@@ -7,9 +7,12 @@ import moment from 'moment';
 
 export default function ProviderEarnings({ bookings, services }) {
   const completedBookings = bookings.filter(b => b.status === 'completed');
+  const pendingPaymentBookings = completedBookings.filter(b => b.payment_status !== 'paid');
 
   const stats = useMemo(() => {
     const total = completedBookings.reduce((sum, b) => sum + (b.total_amount || 0), 0);
+    const pendingAmount = pendingPaymentBookings.reduce((sum, b) => sum + (b.total_amount || 0), 0);
+    const paidAmount = total - pendingAmount;
 
     const thisMonth = completedBookings.filter(b =>
       moment(b.completed_at || b.scheduled_date).isSame(moment(), 'month')
@@ -21,8 +24,8 @@ export default function ProviderEarnings({ bookings, services }) {
     );
     const lastMonthTotal = lastMonth.reduce((sum, b) => sum + (b.total_amount || 0), 0);
 
-    return { total, thisMonthTotal, lastMonthTotal, thisMonthJobs: thisMonth.length, totalJobs: completedBookings.length };
-  }, [completedBookings]);
+    return { total, paidAmount, pendingAmount, thisMonthTotal, lastMonthTotal, thisMonthJobs: thisMonth.length, totalJobs: completedBookings.length, pendingJobs: pendingPaymentBookings.length };
+  }, [completedBookings, pendingPaymentBookings]);
 
   const chartData = useMemo(() => {
     const months = [];
@@ -47,10 +50,11 @@ export default function ProviderEarnings({ bookings, services }) {
   return (
     <div className="space-y-5">
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {[
           { label: 'Total Earnings', value: `AED ${stats.total.toLocaleString()}`, icon: Banknote, color: 'text-emerald-600 bg-emerald-50' },
           { label: 'This Month', value: `AED ${stats.thisMonthTotal.toLocaleString()}`, icon: TrendingUp, color: 'text-blue-600 bg-blue-50' },
+          { label: 'Pending Payments', value: `AED ${stats.pendingAmount.toLocaleString()}`, icon: Clock, color: 'text-orange-600 bg-orange-50', sub: `${stats.pendingJobs} job${stats.pendingJobs !== 1 ? 's' : ''}` },
           { label: 'Jobs This Month', value: stats.thisMonthJobs, icon: Calendar, color: 'text-amber-600 bg-amber-50' },
           { label: 'Total Jobs', value: stats.totalJobs, icon: CheckCircle2, color: 'text-purple-600 bg-purple-50' },
         ].map((kpi, idx) => {
@@ -63,6 +67,7 @@ export default function ProviderEarnings({ bookings, services }) {
                 </div>
                 <p className="text-2xl font-bold text-slate-900">{kpi.value}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{kpi.label}</p>
+                {kpi.sub && <p className="text-[10px] text-slate-400">{kpi.sub}</p>}
               </CardContent>
             </Card>
           );
