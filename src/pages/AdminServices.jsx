@@ -9,9 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Edit, Trash2, Clock, Tag, Layers } from 'lucide-react';
+import { Plus, Edit, Trash2, Clock, Tag, Layers, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
+import AIServiceCategorizer from '../components/admin/AIServiceCategorizer';
+import AIDynamicPricing from '../components/admin/AIDynamicPricing';
+import AIBundleRecommendations from '../components/admin/AIBundleRecommendations';
 
 function AdminServicesContent() {
   const queryClient = useQueryClient();
@@ -156,6 +159,7 @@ function AdminServicesContent() {
           <TabsList>
             <TabsTrigger value="services" className="gap-1.5"><Tag className="w-3.5 h-3.5" /> Services ({services.length})</TabsTrigger>
             <TabsTrigger value="categories" className="gap-1.5"><Layers className="w-3.5 h-3.5" /> Categories ({categories.length})</TabsTrigger>
+            <TabsTrigger value="ai-insights" className="gap-1.5"><Sparkles className="w-3.5 h-3.5" /> AI Insights</TabsTrigger>
           </TabsList>
 
           <TabsContent value="categories" className="mt-6">
