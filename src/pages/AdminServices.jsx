@@ -7,14 +7,20 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, Edit, Trash2, Clock, Tag, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
 
 function AdminServicesContent() {
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState('services');
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [showCatForm, setShowCatForm] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [catForm, setCatForm] = useState({ name: '', slug: '', description: '', icon: '', display_order: 0 });
   const [formData, setFormData] = useState({
     name: '',
     category_id: '',
@@ -67,6 +73,21 @@ function AdminServicesContent() {
     }
   });
 
+  const createCatMutation = useMutation({
+    mutationFn: (data) => base44.entities.ServiceCategory.create(data),
+    onSuccess: () => { queryClient.invalidateQueries(['categories']); resetCatForm(); toast.success('Category created'); }
+  });
+  const updateCatMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.ServiceCategory.update(id, data),
+    onSuccess: () => { queryClient.invalidateQueries(['categories']); resetCatForm(); toast.success('Category updated'); }
+  });
+  const deleteCatMutation = useMutation({
+    mutationFn: (id) => base44.entities.ServiceCategory.delete(id),
+    onSuccess: () => { queryClient.invalidateQueries(['categories']); toast.success('Category deleted'); }
+  });
+
+  const resetCatForm = () => { setCatForm({ name: '', slug: '', description: '', icon: '', display_order: 0 }); setEditingCategory(null); setShowCatForm(false); };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -115,13 +136,91 @@ function AdminServicesContent() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Manage Services</h1>
-            <p className="text-slate-500">Configure your service catalog</p>
+            <p className="text-slate-500">Configure services, pricing, and categories</p>
           </div>
-          <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Service
-          </Button>
+          <div className="flex gap-2">
+            {activeTab === 'categories' && (
+              <Button variant="outline" onClick={() => { setShowCatForm(!showCatForm); setEditingCategory(null); setCatForm({ name: '', slug: '', description: '', icon: '', display_order: 0 }); }}>
+                <Plus className="w-4 h-4 mr-2" /> Add Category
+              </Button>
+            )}
+            {activeTab === 'services' && (
+              <Button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700">
+                <Plus className="w-4 h-4 mr-2" /> Add Service
+              </Button>
+            )}
+          </div>
         </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+          <TabsList>
+            <TabsTrigger value="services" className="gap-1.5"><Tag className="w-3.5 h-3.5" /> Services ({services.length})</TabsTrigger>
+            <TabsTrigger value="categories" className="gap-1.5"><Layers className="w-3.5 h-3.5" /> Categories ({categories.length})</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="categories" className="mt-6">
+            {showCatForm && (
+              <Card className="mb-6">
+                <CardHeader><CardTitle>{editingCategory ? 'Edit Category' : 'Add Category'}</CardTitle></CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                      <Input value={catForm.name} onChange={e => setCatForm({ ...catForm, name: e.target.value })} required />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Slug</label>
+                      <Input value={catForm.slug} onChange={e => setCatForm({ ...catForm, slug: e.target.value })} placeholder="e.g. hard-services" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Icon (lucide name)</label>
+                      <Input value={catForm.icon} onChange={e => setCatForm({ ...catForm, icon: e.target.value })} placeholder="e.g. Wrench" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Display Order</label>
+                      <Input type="number" value={catForm.display_order} onChange={e => setCatForm({ ...catForm, display_order: parseInt(e.target.value) || 0 })} />
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <Textarea value={catForm.description} onChange={e => setCatForm({ ...catForm, description: e.target.value })} rows={2} />
+                  </div>
+                  <div className="flex gap-2">
+                    <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => {
+                      const data = { ...catForm, slug: catForm.slug || catForm.name.toLowerCase().replace(/\s+/g, '-') };
+                      editingCategory ? updateCatMutation.mutate({ id: editingCategory.id, data }) : createCatMutation.mutate(data);
+                    }}>{editingCategory ? 'Update' : 'Create'}</Button>
+                    <Button variant="outline" onClick={resetCatForm}>Cancel</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {categories.map(cat => (
+                <Card key={cat.id}>
+                  <CardContent className="p-5">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-semibold text-slate-900">{cat.name}</h3>
+                      <Badge variant="outline" className="text-[10px]">Order: {cat.display_order || 0}</Badge>
+                    </div>
+                    <p className="text-sm text-slate-500 mb-1">Slug: {cat.slug}</p>
+                    {cat.description && <p className="text-sm text-slate-600 mb-3">{cat.description}</p>}
+                    <p className="text-xs text-slate-400 mb-3">{services.filter(s => s.category_id === cat.id).length} services</p>
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" onClick={() => { setEditingCategory(cat); setCatForm(cat); setShowCatForm(true); }}>
+                        <Edit className="w-3.5 h-3.5 mr-1" /> Edit
+                      </Button>
+                      <Button size="sm" variant="outline" className="text-red-600" onClick={() => { if (confirm('Delete category?')) deleteCatMutation.mutate(cat.id); }}>
+                        <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="services" className="mt-6">
         {showForm && (
           <Card className="mb-8">
             <CardHeader>
@@ -162,7 +261,7 @@ function AdminServicesContent() {
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Price (AED)</label>
                     <Input
@@ -179,6 +278,24 @@ function AdminServicesContent() {
                       value={formData.duration_minutes}
                       onChange={(e) => setFormData({...formData, duration_minutes: e.target.value})}
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
+                    <Input
+                      value={formData.image_url}
+                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Switch checked={formData.is_active !== false} onCheckedChange={v => setFormData({...formData, is_active: v})} />
+                    <label className="text-sm text-slate-700">Active</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch checked={formData.available_for_subscription !== false} onCheckedChange={v => setFormData({...formData, available_for_subscription: v})} />
+                    <label className="text-sm text-slate-700">Available for subscriptions</label>
                   </div>
                 </div>
 
@@ -217,31 +334,37 @@ function AdminServicesContent() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 text-sm mb-4">{service.description}</p>
-                <div className="text-2xl font-bold text-slate-900 mb-4">AED {service.price}</div>
+                <p className="text-slate-600 text-sm mb-2 line-clamp-2">{service.description}</p>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-2xl font-bold text-slate-900">AED {service.price}</span>
+                  {service.duration_minutes && (
+                    <span className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" /> {service.duration_minutes} min</span>
+                  )}
+                </div>
+                {categories.find(c => c.id === service.category_id) && (
+                  <Badge variant="outline" className="text-[10px] mb-3">
+                    {categories.find(c => c.id === service.category_id)?.name}
+                  </Badge>
+                )}
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline" onClick={() => handleEdit(service)}>
-                    <Edit className="w-4 h-4 mr-1" />
-                    Edit
+                    <Edit className="w-4 h-4 mr-1" /> Edit
                   </Button>
                   <Button 
                     size="sm" 
                     variant="outline" 
                     className="text-red-600 hover:text-red-700"
-                    onClick={() => {
-                      if (confirm('Delete this service?')) {
-                        deleteMutation.mutate(service.id);
-                      }
-                    }}
+                    onClick={() => { if (confirm('Delete this service?')) deleteMutation.mutate(service.id); }}
                   >
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Delete
+                    <Trash2 className="w-4 h-4 mr-1" /> Delete
                   </Button>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
