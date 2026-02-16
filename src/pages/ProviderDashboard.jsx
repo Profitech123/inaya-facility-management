@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
@@ -12,6 +12,7 @@ import ProviderJobCard from '../components/provider-dashboard/ProviderJobCard';
 import ProviderJobDetail from '../components/provider-dashboard/ProviderJobDetail';
 import ProviderJobMap from '../components/provider-dashboard/ProviderJobMap';
 import ProviderEarnings from '../components/provider-dashboard/ProviderEarnings';
+import ProviderAvailability from '../components/provider-dashboard/ProviderAvailability';
 
 function ProviderDashboardContent() {
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -34,6 +35,8 @@ function ProviderDashboardContent() {
     enabled: !!user?.email,
   });
 
+  const queryClient = useQueryClient();
+
   // Get bookings assigned to this provider
   const { data: bookings = [], refetch: refetchBookings } = useQuery({
     queryKey: ['providerBookings', provider?.id],
@@ -44,6 +47,18 @@ function ProviderDashboardContent() {
     enabled: !!provider?.id,
     initialData: [],
   });
+
+  // Real-time booking updates
+  useEffect(() => {
+    if (!provider?.id) return;
+    const unsubscribe = base44.entities.Booking.subscribe((event) => {
+      if (event.data?.assigned_provider_id === provider.id || 
+          bookings.some(b => b.id === event.id)) {
+        queryClient.invalidateQueries({ queryKey: ['providerBookings'] });
+      }
+    });
+    return unsubscribe;
+  }, [provider?.id, queryClient]);
 
   // Load services, properties, users for display
   const { data: services = [] } = useQuery({
@@ -152,10 +167,11 @@ function ProviderDashboardContent() {
         <ProviderDashboardHeader provider={provider} todayCount={todayCount} activeCount={activeCount} />
 
         <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); setSelectedBooking(null); }}>
-          <TabsList className="bg-white border border-slate-200 p-1 h-auto">
+          <TabsList className="bg-white border border-slate-200 p-1 h-auto flex-wrap">
             <TabsTrigger value="jobs" className="text-sm px-5">My Jobs</TabsTrigger>
             <TabsTrigger value="map" className="text-sm px-5">Map View</TabsTrigger>
             <TabsTrigger value="earnings" className="text-sm px-5">Earnings</TabsTrigger>
+            <TabsTrigger value="availability" className="text-sm px-5">Availability</TabsTrigger>
           </TabsList>
 
           {/* Jobs Tab */}
@@ -224,6 +240,11 @@ function ProviderDashboardContent() {
           {/* Earnings Tab */}
           <TabsContent value="earnings" className="mt-5">
             <ProviderEarnings bookings={bookings} services={services} />
+          </TabsContent>
+
+          {/* Availability Tab */}
+          <TabsContent value="availability" className="mt-5">
+            <ProviderAvailability provider={provider} />
           </TabsContent>
         </Tabs>
       </div>
