@@ -61,7 +61,6 @@ import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminSupport from './pages/AdminSupport';
 import AdminTechSchedule from './pages/AdminTechSchedule';
 import AdminTechnicians from './pages/AdminTechnicians';
-import BookService from './pages/BookService';
 import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
@@ -108,7 +107,6 @@ export const PAGES = {
     "AdminSupport": AdminSupport,
     "AdminTechSchedule": AdminTechSchedule,
     "AdminTechnicians": AdminTechnicians,
-    "BookService": BookService,
     "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
     "Dashboard": Dashboard,
