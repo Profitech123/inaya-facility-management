@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 const PROJECTS = [
   {
     label: "AC Deep Cleaning",
-    before: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=700&q=70",
-    after: "https://images.unsplash.com/photo-1631545806609-be9d37bfce84?w=700&q=70",
+    before: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/f7d629820_generated_image.png",
+    after: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/e70a4957e_generated_image.png",
   },
   {
     label: "Plumbing Repair",
-    before: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=700&q=70",
-    after: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=700&q=70",
+    before: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/39db25e27_generated_image.png",
+    after: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/b06641488_generated_image.png",
   },
 ];
 

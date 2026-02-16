@@ -107,7 +107,7 @@ export default function Hero() {
             
             <div className="rounded-3xl overflow-hidden shadow-2xl shadow-slate-300/50">
               <img
-                src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=700&q=80"
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/95350b0d1_generated_image.png"
                 alt="Professional technician performing home maintenance"
                 className="w-full h-[420px] lg:h-[480px] object-cover"
                 loading="eager"
