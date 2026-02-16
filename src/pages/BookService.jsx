@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 import BookingStepIndicator from '../components/booking/BookingStepIndicator';
-import BookingScheduleStep from '../components/booking/BookingScheduleStep';
+import ServiceSelectionStep from '../components/booking/ServiceSelectionStep';
+import PropertyStep from '../components/booking/PropertyStep';
+import ScheduleStep from '../components/booking/ScheduleStep';
 import BookingCustomizeStep from '../components/booking/BookingCustomizeStep';
 import BookingReviewConfirmStep from '../components/booking/BookingReviewConfirmStep';
 import BookingSummarySidebar from '../components/booking/BookingSummarySidebar';
@@ -19,6 +21,7 @@ import BookingConfirmation from '../components/booking/BookingConfirmation';
 
 export default function BookService() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [step, setStep] = useState(1);
@@ -51,7 +54,11 @@ export default function BookService() {
     checkAuth();
 
     const params = new URLSearchParams(window.location.search);
-    setServiceId(params.get('service'));
+    const preSelectedService = params.get('service');
+    if (preSelectedService) {
+      setServiceId(preSelectedService);
+      setStep(2); // skip to property step if service is pre-selected
+    }
 
     const paymentStatus = params.get('payment');
     const bookingId = params.get('booking_id');
@@ -62,6 +69,7 @@ export default function BookService() {
     }
   }, []);
 
+  // Fetch service based on selected ID
   const { data: service } = useQuery({
     queryKey: ['service', serviceId],
     queryFn: async () => {
@@ -71,7 +79,7 @@ export default function BookService() {
     enabled: !!serviceId
   });
 
-  const { data: properties = [] } = useQuery({
+  const { data: properties = [], refetch: refetchProperties } = useQuery({
     queryKey: ['myProperties', user?.id],
     queryFn: async () => {
       const allProps = await base44.entities.Property.list();
@@ -121,35 +129,33 @@ export default function BookService() {
 
   const handleBooking = async () => {
     setIsProcessingPayment(true);
-    try {
-      const newBooking = await createBookingMutation.mutateAsync({
-        service_id: serviceId,
-        customer_id: user.id,
-        property_id: bookingData.property_id,
-        scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
-        scheduled_time: bookingData.scheduled_time,
-        customer_notes: bookingData.customer_notes,
-        total_amount: grandTotal,
-        addon_ids: selectedAddonIds,
-        addons_amount: addonsTotal,
-        assigned_provider_id: selectedProviderId || undefined,
-        assigned_provider: selectedProvider?.full_name || undefined,
-        status: 'confirmed',
-        payment_status: 'paid'
-      });
+    const newBooking = await createBookingMutation.mutateAsync({
+      service_id: serviceId,
+      customer_id: user.id,
+      property_id: bookingData.property_id,
+      scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
+      scheduled_time: bookingData.scheduled_time,
+      customer_notes: bookingData.customer_notes,
+      total_amount: grandTotal,
+      addon_ids: selectedAddonIds,
+      addons_amount: addonsTotal,
+      assigned_provider_id: selectedProviderId || undefined,
+      assigned_provider: selectedProvider?.full_name || undefined,
+      status: 'confirmed',
+      payment_status: 'paid'
+    });
 
+    try {
       await base44.functions.invoke('sendBookingConfirmation', {
         booking_id: newBooking.id
       });
-
-      setConfirmedBooking(newBooking);
-      setIsProcessingPayment(false);
-      setStep('success');
-    } catch (error) {
-      console.error('Booking error:', error);
-      setIsProcessingPayment(false);
-      toast.error('Failed to create booking. Please try again.');
+    } catch (e) {
+      // non-critical
     }
+
+    setConfirmedBooking(newBooking);
+    setIsProcessingPayment(false);
+    setStep('success');
   };
 
   // Loading / auth states
@@ -161,10 +167,10 @@ export default function BookService() {
     );
   }
 
-  if (!user || !service) {
+  if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-500">
-        <Loader2 className="w-6 h-6 animate-spin mr-2" /> Loading service details...
+        <Loader2 className="w-6 h-6 animate-spin mr-2" /> Loading...
       </div>
     );
   }
@@ -206,6 +212,8 @@ export default function BookService() {
     );
   }
 
+  const headerServiceName = service?.name || 'a Service';
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -214,10 +222,10 @@ export default function BookService() {
           <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-slate-400 hover:text-white text-sm mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
-          <h1 className="text-3xl font-bold mb-1">Book {service.name}</h1>
+          <h1 className="text-3xl font-bold mb-1">Book {headerServiceName}</h1>
           <div className="flex items-center gap-4 text-slate-300 text-sm">
-            <span>Starting from AED {service.price}</span>
-            {service.duration_minutes && (
+            {service && <span>Starting from AED {service.price}</span>}
+            {service?.duration_minutes && (
               <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> ~{service.duration_minutes} min</span>
             )}
           </div>
@@ -225,19 +233,39 @@ export default function BookService() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <BookingStepIndicator currentStep={step} />
+        <BookingStepIndicator currentStep={typeof step === 'number' ? step : 5} />
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Step 1: Service Selection */}
             {step === 1 && (
+              <ServiceSelectionStep
+                selectedServiceId={serviceId}
+                onSelectService={setServiceId}
+                onNext={() => setStep(2)}
+              />
+            )}
+
+            {/* Step 2: Property Details */}
+            {step === 2 && (
               <>
-                <BookingScheduleStep
+                <PropertyStep
                   bookingData={bookingData}
                   setBookingData={setBookingData}
                   properties={properties}
-                  allBookings={allBookings}
-                  onNext={() => setStep(2)}
+                  userId={user.id}
+                  onPropertiesRefetch={refetchProperties}
+                  onBack={() => {
+                    // Only go back to step 1 if service wasn't pre-selected from URL
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.get('service')) {
+                      navigate(-1);
+                    } else {
+                      setStep(1);
+                    }
+                  }}
+                  onNext={() => setStep(3)}
                 />
                 {selectedProperty && (
                   <AIServiceRecommendation
@@ -249,7 +277,19 @@ export default function BookService() {
               </>
             )}
 
-            {step === 2 && (
+            {/* Step 3: Schedule */}
+            {step === 3 && (
+              <ScheduleStep
+                bookingData={bookingData}
+                setBookingData={setBookingData}
+                allBookings={allBookings}
+                onBack={() => setStep(2)}
+                onNext={() => setStep(4)}
+              />
+            )}
+
+            {/* Step 4: Customize (Add-ons, Technician, Notes) */}
+            {step === 4 && (
               <BookingCustomizeStep
                 serviceId={serviceId}
                 bookingData={bookingData}
@@ -259,12 +299,13 @@ export default function BookService() {
                 selectedProviderId={selectedProviderId}
                 setSelectedProviderId={setSelectedProviderId}
                 allBookings={allBookings}
-                onBack={() => setStep(1)}
-                onNext={() => setStep(3)}
+                onBack={() => setStep(3)}
+                onNext={() => setStep(5)}
               />
             )}
 
-            {step === 3 && (
+            {/* Step 5: Review & Confirm */}
+            {step === 5 && (
               <BookingReviewConfirmStep
                 service={service}
                 selectedProperty={selectedProperty}
@@ -274,7 +315,7 @@ export default function BookService() {
                 grandTotal={grandTotal}
                 addonsTotal={addonsTotal}
                 isProcessingPayment={isProcessingPayment}
-                onBack={() => setStep(2)}
+                onBack={() => setStep(4)}
                 onConfirm={handleBooking}
               />
             )}
@@ -289,7 +330,7 @@ export default function BookService() {
               selectedAddons={selectedAddons}
               selectedProvider={selectedProvider}
               grandTotal={grandTotal}
-              currentStep={step}
+              currentStep={typeof step === 'number' ? step : 5}
             />
           </div>
         </div>

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Calendar, Clock, MapPin, User, Package, StickyNote } from 'lucide-react';
+import { Shield, Calendar, Clock, MapPin, User, Package, StickyNote, Wrench } from 'lucide-react';
 import { format } from 'date-fns';
+
+const TOTAL_STEPS = 5;
 
 export default function BookingSummarySidebar({
   service,
@@ -12,8 +14,6 @@ export default function BookingSummarySidebar({
   grandTotal,
   currentStep,
 }) {
-  const hasSchedule = bookingData.scheduled_date && bookingData.scheduled_time;
-
   return (
     <Card className="sticky top-24">
       <CardHeader className="pb-3">
@@ -21,26 +21,35 @@ export default function BookingSummarySidebar({
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         {/* Service */}
-        <div className="flex justify-between items-start">
-          <span className="text-slate-500">Service</span>
-          <span className="font-medium text-slate-900 text-right">{service.name}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-slate-500">Base price</span>
-          <span className="text-slate-900">AED {service.price}</span>
-        </div>
+        {service ? (
+          <>
+            <div className="flex items-start gap-2">
+              <Wrench className="w-3.5 h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
+              <span className="font-medium text-slate-900">{service.name}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">Base price</span>
+              <span className="text-slate-900">AED {service.price}</span>
+            </div>
+          </>
+        ) : (
+          <div className="text-slate-400 text-xs italic">No service selected yet</div>
+        )}
 
         {/* Property */}
         {selectedProperty && (
           <div className="flex items-start gap-2 pt-2 border-t">
             <MapPin className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
-            <span className="text-slate-700 text-xs">{selectedProperty.address} ({selectedProperty.property_type})</span>
+            <div>
+              <span className="text-slate-700 text-xs">{selectedProperty.address}</span>
+              <span className="text-slate-400 text-xs capitalize block">{selectedProperty.property_type}{selectedProperty.bedrooms ? ` • ${selectedProperty.bedrooms} BR` : ''}</span>
+            </div>
           </div>
         )}
 
         {/* Schedule */}
         {bookingData.scheduled_date && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pt-2 border-t">
             <Calendar className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
             <span className="text-slate-700 text-xs">{format(bookingData.scheduled_date, 'EEE, MMM d, yyyy')}</span>
           </div>
@@ -76,7 +85,7 @@ export default function BookingSummarySidebar({
         )}
 
         {/* Notes */}
-        {bookingData.customer_notes && currentStep >= 2 && (
+        {bookingData.customer_notes && currentStep >= 4 && (
           <div className="flex items-start gap-2 pt-2 border-t">
             <StickyNote className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
             <span className="text-slate-600 text-xs line-clamp-2">{bookingData.customer_notes}</span>
@@ -94,7 +103,7 @@ export default function BookingSummarySidebar({
         {/* Progress indicator */}
         <div className="pt-2">
           <div className="flex gap-1">
-            {[1, 2, 3].map(s => (
+            {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map(s => (
               <div
                 key={s}
                 className={`h-1 flex-1 rounded-full transition-colors ${
@@ -104,7 +113,7 @@ export default function BookingSummarySidebar({
             ))}
           </div>
           <p className="text-[10px] text-slate-400 mt-1.5 text-center">
-            Step {currentStep} of 3 — {currentStep === 1 ? 'Schedule' : currentStep === 2 ? 'Customize' : 'Review'}
+            Step {currentStep} of {TOTAL_STEPS}
           </p>
         </div>
 
