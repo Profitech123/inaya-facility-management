@@ -54,7 +54,7 @@ export default function BookingCustomizeStep({
             <ArrowLeft className="w-4 h-4" /> Back
           </Button>
           <Button onClick={onNext} className="bg-emerald-600 hover:bg-emerald-700 gap-2">
-            Review Booking <ArrowRight className="w-4 h-4" />
+            Review & Confirm <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </CardContent>
