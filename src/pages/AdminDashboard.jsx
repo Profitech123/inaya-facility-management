@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CalendarDots, Package as PhPackage, CurrencyCircleDollar, UsersThree, ChartLineUp, ArrowsClockwise } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 import AdminNotifications from '../components/admin/AdminNotifications';
 import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
@@ -17,69 +18,66 @@ import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function AdminDashboardContent() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const { user, me } = useAuth();
+  const currentUser = me();
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
-    queryFn: () => base44.entities.Booking.list('-created_date', 200),
-    enabled: !!user,
+    queryFn: () => api.bookings.listAll(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 30000
   });
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
-    queryFn: () => base44.entities.Subscription.list(),
-    enabled: !!user,
+    queryFn: () => api.subscriptions.listAll(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 60000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
-    enabled: !!user,
+    queryFn: () => api.services.list(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 60000
   });
 
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
-    queryFn: () => base44.entities.Provider.list(),
-    enabled: !!user,
+    queryFn: () => api.providers.list(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 60000
   });
 
   const { data: reviews = [] } = useQuery({
     queryKey: ['adminReviews'],
-    queryFn: () => base44.entities.ProviderReview.list('-created_date', 50),
-    enabled: !!user,
+    queryFn: () => api.reviews.listAll(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 60000
   });
 
   const { data: tickets = [] } = useQuery({
     queryKey: ['adminTickets'],
-    queryFn: () => base44.entities.SupportTicket.list('-created_date', 50),
-    enabled: !!user,
+    queryFn: () => api.chatMessages.listAll(),
+    enabled: !!currentUser,
     initialData: [],
     staleTime: 60000
   });
 
-  const totalRevenue = bookings.reduce((sum, b) => sum + (b.payment_status === 'paid' ? b.total_amount : 0), 0);
-  const monthlyRecurring = subscriptions.filter(s => s.status === 'active').reduce((sum, s) => sum + s.monthly_amount, 0);
+  const totalRevenue = bookings.reduce((sum, b) => sum + (b.payment_status === 'paid' ? (b.total_price || 0) : 0), 0);
+  const monthlyRecurring = subscriptions.filter(s => s.status === 'active').reduce((sum, s) => sum + (s.price || 0), 0);
   const uniqueCustomers = new Set([...bookings.map(b => b.customer_id), ...subscriptions.map(s => s.customer_id)]).size;
   const completedJobs = bookings.filter(b => b.status === 'completed').length;
   const avgBookingValue = bookings.filter(b => b.payment_status === 'paid').length > 0
     ? Math.round(totalRevenue / bookings.filter(b => b.payment_status === 'paid').length)
     : 0;
 
-  if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!currentUser) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   const kpis = [
     { label: 'Total Revenue', value: `AED ${totalRevenue.toLocaleString()}`, sub: 'From paid bookings', icon: CurrencyCircleDollar, color: 'text-emerald-600', bg: 'bg-emerald-50' },

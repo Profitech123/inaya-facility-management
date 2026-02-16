@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,37 +12,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BookingTimeline from '../components/booking/BookingTimeline';
 import AdminBookingCalendar from '../components/admin/AdminBookingCalendar';
 import { logAuditEvent } from '../components/admin/AuditLogger';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function AdminBookingsContent() {
   const queryClient = useQueryClient();
+  const { user, me } = useAuth();
+  const currentUser = me();
   const [refundingId, setRefundingId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [viewMode, setViewMode] = useState('calendar');
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
-    queryFn: () => base44.entities.Booking.list('-scheduled_date'),
+    queryFn: () => api.bookings.listAll(),
     initialData: [],
     staleTime: 30000
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
+    queryFn: () => api.services.list(),
     initialData: [],
     staleTime: 60000
   });
 
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
-    queryFn: () => base44.entities.Provider.list(),
+    queryFn: () => api.providers.list(),
     initialData: [],
     staleTime: 60000
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Booking.update(id, data),
+    mutationFn: ({ id, data }) => api.bookings.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(['allBookings']);
       toast.success('Booking updated');

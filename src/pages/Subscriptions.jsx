@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Puzzle, ArrowRight } from 'lucide-react';
@@ -12,18 +13,14 @@ import PlanManagement from '../components/subscriptions/PlanManagement';
 import AIPackageSuggestion from '../components/subscriptions/AIPackageSuggestion';
 
 export default function Subscriptions() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const { user, me } = useAuth();
+  const currentUser = me();
 
   const { data: packages = [] } = useQuery({
     queryKey: ['subscriptionPackages'],
     queryFn: async () => {
       try {
-        const allPackages = await base44.entities.SubscriptionPackage.list();
-        return allPackages.filter(pkg => pkg.is_active === true);
+        return await api.packages.list({ active: true });
       } catch (error) {
         console.error('Error fetching packages:', error);
         return [];
@@ -33,18 +30,17 @@ export default function Subscriptions() {
   });
 
   const { data: subscriptions = [] } = useQuery({
-    queryKey: ['userSubscriptions', user?.id],
+    queryKey: ['userSubscriptions', currentUser?.id],
     queryFn: async () => {
-      if (!user?.id) return [];
+      if (!currentUser?.id) return [];
       try {
-        const allSubs = await base44.entities.Subscription.list();
-        return allSubs.filter(sub => sub.customer_id === user.id && sub.status === 'active');
+        return await api.subscriptions.list({ customerId: currentUser.id, status: 'active' });
       } catch (error) {
         console.error('Error fetching subscriptions:', error);
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 

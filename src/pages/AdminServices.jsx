@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,40 +10,41 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function AdminServicesContent() {
   const queryClient = useQueryClient();
+  const { user, me } = useAuth();
+  const currentUser = me();
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    category_id: '',
+    category: '',
     description: '',
     price: '',
     duration_minutes: '',
     image_url: '',
     features: '',
-    is_active: true,
-    available_for_subscription: true
+    active: true
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
+    queryFn: () => api.services.list(),
     initialData: [],
     staleTime: 60000
   });
 
-  const { data: categories = [] } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => base44.entities.ServiceCategory.list(),
-    initialData: [],
-    staleTime: 60000
-  });
+  // Hardcoded categories since we don't have a separate table
+  const categories = [
+    { id: 'soft-services', name: 'Soft Services' },
+    { id: 'hard-services', name: 'Hard Services' },
+    { id: 'specialized-services', name: 'Specialized Services' }
+  ];
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Service.create(data),
+    mutationFn: (data) => api.services.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries(['services']);
       resetForm();
@@ -51,7 +53,7 @@ function AdminServicesContent() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Service.update(id, data),
+    mutationFn: ({ id, data }) => api.services.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(['services']);
       resetForm();
@@ -60,7 +62,7 @@ function AdminServicesContent() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Service.delete(id),
+    mutationFn: (id) => api.services.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries(['services']);
       toast.success('Service deleted');

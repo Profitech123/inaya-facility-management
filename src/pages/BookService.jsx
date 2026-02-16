@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { api } from '@/lib/supabase/api';
-import { useQuery, useMutation } from '@tantml:function_calls>
-<invoke name="card, CardContent } from '@/components/ui/card';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { XCircle, Loader2, ArrowLeft, Clock } from 'lucide-react';

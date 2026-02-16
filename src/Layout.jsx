@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from './utils';
-import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
 import {
@@ -15,26 +15,16 @@ import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 
 export default function Layout({ children, currentPageName }) {
-  const [user, setUser] = useState(null);
+  const { user, me, signOut } = useAuth();
+  const currentUser = me();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    base44.auth.me()
-      .then(setUser)
-      .catch((error) => {
-        if (error?.status === 401) {
-          setUser(null);
-        } else {
-          setUser(null);
-        }
-      });
-  }, []);
 
   // Admin pages get their own separate layout
   const isAdminPage = currentPageName?.startsWith('Admin');
   
-  if (isAdminPage && user && user.role !== 'admin') {
-    window.location.href = createPageUrl('Dashboard');
+  if (isAdminPage && currentUser && currentUser.role !== 'admin') {
+    navigate('/Dashboard');
     return null;
   }
   
@@ -43,7 +33,8 @@ export default function Layout({ children, currentPageName }) {
   }
 
   const handleLogout = () => {
-    base44.auth.logout();
+    signOut();
+    navigate('/');
   };
 
   const isActivePage = (pageName) => currentPageName === pageName;
@@ -108,12 +99,12 @@ export default function Layout({ children, currentPageName }) {
                 Book a Service
               </Link>
 
-              {user ? (
+              {currentUser ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="gap-2 border-slate-200">
                       <User className="w-4 h-4" />
-                      <span className="hidden sm:inline text-slate-700">{user.full_name?.split(' ')[0] || 'Account'}</span>
+                      <span className="hidden sm:inline text-slate-700">{currentUser.full_name?.split(' ')[0] || 'Account'}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
@@ -146,17 +137,18 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenu>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-slate-600"
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
-                    size="sm" 
+                  <Link to={createPageUrl('CustomerLogin')}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-slate-600"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to={createPageUrl('CustomerLogin')}>
+                    <Button 
+                      size="sm" 
                     className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   >
                     Create Account

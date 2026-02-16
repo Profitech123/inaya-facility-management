@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,13 +11,14 @@ import { Badge } from '@/components/ui/badge';
 import { MessageSquare, Plus, X, Sparkles, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { createPageUrl } from '@/utils';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import SmartFAQSuggestions from '../components/support/SmartFAQSuggestions';
 import { classifyTicket } from '../components/support/AITicketClassifier';
 
 function SupportContent() {
   const queryClient = useQueryClient();
-  const [user, setUser] = useState(null);
+  const { user, me } = useAuth();
+  const currentUser = me();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     subject: '',
@@ -27,19 +29,15 @@ function SupportContent() {
   const [classifying, setClassifying] = useState(false);
   const [aiClassification, setAiClassification] = useState(null);
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = createPageUrl('Home'));
-  }, []);
-
   const { data: tickets = [] } = useQuery({
-    queryKey: ['supportTickets', user?.id],
-    queryFn: () => base44.entities.SupportTicket.filter({ customer_id: user?.id }, '-created_date'),
-    enabled: !!user,
+    queryKey: ['chatMessages', currentUser?.id],
+    queryFn: () => api.chatMessages.list({ customerId: currentUser?.id }),
+    enabled: !!currentUser,
     initialData: []
   });
 
   const createTicketMutation = useMutation({
-    mutationFn: (data) => base44.entities.SupportTicket.create(data),
+    mutationFn: (data) => api.chatMessages.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries(['supportTickets']);
       setShowForm(false);
@@ -58,17 +56,20 @@ function SupportContent() {
 
     const ticketNumber = 'TKT-' + Date.now().toString().slice(-8);
     createTicketMutation.mutate({
-      ...formData,
-      category: classification.category,
-      priority: classification.priority,
-      ticket_number: ticketNumber,
-      customer_id: user.id
+      customer_id: currentUser.id,
+      message: `${formData.subject}\n\n${formData.description}`,
+      sender: 'customer',
+      metadata: {
+        category: classification.category,
+        priority: classification.priority,
+        ticket_number: ticketNumber
+      }
     });
     setClassifying(false);
     setAiClassification(null);
   };
 
-  if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!currentUser) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50">

@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Download, DollarSign, FileText } from 'lucide-react';
 import { createPageUrl } from '@/utils';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function PaymentHistoryContent() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = createPageUrl('Home'));
-  }, []);
+  const { user, me } = useAuth();
+  const currentUser = me();
 
   const { data: invoices = [] } = useQuery({
-    queryKey: ['invoices', user?.id],
-    queryFn: () => base44.entities.Invoice.filter({ customer_id: user?.id }, '-invoice_date'),
-    enabled: !!user,
+    queryKey: ['payments', currentUser?.id],
+    queryFn: () => api.payments.list(currentUser?.id),
+    enabled: !!currentUser,
     initialData: []
   });
 
   const totalPaid = invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + i.total_amount, 0);
   const totalPending = invoices.filter(i => i.status === 'pending').reduce((sum, i) => sum + i.total_amount, 0);
 
-  if (!user) {
+  if (!currentUser) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
