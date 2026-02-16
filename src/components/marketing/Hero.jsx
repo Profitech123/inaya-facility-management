@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Shield, Clock, Award, Zap, ChevronDown } from 'lucide-react';
+import { ArrowRight, Shield, Clock, Award, Zap, ChevronDown, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
@@ -51,14 +51,14 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4 mb-12"
             >
-              <Link to={createPageUrl('Subscriptions')}>
-                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-8 h-12 shadow-lg transition-all hover:-translate-y-0.5">
-                  Explore Packages
+              <Link to={createPageUrl('ServiceFinder')}>
+                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-8 h-12 shadow-lg transition-all hover:-translate-y-0.5 gap-2">
+                  <Search className="w-5 h-5" /> Find Your Service
                 </Button>
               </Link>
-              <Link to={createPageUrl('OnDemandServices')}>
+              <Link to={createPageUrl('Subscriptions')}>
                 <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100 text-base px-8 h-12">
-                  Book a Service
+                  Explore Packages
                 </Button>
               </Link>
             </motion.div>

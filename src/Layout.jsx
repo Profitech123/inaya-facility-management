@@ -88,6 +88,7 @@ export default function Layout({ children, currentPageName }) {
                   <DropdownMenuItem asChild><Link to={createPageUrl('ProjectManagement')} className="w-full">Project Management</Link></DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <Link to={createPageUrl('ServiceFinder')} className={navLinkClass('ServiceFinder')}>Service Finder</Link>
               <Link to={createPageUrl('OnDemandServices')} className={navLinkClass('OnDemandServices')}>On-Demand</Link>
               <DropdownMenu>
                 <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['Subscriptions','PackageBuilder'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
@@ -104,8 +105,8 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Right Section */}
             <div className="flex items-center gap-3">
-              <Link to={createPageUrl('OnDemandServices')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
-                Book a Service
+              <Link to={createPageUrl('ServiceFinder')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
+                Find a Service
               </Link>
 
               {user ? (
@@ -182,9 +183,9 @@ export default function Layout({ children, currentPageName }) {
               <Link to={createPageUrl('HardServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Hard Services</Link>
               <Link to={createPageUrl('SoftServices')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Soft Services</Link>
               <Link to={createPageUrl('ProjectManagement')} className="block text-slate-700 hover:text-emerald-600 pl-4 text-sm" onClick={() => setMobileMenuOpen(false)}>Project Management</Link>
-              <Link to={createPageUrl('OnDemandServices')} className="block" onClick={() => setMobileMenuOpen(false)}>
+              <Link to={createPageUrl('ServiceFinder')} className="block" onClick={() => setMobileMenuOpen(false)}>
                 <span className="inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold w-full justify-center shadow-sm">
-                  Book a Service
+                  Find a Service
                 </span>
               </Link>
               <Link to={createPageUrl('Subscriptions')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Packages</Link>
