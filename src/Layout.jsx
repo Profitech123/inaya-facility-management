@@ -36,8 +36,8 @@ export default function Layout({ children, currentPageName }) {
     return <>{children}</>;
   }
 
-  // Admin pages get their own separate layout
-  const isAdminPage = currentPageName?.startsWith('Admin');
+  // Admin pages get their own separate layout (except AdminLogin which has its own UI)
+  const isAdminPage = currentPageName?.startsWith('Admin') && currentPageName !== 'AdminLogin';
   
   if (isAdminPage && user && user.role !== 'admin') {
     window.location.href = createPageUrl('Dashboard');
@@ -46,6 +46,11 @@ export default function Layout({ children, currentPageName }) {
   
   if (isAdminPage) {
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
+  }
+
+  // AdminLogin gets a bare layout — no nav/footer
+  if (currentPageName === 'AdminLogin') {
+    return <>{children}</>;
   }
 
   const handleLogout = () => {
