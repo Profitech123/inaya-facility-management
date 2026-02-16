@@ -79,7 +79,9 @@ import PackageBuilder from './pages/PackageBuilder';
 import PaymentHistory from './pages/PaymentHistory';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ProjectManagement from './pages/ProjectManagement';
+import ProviderDashboard from './pages/ProviderDashboard';
 import ProviderOnboarding from './pages/ProviderOnboarding';
+import ServiceFinder from './pages/ServiceFinder';
 import Services from './pages/Services';
 import SoftServices from './pages/SoftServices';
 import SubscribePackage from './pages/SubscribePackage';
@@ -88,8 +90,6 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import ServiceFinder from './pages/ServiceFinder';
-import ProviderDashboard from './pages/ProviderDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -126,7 +126,9 @@ export const PAGES = {
     "PaymentHistory": PaymentHistory,
     "PrivacyPolicy": PrivacyPolicy,
     "ProjectManagement": ProjectManagement,
+    "ProviderDashboard": ProviderDashboard,
     "ProviderOnboarding": ProviderOnboarding,
+    "ServiceFinder": ServiceFinder,
     "Services": Services,
     "SoftServices": SoftServices,
     "SubscribePackage": SubscribePackage,
@@ -135,8 +137,6 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "ServiceFinder": ServiceFinder,
-    "ProviderDashboard": ProviderDashboard,
 }
 
 export const pagesConfig = {
