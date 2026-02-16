@@ -66,32 +66,32 @@ export default function ManagingPortfolios() {
             <div className="grid grid-cols-12 grid-rows-12 gap-3 h-[520px]">
               <div className="col-span-7 row-span-8 rounded-3xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=60"
-                  alt="Modern building"
+                  src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&q=60"
+                  alt="Dubai Marina skyline towers"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
               <div className="col-span-5 row-span-6 rounded-3xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=400&q=60"
-                  alt="Office building"
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=60"
+                  alt="Luxury villa with landscaped garden"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
               <div className="col-span-5 row-span-6 rounded-3xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=60"
-                  alt="Residential tower"
+                  src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=60"
+                  alt="AC maintenance technician servicing unit"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
               <div className="col-span-7 row-span-4 rounded-3xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1582653291997-079a1c04e5a1?w=600&q=60"
-                  alt="Pool maintenance"
+                  src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=60"
+                  alt="Modern Dubai villa with pool and garden"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
