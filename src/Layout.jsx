@@ -19,15 +19,15 @@ export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    base44.auth.me()
-      .then(setUser)
-      .catch((error) => {
-        if (error?.status === 401) {
-          setUser(null);
-        } else {
-          setUser(null);
-        }
-      });
+    base44.auth.isAuthenticated().then(isAuth => {
+      if (!isAuth) {
+        setUser(null);
+        return;
+      }
+      base44.auth.me()
+        .then(setUser)
+        .catch(() => setUser(null));
+    });
   }, []);
 
   // Provider dashboard gets its own layout (no nav/footer)
