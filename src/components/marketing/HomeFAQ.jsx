@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, HelpCircle } from 'lucide-react';
 
 const faqs = [
   {
@@ -26,16 +26,19 @@ const faqs = [
 
 export default function HomeFAQ() {
   return (
-    <section className="py-24 bg-slate-50">
+    <section className="py-28 bg-slate-50/50">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-14"
         >
-          <span className="text-emerald-600 text-sm font-bold tracking-[0.15em] uppercase">FAQ</span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-3">Common Questions</h2>
+          <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-5 py-2 mb-5 shadow-sm">
+            <HelpCircle className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-600 font-semibold text-xs uppercase tracking-widest">FAQ</span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">Common Questions</h2>
         </motion.div>
 
         <motion.div
@@ -45,8 +48,8 @@ export default function HomeFAQ() {
         >
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, idx) => (
-              <AccordionItem key={idx} value={`faq-${idx}`} className="bg-white border border-slate-200 rounded-2xl px-6 overflow-hidden">
-                <AccordionTrigger className="text-left font-semibold text-slate-900 hover:no-underline py-5">
+              <AccordionItem key={idx} value={`faq-${idx}`} className="bg-white border border-slate-100 rounded-2xl px-7 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <AccordionTrigger className="text-left font-bold text-slate-900 hover:no-underline py-5 text-[15px]">
                   {faq.q}
                 </AccordionTrigger>
                 <AccordionContent className="text-slate-500 leading-relaxed pb-5">
@@ -57,8 +60,8 @@ export default function HomeFAQ() {
           </Accordion>
         </motion.div>
 
-        <div className="text-center mt-8">
-          <Link to={createPageUrl('FAQ')} className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1.5">
+        <div className="text-center mt-10">
+          <Link to={createPageUrl('FAQ')} className="text-sm font-bold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1.5 transition-colors">
             View all FAQs <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

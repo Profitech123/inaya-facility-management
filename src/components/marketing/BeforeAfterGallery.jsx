@@ -35,26 +35,29 @@ export default function BeforeAfterGallery() {
   const handleTouchMove = (e) => { updatePosition(e.touches[0].clientX); };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-28 bg-white relative">
       <div className="max-w-5xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <span className="text-emerald-600 text-sm font-bold tracking-[0.15em] uppercase">Our Work</span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-3">See the Difference</h2>
+          <div className="inline-flex items-center gap-2 bg-slate-100 rounded-full px-5 py-2 mb-5">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="text-slate-600 font-semibold text-xs uppercase tracking-widest">Our Work</span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">See the Difference</h2>
         </motion.div>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-2 mb-8">
+        <div className="flex justify-center gap-3 mb-10">
           {PROJECTS.map((p, idx) => (
             <button
               key={idx}
               onClick={() => { setActiveIdx(idx); setSliderPos(50); }}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                idx === activeIdx ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                idx === activeIdx ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
               }`}
             >
               {p.label}
@@ -68,7 +71,7 @@ export default function BeforeAfterGallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-xl cursor-ew-resize select-none h-[340px] md:h-[440px]"
+          className="relative rounded-3xl overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] cursor-ew-resize select-none h-[340px] md:h-[480px] border border-slate-200"
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
@@ -85,18 +88,18 @@ export default function BeforeAfterGallery() {
           </div>
 
           {/* Divider line */}
-          <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10" style={{ left: `${sliderPos}%` }}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
-              <div className="flex gap-0.5">
-                <div className="w-0 h-0 border-t-[5px] border-b-[5px] border-r-[6px] border-transparent border-r-slate-400" />
-                <div className="w-0 h-0 border-t-[5px] border-b-[5px] border-l-[6px] border-transparent border-l-slate-400" />
+          <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10" style={{ left: `${sliderPos}%` }}>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border border-slate-100">
+              <div className="flex gap-1">
+                <div className="w-0 h-0 border-t-[6px] border-b-[6px] border-r-[7px] border-transparent border-r-slate-400" />
+                <div className="w-0 h-0 border-t-[6px] border-b-[6px] border-l-[7px] border-transparent border-l-slate-400" />
               </div>
             </div>
           </div>
 
           {/* Labels */}
-          <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full z-20">Before</div>
-          <div className="absolute top-4 right-4 bg-emerald-600/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full z-20">After</div>
+          <div className="absolute top-5 left-5 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-4 py-2 rounded-full z-20 border border-white/10">Before</div>
+          <div className="absolute top-5 right-5 bg-emerald-600/80 backdrop-blur-md text-white text-xs font-bold px-4 py-2 rounded-full z-20 border border-emerald-400/20">After</div>
         </motion.div>
       </div>
     </section>
