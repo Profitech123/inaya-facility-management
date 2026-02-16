@@ -13,7 +13,7 @@ const TIME_SLOTS = [
 ];
 
 export default function BookingCalendar({ selectedDate, selectedTimeSlot, onDateChange, onTimeSlotChange, bookedSlots = [] }) {
-  const today = startOfDay(new Date());
+  const today = startOfDay(addDays(new Date(), -1)); // Allow yesterday to avoid timezone issues
   const maxDate = addDays(today, 90);
 
   const isSlotBooked = (date, slotId) => {
@@ -32,13 +32,30 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onDate
       {/* Calendar */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-3">Pick a Date</label>
+
+        {/* FALLBACK FOR TESTING */}
+        <input
+          type="date"
+          className="mb-4 p-2 border rounded w-full"
+          onChange={(e) => {
+            if (e.target.valueAsDate) {
+              onDateChange(e.target.valueAsDate);
+              onTimeSlotChange('');
+            }
+          }}
+        />
+
         <div className="bg-white border border-slate-200 rounded-xl p-3">
           <Calendar
             mode="single"
+            required
             selected={selectedDate}
             onSelect={(date) => {
-              onDateChange(date);
-              onTimeSlotChange('');
+              console.log('Calendar onSelect:', date);
+              if (date) {
+                onDateChange(date);
+                onTimeSlotChange('');
+              }
             }}
             disabled={(date) => date < today || date > maxDate}
             modifiers={{
@@ -47,10 +64,14 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onDate
             modifiersClassNames={{
               busy: "!text-amber-600 !font-bold",
             }}
-            className="rounded-lg"
+            className="rounded-lg pointer-events-auto"
           />
         </div>
         <p className="text-xs text-slate-400 mt-2">Book up to 90 days in advance</p>
+        {/* Debug Info */}
+        <p className="text-xs text-red-500 mt-1" id="debug-date">
+          Debug: {selectedDate ? format(selectedDate, 'yyyy-MM-dd') : 'None'}
+        </p>
       </div>
 
       {/* Time Slots */}
@@ -78,8 +99,8 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onDate
                     booked
                       ? "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed"
                       : selected
-                      ? "bg-emerald-50 text-emerald-700 border-emerald-500 shadow-sm"
-                      : "bg-white text-slate-700 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-500 shadow-sm"
+                        : "bg-white text-slate-700 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30"
                   )}
                 >
                   <div className="flex items-center justify-between">

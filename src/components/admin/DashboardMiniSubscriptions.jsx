@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Badge } from '@/components/ui/badge';
-import { parseISO, isValid, format, subMonths, startOfMonth } from 'date-fns';
+import { parseISO, format, subMonths, startOfMonth } from 'date-fns';
 
 export default function DashboardMiniSubscriptions({ subscriptions }) {
   const { chartData, stats } = useMemo(() => {

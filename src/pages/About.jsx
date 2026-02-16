@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Award, Heart, Users, Target, TrendingUp, CheckCircle } from 'lucide-react';
+import { Shield, Award, Heart, Users, Target, TrendingUp } from 'lucide-react';
 
 const coreValues = [
   {

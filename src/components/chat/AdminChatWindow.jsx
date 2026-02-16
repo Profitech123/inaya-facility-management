@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, User, Mail, Clock } from 'lucide-react';
+import { CheckCircle2, User, Mail } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import ChatBubble from './ChatBubble';

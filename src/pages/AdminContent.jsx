@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Trash2, Edit2, Save, X, Star, MoveUp, MoveDown } from 'lucide-react';
+import { Plus, Trash2, Edit2, Save, X, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
 

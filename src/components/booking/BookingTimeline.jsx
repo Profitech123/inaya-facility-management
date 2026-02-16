@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, Circle, Clock, Truck, Wrench, XCircle } from 'lucide-react';
+import { CheckCircle2, Clock, Wrench, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 

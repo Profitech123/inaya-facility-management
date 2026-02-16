@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Calendar, Clock, MapPin, Printer, ArrowRight, PlusCircle, Headphones, Users } from 'lucide-react';
+import { CheckCircle, Calendar, Clock, MapPin, Printer, ArrowRight, PlusCircle, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';

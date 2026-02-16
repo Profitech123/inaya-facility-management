@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
@@ -11,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import CustomerChatWidget from './components/chat/CustomerChatWidget';
 import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 import TechnicianLayout from './Layouts/TechnicianLayout';

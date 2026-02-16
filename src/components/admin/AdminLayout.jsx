@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, Settings, MessageSquare, FileText } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, MessageSquare, FileText } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', page: 'AdminDashboard', icon: LayoutDashboard },

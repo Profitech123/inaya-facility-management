@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Wrench, Zap, Droplets, Wind, Paintbrush, Flame, Gauge, Phone, ArrowRight } from 'lucide-react';
+import { Wrench, Zap, Droplets, Wind, Paintbrush, Flame, Gauge, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import QuoteRequestForm from '../components/services/QuoteRequestForm';

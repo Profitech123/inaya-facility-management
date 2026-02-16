@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Mail, Users } from 'lucide-react';
+import { Package, Calendar, DollarSign, Plus, Pencil, Trash2, Bell, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';

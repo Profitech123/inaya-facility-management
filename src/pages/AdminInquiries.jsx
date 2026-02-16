@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Mail, Phone, Calendar, CheckCircle2, Archive, MessageSquare, Trash2 } from 'lucide-react';
+import { Search, Mail, Phone, Calendar, Archive, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
 import { format } from 'date-fns';

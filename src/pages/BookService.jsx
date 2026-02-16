@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
-import { CheckCircle, XCircle, Loader2, ArrowLeft, ArrowRight, Clock, Shield } from 'lucide-react';
+import { XCircle, Loader2, ArrowLeft, ArrowRight, Clock, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';

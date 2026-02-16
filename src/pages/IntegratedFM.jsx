@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Wrench, Sparkles, Phone, Headphones, Link2, ArrowRight } from 'lucide-react';
+import { Wrench, Sparkles, Headphones, Link2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import QuoteRequestForm from '../components/services/QuoteRequestForm';

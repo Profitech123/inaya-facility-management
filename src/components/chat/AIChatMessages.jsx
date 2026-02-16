@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, User, ArrowRight } from 'lucide-react';
+import { Bot, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Trash2, Receipt, Tag, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const FREQ_LABELS = {
   weekly: 'Weekly (4x/mo)',
