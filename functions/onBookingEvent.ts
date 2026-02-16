@@ -168,7 +168,96 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
       });
 
       console.log(`Status update email sent to ${customer.email}: ${oldStatus} → ${newStatus}`);
+
+      // === 2b. DELAYED → Alert admins immediately ===
+      if (newStatus === 'delayed') {
+        const admins = (await base44.asServiceRole.entities.User.list()).filter(u => u.role === 'admin' && u.email);
+        const provider = booking.assigned_provider_id
+          ? (await base44.asServiceRole.entities.Provider.list()).find(p => p.id === booking.assigned_provider_id)
+          : null;
+        const property = await base44.asServiceRole.entities.Property.read(booking.property_id);
+
+        for (const admin of admins) {
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: admin.email,
+            subject: `⚠️ Job Delayed: ${service.name} — ${customer.full_name}`,
+            body: `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+  <div style="background:#dc2626;color:white;padding:20px;border-radius:8px 8px 0 0;text-align:center">
+    <h2 style="margin:0">⚠️ Job Delay Alert</h2>
+  </div>
+  <div style="background:#fef2f2;padding:20px;border:1px solid #fecaca;border-top:none;border-radius:0 0 8px 8px">
+    <p><strong>Service:</strong> ${service.name}</p>
+    <p><strong>Customer:</strong> ${customer.full_name} (${customer.email})</p>
+    <p><strong>Provider:</strong> ${provider?.full_name || 'Unassigned'}</p>
+    <p><strong>Scheduled:</strong> ${booking.scheduled_date} at ${booking.scheduled_time || 'N/A'}</p>
+    <p><strong>Location:</strong> ${property?.address || 'N/A'}</p>
+    <p><strong>Amount:</strong> AED ${booking.total_amount}</p>
+    <p><strong>Delay Reason:</strong> ${booking.delay_reason || 'Not specified'}</p>
+    <p style="margin-top:15px;text-align:center"><strong>Please review and take action in the admin dashboard.</strong></p>
+  </div>
+</div>`,
+            from_name: 'INAYA Operations Alert'
+          });
+        }
+        console.log(`Delay alert sent to ${admins.length} admin(s)`);
+      }
+
       return Response.json({ success: true, action: 'status_update_sent', from: oldStatus, to: newStatus });
+    }
+
+    // === 3. PROVIDER ASSIGNED → Smart notification to provider ===
+    if (event.type === 'update' && old_data && data.assigned_provider_id && data.assigned_provider_id !== old_data.assigned_provider_id) {
+      const booking = data;
+      const providers = await base44.asServiceRole.entities.Provider.list();
+      const provider = providers.find(p => p.id === booking.assigned_provider_id);
+
+      if (!provider?.email) {
+        return Response.json({ skipped: true, reason: 'No provider email' });
+      }
+
+      const [service, property, customer] = await Promise.all([
+        base44.asServiceRole.entities.Service.read(booking.service_id),
+        base44.asServiceRole.entities.Property.read(booking.property_id),
+        base44.asServiceRole.entities.User.read(booking.customer_id),
+      ]);
+
+      const aiBody = await base44.asServiceRole.integrations.Core.InvokeLLM({
+        prompt: `Write a concise HTML email body (no subject) for a technician being assigned a new job:
+- Technician: ${provider.full_name}
+- Service: ${service.name} (estimated ${service.duration_minutes || 60} min)
+- Customer: ${customer.full_name}
+- Date: ${booking.scheduled_date}
+- Time: ${booking.scheduled_time || 'TBD'}
+- Location: ${property.address || ''}, ${property.area || ''}, Dubai
+- Property: ${property.property_type || 'Property'}, ${property.bedrooms || '?'} bedrooms
+- Access notes: ${property.access_notes || 'None'}
+- Customer notes: ${booking.customer_notes || 'None'}
+- Amount: AED ${booking.total_amount}
+
+Include: what tools/materials to prepare for this service, estimated travel considerations for Dubai, and a reminder to update job status via the provider dashboard.
+Keep it professional and actionable.`,
+      });
+
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: provider.email,
+        subject: `🔧 New Job Assigned: ${service.name} — ${booking.scheduled_date}`,
+        body: `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+  <div style="background:linear-gradient(135deg,#1e293b,#334155);color:white;padding:25px;text-align:center;border-radius:8px 8px 0 0">
+    <h2 style="margin:0">🔧 New Job Assignment</h2>
+    <p style="margin:5px 0 0;opacity:.85">${service.name}</p>
+  </div>
+  <div style="background:#f9fafb;padding:25px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px">
+    ${aiBody}
+    <p style="text-align:center;margin-top:20px;font-size:13px;">Questions? Contact dispatch: <strong>+971 4 815 7300</strong></p>
+  </div>
+</div>`,
+        from_name: 'INAYA Dispatch'
+      });
+
+      console.log(`Assignment notification sent to provider ${provider.full_name} (${provider.email})`);
+      return Response.json({ success: true, action: 'provider_assignment_sent' });
     }
 
     return Response.json({ skipped: true, reason: 'No matching condition' });
