@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Loader2, Calendar } from 'lucide-react';
+import { Loader2, Calendar, Plus } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BookingTimeline from '../components/booking/BookingTimeline';
 import AdminBookingCalendar from '../components/admin/AdminBookingCalendar';
+import CreateJobDialog from '../components/admin/CreateJobDialog';
 import { logAuditEvent } from '../components/admin/AuditLogger';
 import AuthGuard from '../components/AuthGuard';
 
@@ -18,6 +19,8 @@ function AdminBookingsContent() {
   const [refundingId, setRefundingId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [viewMode, setViewMode] = useState('calendar');
+  const [showCreateJob, setShowCreateJob] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
@@ -96,9 +99,14 @@ function AdminBookingsContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-slate-900">Manage Bookings</h1>
-          <p className="text-slate-500">View and manage all service bookings</p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Manage Bookings</h1>
+            <p className="text-slate-500">View and manage all service bookings</p>
+          </div>
+          <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2" onClick={() => setShowCreateJob(true)}>
+            <Plus className="w-4 h-4" /> Create Job
+          </Button>
         </div>
 
         <Tabs value={viewMode} onValueChange={setViewMode} className="mb-6">
@@ -119,8 +127,24 @@ function AdminBookingsContent() {
           </TabsContent>
 
           <TabsContent value="list" className="mt-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-40 h-9 text-sm"><SelectValue placeholder="All Statuses" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="confirmed">Confirmed</SelectItem>
+                  <SelectItem value="en_route">En Route</SelectItem>
+                  <SelectItem value="in_progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="delayed">Delayed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="text-sm text-slate-500">{filteredBookings.length} bookings</span>
+            </div>
             <div className="space-y-4">
-          {filteredBookings.map(booking => {
+          {filteredBookings.filter(b => statusFilter === 'all' || b.status === statusFilter).map(booking => {
             const service = getService(booking.service_id);
             
             return (
@@ -300,6 +324,7 @@ function AdminBookingsContent() {
            </div>
           </div>
           )}
+          <CreateJobDialog open={showCreateJob} onClose={() => setShowCreateJob(false)} />
           </div>
           </div>
           );
@@ -312,3 +337,5 @@ export default function AdminBookings() {
     </AuthGuard>
   );
 }
+
+// Note: CreateJobDialog is rendered inside AdminBookingsContent
