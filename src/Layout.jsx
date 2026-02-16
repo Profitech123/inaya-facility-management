@@ -25,10 +25,10 @@ export default function Layout({ children, currentPageName }) {
         setUser(null);
         return;
       }
-      base44.auth.me()
+      return base44.auth.me()
         .then(setUser)
         .catch(() => setUser(null));
-    });
+    }).catch(() => setUser(null));
   }, []);
 
   // Provider dashboard gets its own layout (no nav/footer)
