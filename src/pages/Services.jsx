@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/lib/supabase/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,25 +10,18 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 export default function Services() {
-  const { data: categories = [] } = useQuery({
-    queryKey: ['serviceCategories'],
-    queryFn: async () => {
-      try {
-        return await base44.entities.ServiceCategory.list('display_order');
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        return [];
-      }
-    },
-    initialData: []
-  });
+  // For now, hardcoded categories since we don't have a separate categories table
+  const categories = [
+    { id: 'soft-services', name: 'Soft Services', slug: 'soft-services' },
+    { id: 'hard-services', name: 'Hard Services', slug: 'hard-services' },
+    { id: 'specialized-services', name: 'Specialized Services', slug: 'specialized-services' }
+  ];
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
       try {
-        const allServices = await base44.entities.Service.list();
-        return allServices.filter(s => s.is_active === true);
+        return await api.services.list({ active: true });
       } catch (error) {
         console.error('Error fetching services:', error);
         return [];

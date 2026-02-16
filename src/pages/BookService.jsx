@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { Card, CardContent } from '@/components/ui/card';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
+import { useQuery, useMutation } from '@tantml:function_calls>
+<invoke name="card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { XCircle, Loader2, ArrowLeft, Clock } from 'lucide-react';
@@ -19,8 +20,8 @@ import BookingConfirmation from '../components/booking/BookingConfirmation';
 
 export default function BookService() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [isAuthChecking, setIsAuthChecking] = useState(true);
+  const { user, me, redirectToLogin } = useAuth();
+  const currentUser = me();
   const [step, setStep] = useState(1);
   const [serviceId, setServiceId] = useState(null);
   const [bookingData, setBookingData] = useState({
@@ -35,20 +36,10 @@ export default function BookService() {
   const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const currentUser = await base44.auth.me();
-        setUser(currentUser);
-        setIsAuthChecking(false);
-      } catch (error) {
-        if (error?.status === 401) {
-          base44.auth.redirectToLogin(window.location.href);
-        } else {
-          setIsAuthChecking(false);
-        }
-      }
-    };
-    checkAuth();
+    if (!user) {
+      redirectToLogin(window.location.href);
+      return;
+    }
 
     const params = new URLSearchParams(window.location.search);
     setServiceId(params.get('service'));
@@ -65,51 +56,50 @@ export default function BookService() {
   const { data: service } = useQuery({
     queryKey: ['service', serviceId],
     queryFn: async () => {
-      const services = await base44.entities.Service.list();
-      return services.find(s => s.id === serviceId);
+      if (!serviceId) return null;
+      return await api.services.get(serviceId);
     },
     enabled: !!serviceId
   });
 
   const { data: properties = [] } = useQuery({
-    queryKey: ['myProperties', user?.id],
+    queryKey: ['myProperties', currentUser?.id],
     queryFn: async () => {
-      const allProps = await base44.entities.Property.list();
-      return allProps.filter(p => p.owner_id === user?.id);
+      return await api.properties.list(currentUser?.id);
     },
-    enabled: !!user?.id && !isAuthChecking,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const { data: allAddons = [] } = useQuery({
     queryKey: ['addons'],
     queryFn: async () => {
-      const addons = await base44.entities.ServiceAddon.list();
-      return addons.filter(a => a.is_active === true);
+      // Addons would need to be stored in services table or a separate table
+      // For now, return empty array
+      return [];
     },
-    enabled: !!user?.id && !isAuthChecking,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const { data: allBookings = [] } = useQuery({
     queryKey: ['allBookings'],
-    queryFn: () => base44.entities.Booking.list(),
-    enabled: !!user?.id && !isAuthChecking,
+    queryFn: () => api.bookings.listAll(),
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const { data: allProviders = [] } = useQuery({
     queryKey: ['allProviders'],
     queryFn: async () => {
-      const providers = await base44.entities.Provider.list();
-      return providers.filter(p => p.is_active);
+      return await api.providers.list({ active: true });
     },
-    enabled: !!user?.id && !isAuthChecking,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const createBookingMutation = useMutation({
-    mutationFn: (data) => base44.entities.Booking.create(data),
+    mutationFn: (data) => api.bookings.create(data),
   });
 
   // Derived values
@@ -124,29 +114,29 @@ export default function BookService() {
     try {
       const newBooking = await createBookingMutation.mutateAsync({
         service_id: serviceId,
-        customer_id: user.id,
+        customer_id: currentUser.id,
         property_id: bookingData.property_id,
         scheduled_date: format(bookingData.scheduled_date, 'yyyy-MM-dd'),
         scheduled_time: bookingData.scheduled_time,
-        customer_notes: bookingData.customer_notes,
-        total_amount: grandTotal,
-        addon_ids: selectedAddonIds,
-        addons_amount: addonsTotal,
-        assigned_provider_id: selectedProviderId || undefined,
-        assigned_provider: selectedProvider?.full_name || undefined,
+        notes: bookingData.customer_notes,
+        total_price: grandTotal,
         status: 'confirmed',
-        payment_status: 'paid'
+        payment_status: 'paid',
+        technician_id: selectedProviderId || null
       });
 
-      await base44.functions.invoke('sendBookingConfirmation', {
-        booking_id: newBooking.id
-      });
+      // TODO: Implement email notification via Supabase Edge Function
+      // await supabase.functions.invoke('send-booking-confirmation', {
+      //   body: { booking_id: newBooking.id }
+      // });
 
       setConfirmedBooking(newBooking);
       setIsProcessingPayment(false);
       setStep('success');
+      toast.success('Booking confirmed successfully!');
     } catch (error) {
       console.error('Booking error:', error);
+      toast.error('Failed to create booking');
       setIsProcessingPayment(false);
       toast.error('Failed to create booking. Please try again.');
     }

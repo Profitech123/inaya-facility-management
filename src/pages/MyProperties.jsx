@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,10 +9,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Home, Plus, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function MyPropertiesContent() {
-  const [user, setUser] = useState(null);
+  const { user, me } = useAuth();
+  const currentUser = me();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     property_type: 'villa',
@@ -24,27 +26,22 @@ function MyPropertiesContent() {
 
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = '/');
-  }, []);
-
   const { data: properties = [] } = useQuery({
-    queryKey: ['myProperties', user?.id],
+    queryKey: ['myProperties', currentUser?.id],
     queryFn: async () => {
       try {
-        const allProps = await base44.entities.Property.list();
-        return allProps.filter(p => p.owner_id === user?.id);
+        return await api.properties.list(currentUser?.id);
       } catch (error) {
         console.error('Error fetching properties:', error);
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const createPropertyMutation = useMutation({
-    mutationFn: (data) => base44.entities.Property.create(data),
+    mutationFn: (data) => api.properties.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries(['myProperties']);
       setShowForm(false);
@@ -59,11 +56,11 @@ function MyPropertiesContent() {
       ...formData,
       bedrooms: parseInt(formData.bedrooms),
       square_meters: parseFloat(formData.square_meters),
-      owner_id: user.id
+      customer_id: currentUser.id
     });
   };
 
-  if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!currentUser) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50">

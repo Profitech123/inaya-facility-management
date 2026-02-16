@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,31 +11,27 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import PauseCancelDialog from '../components/subscriptions/PauseCancelDialog';
 import RenewalReminderBanner from '../components/subscriptions/RenewalReminderBanner';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function MySubscriptionsContent() {
-  const [user, setUser] = useState(null);
+  const { user, me } = useAuth();
+  const currentUser = me();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => window.location.href = '/');
-  }, []);
-
   const { data: subscriptions = [] } = useQuery({
-    queryKey: ['mySubscriptions', user?.id],
+    queryKey: ['mySubscriptions', currentUser?.id],
     queryFn: async () => {
       try {
-        const allSubs = await base44.entities.Subscription.list('-created_date');
-        return allSubs.filter(s => s.customer_id === user?.id);
+        return await api.subscriptions.list({ customerId: currentUser?.id });
       } catch (error) {
         console.error('Error fetching subscriptions:', error);
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
@@ -42,7 +39,7 @@ function MySubscriptionsContent() {
     queryKey: ['packages'],
     queryFn: async () => {
       try {
-        return await base44.entities.SubscriptionPackage.list();
+        return await api.packages.list();
       } catch (error) {
         console.error('Error fetching packages:', error);
         return [];
@@ -55,21 +52,23 @@ function MySubscriptionsContent() {
     queryKey: ['properties'],
     queryFn: async () => {
       try {
-        return await base44.entities.Property.list();
+        return await api.properties.list(currentUser?.id);
       } catch (error) {
         console.error('Error fetching properties:', error);
         return [];
       }
     },
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Subscription.update(id, data),
+    mutationFn: ({ id, data }) => api.subscriptions.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mySubscriptions'] });
       setDialogOpen(false);
       setSelectedSub(null);
+      toast.success('Subscription updated successfully');
     }
   });
 

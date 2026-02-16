@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import React from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,32 +8,29 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function MyBookingsContent() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const { user, me } = useAuth();
+  const currentUser = me();
 
   const { data: bookings = [], isLoading } = useQuery({
-    queryKey: ['allMyBookings', user?.id],
-    queryFn: () => base44.entities.Booking.filter({ customer_id: user?.id }, '-scheduled_date'),
-    enabled: !!user,
+    queryKey: ['allMyBookings', currentUser?.id],
+    queryFn: () => api.bookings.list({ customerId: currentUser?.id }),
+    enabled: !!currentUser,
     initialData: []
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
+    queryFn: () => api.services.list(),
     initialData: []
   });
 
   const { data: properties = [] } = useQuery({
-    queryKey: ['myProperties', user?.id],
-    queryFn: () => base44.entities.Property.filter({ owner_id: user?.id }),
-    enabled: !!user,
+    queryKey: ['myProperties', currentUser?.id],
+    queryFn: () => api.properties.list(currentUser?.id),
+    enabled: !!currentUser,
     initialData: []
   });
 
@@ -47,7 +45,7 @@ function MyBookingsContent() {
     pending: 'bg-yellow-100 text-yellow-800'
   }[status] || 'bg-slate-100 text-slate-800');
 
-  if (!user || isLoading) {
+  if (!currentUser || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />

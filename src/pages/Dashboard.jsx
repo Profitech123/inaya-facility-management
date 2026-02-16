@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import { api } from '@/lib/supabase/api';
 import { useQuery } from '@tanstack/react-query';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import SubscriptionHeroCard from '../components/dashboard/SubscriptionHeroCard';
@@ -14,39 +15,34 @@ import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function DashboardContent() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const { user, me } = useAuth();
+  const currentUser = me();
 
   const { data: bookings = [] } = useQuery({
-    queryKey: ['myBookings', user?.id],
+    queryKey: ['myBookings', currentUser?.id],
     queryFn: async () => {
       try {
-        const allBookings = await base44.entities.Booking.list('-scheduled_date', 100);
-        return allBookings.filter(b => b.customer_id === user?.id).slice(0, 10);
+        return await api.bookings.list({ customerId: currentUser?.id });
       } catch (error) {
         console.error('Error fetching bookings:', error);
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
   const { data: subscriptions = [] } = useQuery({
-    queryKey: ['mySubscriptions', user?.id],
+    queryKey: ['mySubscriptions', currentUser?.id],
     queryFn: async () => {
       try {
-        const allSubs = await base44.entities.Subscription.list();
-        return allSubs.filter(s => s.customer_id === user?.id && s.status === 'active');
+        return await api.subscriptions.list({ customerId: currentUser?.id, status: 'active' });
       } catch (error) {
         console.error('Error fetching subscriptions:', error);
         return [];
       }
     },
-    enabled: !!user?.id,
+    enabled: !!currentUser?.id,
     initialData: []
   });
 
@@ -54,7 +50,7 @@ function DashboardContent() {
     queryKey: ['subPackages'],
     queryFn: async () => {
       try {
-        return await base44.entities.SubscriptionPackage.list();
+        return await api.packages.list({ active: true });
       } catch (error) {
         console.error('Error fetching packages:', error);
         return [];
@@ -67,7 +63,7 @@ function DashboardContent() {
     queryKey: ['services'],
     queryFn: async () => {
       try {
-        return await base44.entities.Service.list();
+        return await api.services.list({ active: true });
       } catch (error) {
         console.error('Error fetching services:', error);
         return [];
@@ -76,7 +72,7 @@ function DashboardContent() {
     initialData: []
   });
 
-  if (!user) {
+  if (!currentUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -95,7 +91,7 @@ function DashboardContent() {
       {/* Main content */}
       <div className="flex-1 lg:ml-56">
         <div className="max-w-5xl mx-auto px-6 py-8">
-          <DashboardHeader user={user} />
+          <DashboardHeader user={currentUser} />
 
           <div className="space-y-6">
             {/* Onboarding Checklist */}
@@ -120,7 +116,7 @@ function DashboardContent() {
             </div>
 
             {/* AI Recommendations */}
-            <DashboardRecommendations user={user} bookings={bookings} />
+            <DashboardRecommendations user={currentUser} bookings={bookings} />
 
             {/* Quick actions */}
             <QuickActionsRow />
