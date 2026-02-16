@@ -9,7 +9,7 @@ import { Star, Search, Filter, Users, Briefcase, AlertCircle, User, ExternalLink
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import AddTechnicianDialog from '../components/admin/AddTechnicianDialog';
 import AssignServicesDialog from '../components/admin/AssignServicesDialog';
 import BlockoutManager from '../components/admin/BlockoutManager';

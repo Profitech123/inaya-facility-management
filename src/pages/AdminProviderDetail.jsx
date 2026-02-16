@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 import ProviderProfileHeader from '../components/admin/provider-detail/ProviderProfileHeader';
 import ProviderKPICards from '../components/admin/provider-detail/ProviderKPICards';

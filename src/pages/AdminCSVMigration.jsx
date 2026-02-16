@@ -8,7 +8,7 @@ import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle, Loader2 } from 'luc
 import { toast } from 'sonner';
 import CSVPreviewTable from '../components/admin/CSVPreviewTable';
 import CSVColumnMapper from '../components/admin/CSVColumnMapper';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 const ENTITY_OPTIONS = [
   { value: 'Service', label: 'Services', fields: ['name', 'slug', 'category_id', 'description', 'price', 'duration_minutes', 'image_url', 'is_active'] },

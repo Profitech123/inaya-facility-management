@@ -11,7 +11,7 @@ import { differenceInDays, parseISO } from 'date-fns';
 import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
 import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
 import ScheduledServicesList from '../components/admin/ScheduledServicesList';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function AdminSubscriptionsContent() {
   const [showPackageForm, setShowPackageForm] = useState(false);

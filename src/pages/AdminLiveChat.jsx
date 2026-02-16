@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { createPageUrl } from '@/utils';
 import AdminChatList from '../components/chat/AdminChatList';
 import AdminChatWindow from '../components/chat/AdminChatWindow';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function AdminLiveChatContent() {
   const [user, setUser] = useState(null);

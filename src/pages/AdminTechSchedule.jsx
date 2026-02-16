@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import TechnicianScheduleCalendar from '../components/admin/TechnicianScheduleCalendar';
 import { Loader2 } from 'lucide-react';
 

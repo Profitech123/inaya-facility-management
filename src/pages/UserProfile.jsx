@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import ProfileInfoCard from '../components/profile/ProfileInfoCard';
 import ProfileBookingsCard from '../components/profile/ProfileBookingsCard';
 import ProfilePropertiesCard from '../components/profile/ProfilePropertiesCard';

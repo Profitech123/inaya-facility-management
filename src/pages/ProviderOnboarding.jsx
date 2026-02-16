@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import ProviderOnboardingStepIndicator from '../components/onboarding/provider/ProviderOnboardingStepIndicator';
 import StepProfile from '../components/onboarding/provider/StepProfile';
 import StepSpecialization from '../components/onboarding/provider/StepSpecialization';

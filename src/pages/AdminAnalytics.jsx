@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import DateRangeFilter from '../components/reports/DateRangeFilter';
 import EnhancedKPICards from '../components/analytics/EnhancedKPICards';
 import RevenueOverTimeChart from '../components/analytics/RevenueOverTimeChart';

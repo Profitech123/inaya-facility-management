@@ -8,7 +8,7 @@ import CustomerReport from '../components/reports/CustomerReport';
 import BookingReport from '../components/reports/BookingReport';
 import TechnicianReport from '../components/reports/TechnicianReport';
 import SystemHealthReport from '../components/reports/SystemHealthReport';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 
 function getDefaultRange() {
   const end = new Date();

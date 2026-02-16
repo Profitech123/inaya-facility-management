@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, Clock, CheckCircle2, Archive } from 'lucide-react';
 import { toast } from 'sonner';
-import AuthGuard from '../components/AuthGuard';
+import { AuthGuard } from '../components/AuthGuard';
 import AIDraftResponse from '../components/support/AIDraftResponse';
 import AIRecurringIssuesAnalyzer from '../components/support/AIRecurringIssuesAnalyzer';
 
