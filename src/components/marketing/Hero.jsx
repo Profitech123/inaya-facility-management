@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, Play, Shield, Clock, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
@@ -10,66 +10,86 @@ const AVATARS = [
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
 ];
 
 export default function Hero() {
   return (
-    <div className="relative bg-slate-50 overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div className="absolute top-20 right-1/3 w-[500px] h-[500px] rounded-full bg-emerald-500 blur-3xl" />
+    <div className="relative min-h-[92vh] flex items-center overflow-hidden">
+      {/* Cinematic background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-50 via-white to-slate-50" />
+        <div className="absolute top-0 right-0 w-[900px] h-[900px] bg-gradient-to-bl from-emerald-100/40 to-transparent rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-teal-50/60 to-transparent rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)',
+          backgroundSize: '60px 60px'
+        }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left */}
-          <div>
+      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28 relative w-full">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Left — 7 columns */}
+          <div className="lg:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-6"
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-3 mb-8"
             >
-              <div className="w-8 h-[3px] bg-emerald-500 rounded-full" />
-              <span className="text-emerald-600 text-xs font-bold tracking-[0.2em] uppercase">
-                Premium Facility Management
-              </span>
+              <div className="flex items-center gap-2 bg-emerald-600/10 border border-emerald-200/60 backdrop-blur-sm rounded-full px-4 py-2">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-emerald-700 text-xs font-semibold tracking-wide uppercase">
+                  Dubai's #1 Facility Management
+                </span>
+              </div>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl lg:text-[3.5rem] font-bold text-slate-900 leading-[1.1] mb-6"
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-5xl md:text-6xl lg:text-[4.25rem] font-extrabold text-slate-900 leading-[1.05] mb-7 tracking-tight"
             >
-              Professional Property
-              <br />
-              Maintenance for{' '}
-              <span className="text-emerald-500">Your Home.</span>
+              Your Property,{' '}
+              <br className="hidden sm:block" />
+              <span className="relative">
+                <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
+                  Our Expertise.
+                </span>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                  className="absolute -bottom-1 left-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+                />
+              </span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-slate-500 mb-8 leading-relaxed max-w-lg"
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="text-xl text-slate-500 mb-10 leading-relaxed max-w-xl font-light"
             >
-              From subscription plans to one-off services — expert maintenance for Dubai villas and apartments, delivered by certified professionals.
+              Premium maintenance for Dubai's finest properties. Subscription plans, on-demand services, and 24/7 emergency response — all by certified professionals.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-3 mb-10"
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="flex flex-col sm:flex-row gap-4 mb-12"
             >
               <Link to={createPageUrl('Subscriptions')}>
-                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-8 h-13 shadow-lg shadow-emerald-500/25 transition-all hover:-translate-y-0.5 gap-2 w-full sm:w-auto">
+                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-white text-base px-8 h-14 shadow-2xl shadow-slate-900/20 transition-all hover:-translate-y-0.5 hover:shadow-slate-900/30 gap-2.5 w-full sm:w-auto rounded-xl font-semibold">
                   Explore Packages <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to={createPageUrl('OnDemandServices')}>
-                <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-white text-base px-8 h-13 w-full sm:w-auto">
-                  Book a Service
+                <Button size="lg" variant="outline" className="border-2 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-base px-8 h-14 w-full sm:w-auto rounded-xl font-semibold gap-2.5 transition-all">
+                  <Play className="w-4 h-4 fill-current" /> Book a Service
                 </Button>
               </Link>
             </motion.div>
@@ -78,57 +98,108 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex items-center gap-4"
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex items-center gap-5"
             >
-              <div className="flex -space-x-2.5">
+              <div className="flex -space-x-3">
                 {AVATARS.map((src, i) => (
-                  <img key={i} src={src} alt="" className="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
+                  <img key={i} src={src} alt="" className="w-10 h-10 rounded-full border-[3px] border-white object-cover shadow-md ring-1 ring-slate-100" />
                 ))}
               </div>
-              <div>
+              <div className="border-l border-slate-200 pl-5">
                 <div className="flex items-center gap-1 mb-0.5">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
+                  <span className="text-sm font-bold text-slate-800 ml-1">4.9</span>
                 </div>
-                <p className="text-sm text-slate-500">Trusted by <strong className="text-slate-700">5,000+</strong> Dubai households</p>
+                <p className="text-sm text-slate-500">Trusted by <strong className="text-slate-700">5,000+</strong> households</p>
               </div>
             </motion.div>
           </div>
 
-          {/* Right */}
+          {/* Right — 5 columns */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="lg:col-span-5 relative"
           >
-            {/* Decorative shape */}
-            <div className="absolute -top-6 -right-6 w-full h-full bg-emerald-100/60 rounded-3xl rotate-3 -z-10" />
-            
-            <div className="rounded-3xl overflow-hidden shadow-2xl shadow-slate-300/50">
-              <img
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/95350b0d1_generated_image.png"
-                alt="Professional technician performing home maintenance"
-                className="w-full h-[420px] lg:h-[480px] object-cover"
-                loading="eager"
-              />
-            </div>
-
-            {/* Rating badge */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -bottom-4 -left-4 bg-white rounded-2xl px-5 py-4 shadow-xl border border-slate-100"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
-                <span className="text-2xl font-bold text-slate-900">4.9/5</span>
+            {/* Main image */}
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-emerald-200/30 to-teal-100/20 rounded-[2rem] rotate-2 blur-sm" />
+              <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)]">
+                <img
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/95350b0d1_generated_image.png"
+                  alt="Professional technician performing home maintenance"
+                  className="w-full h-[440px] lg:h-[520px] object-cover"
+                  loading="eager"
+                />
+                {/* Image overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </div>
-              <p className="text-xs text-slate-400">Customer Rating</p>
-            </motion.div>
+
+              {/* Floating cards */}
+              <motion.div
+                initial={{ opacity: 0, y: 20, x: -20 }}
+                animate={{ opacity: 1, y: 0, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+                className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-xl rounded-2xl px-5 py-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] border border-white/80"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-lg shadow-amber-400/30">
+                    <Star className="w-6 h-6 text-white fill-white" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-extrabold text-slate-900 leading-none">4.9/5</div>
+                    <p className="text-xs text-slate-500 font-medium">Customer Rating</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: -20, x: 20 }}
+                animate={{ opacity: 1, y: 0, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.85 }}
+                className="absolute -top-4 -right-4 bg-white/90 backdrop-blur-xl rounded-2xl px-5 py-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] border border-white/80"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-extrabold text-slate-900 leading-none">ISO Certified</div>
+                    <p className="text-xs text-slate-500 font-medium">9001 · 14001 · 45001</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
+
+        {/* Bottom stats bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-slate-200/60 rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm"
+        >
+          {[
+            { value: '700+', label: 'Expert Professionals', icon: Award },
+            { value: '24/7', label: 'Emergency Response', icon: Clock },
+            { value: '549+', label: 'Hectares Managed', icon: Shield },
+            { value: '5,000+', label: 'Happy Households', icon: Star },
+          ].map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <div key={i} className="bg-white/80 backdrop-blur-sm px-6 py-5 flex items-center gap-4 hover:bg-white transition-colors">
+                <Icon className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <div>
+                  <div className="text-xl font-extrabold text-slate-900">{stat.value}</div>
+                  <div className="text-xs text-slate-500 font-medium">{stat.label}</div>
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
     </div>
   );
