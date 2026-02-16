@@ -63,7 +63,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white sticky top-0 z-50 border-b border-slate-100 shadow-sm">
+      <nav className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-100/80">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -116,7 +116,7 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Right Section */}
             <div className="flex items-center gap-3">
-              <Link to={createPageUrl('ServiceFinder')} className="hidden lg:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm hover:shadow-md">
+              <Link to={createPageUrl('ServiceFinder')} className="hidden lg:inline-flex bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:shadow-slate-900/20">
                 Find a Service
               </Link>
 
@@ -165,14 +165,14 @@ export default function Layout({ children, currentPageName }) {
                     onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
                     variant="ghost" 
                     size="sm" 
-                    className="text-slate-600"
+                    className="text-slate-600 font-semibold"
                   >
                     Sign In
                   </Button>
                   <Button 
                     onClick={() => base44.auth.redirectToLogin(createPageUrl('Dashboard'))} 
                     size="sm" 
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl shadow-sm"
                   >
                     Create Account
                   </Button>
@@ -224,9 +224,12 @@ export default function Layout({ children, currentPageName }) {
 
       <AIChatWidget />
 
-      <footer className="bg-slate-950 text-white py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-10">
+      <footer className="bg-slate-950 text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[200px] -translate-x-1/3 -translate-y-1/3" />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 relative">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
@@ -274,7 +277,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           
-          <div className="border-t border-slate-800/60 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+          <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('TermsOfService')} className="hover:text-white transition-colors">Terms of Service</Link>
