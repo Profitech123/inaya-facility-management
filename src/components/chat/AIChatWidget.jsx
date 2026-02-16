@@ -166,7 +166,9 @@ export default function AIChatWidget() {
     { label: "View Services", action: "What on-demand services do you offer?" },
     { label: "See Packages", action: "Tell me about your subscription packages" },
     { label: "Get a Quote", action: "I'd like to request a quote" },
-    { label: "Recommend a Service", action: "What service do you recommend for my property?" },
+    { label: "Booking Status", action: "What's the status of my latest booking?" },
+    { label: "Reschedule / Cancel", action: "How can I reschedule or cancel a booking?" },
+    { label: "Emergency Service", action: "I need an emergency service right now" },
   ];
 
   const handleQuickAction = (text) => {
