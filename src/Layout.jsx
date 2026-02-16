@@ -149,10 +149,11 @@ export default function Layout({ children, currentPageName }) {
                   <Link to={createPageUrl('CustomerLogin')}>
                     <Button 
                       size="sm" 
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                  >
-                    Create Account
-                  </Button>
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                      Create Account
+                    </Button>
+                  </Link>
                 </div>
               )}
               
