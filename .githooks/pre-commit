@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -eu
+
+bash scripts/check_large_staged_files.sh
