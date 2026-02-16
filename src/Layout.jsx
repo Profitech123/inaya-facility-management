@@ -4,6 +4,7 @@ import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import NotificationBell from './components/notifications/NotificationBell';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -115,6 +116,8 @@ export default function Layout({ children, currentPageName }) {
               </Link>
 
               {user ? (
+                <>
+                <NotificationBell userId={user.id} />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="gap-2 border-slate-200">
@@ -150,6 +153,7 @@ export default function Layout({ children, currentPageName }) {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                </>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
                   <Button 
