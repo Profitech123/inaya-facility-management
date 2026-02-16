@@ -69,6 +69,7 @@ import Dashboard from './pages/Dashboard';
 import FAQ from './pages/FAQ';
 import HardServices from './pages/HardServices';
 import Home from './pages/Home';
+import Login from './pages/Login';
 import IntegratedFM from './pages/IntegratedFM';
 import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
@@ -86,6 +87,12 @@ import Subscriptions from './pages/Subscriptions';
 import Support from './pages/Support';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
+import TechnicianDashboard from './pages/TechnicianDashboard';
+import TechnicianJobDetail from './pages/TechnicianJobDetail';
+import TechnicianSchedule from './pages/TechnicianSchedule';
+import AdminInquiries from './pages/AdminInquiries';
+import AdminContent from './pages/AdminContent';
+import AdminCustomers from './pages/AdminCustomers';
 import __Layout from './Layout.jsx';
 
 
@@ -112,6 +119,7 @@ export const PAGES = {
     "FAQ": FAQ,
     "HardServices": HardServices,
     "Home": Home,
+    "Login": Login,
     "IntegratedFM": IntegratedFM,
     "MyBookings": MyBookings,
     "MyProperties": MyProperties,
@@ -129,6 +137,12 @@ export const PAGES = {
     "Support": Support,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
+    "TechnicianDashboard": TechnicianDashboard,
+    "TechnicianJobDetail": TechnicianJobDetail,
+    "TechnicianSchedule": TechnicianSchedule,
+    "AdminInquiries": AdminInquiries,
+    "AdminContent": AdminContent,
+    "AdminCustomers": AdminCustomers,
 }
 
 export const pagesConfig = {

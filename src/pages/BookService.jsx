@@ -16,7 +16,7 @@ import AddonSelector from '../components/booking/AddonSelector';
 import TechnicianSelector from '../components/booking/TechnicianSelector';
 import BookingReviewStep from '../components/booking/BookingReviewStep';
 import AIServiceRecommendation from '../components/booking/AIServiceRecommendation';
-import BookingConfirmation from '../components/booking/BookingConfirmation';
+import BookingSuccessModal from '../components/booking/BookingSuccessModal';
 
 export default function BookService() {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ export default function BookService() {
     queryKey: ['addons'],
     queryFn: async () => {
       const addons = await base44.entities.ServiceAddon.list();
-      return addons.filter(a => a.is_active === true);
+      return addons.filter(a => a.is_active !== false);
     },
     enabled: !!user?.id && !isAuthChecking,
     initialData: []
@@ -176,7 +176,7 @@ export default function BookService() {
   // Success
   if (step === 'success') {
     return (
-      <BookingConfirmation
+      <BookingSuccessModal
         booking={confirmedBooking}
         service={service}
         property={selectedProperty}
@@ -252,7 +252,7 @@ export default function BookService() {
                         </Button>
                       </div>
                     ) : (
-                      <Select value={bookingData.property_id} onValueChange={(val) => setBookingData({...bookingData, property_id: val})}>
+                      <Select value={bookingData.property_id} onValueChange={(val) => setBookingData({ ...bookingData, property_id: val })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Choose a property" />
                         </SelectTrigger>
@@ -271,8 +271,8 @@ export default function BookService() {
                   <BookingCalendar
                     selectedDate={bookingData.scheduled_date}
                     selectedTimeSlot={bookingData.scheduled_time}
-                    onDateChange={(date) => setBookingData({...bookingData, scheduled_date: date, scheduled_time: ''})}
-                    onTimeSlotChange={(timeSlot) => setBookingData({...bookingData, scheduled_time: timeSlot})}
+                    onDateChange={(date) => setBookingData({ ...bookingData, scheduled_date: date, scheduled_time: '' })}
+                    onTimeSlotChange={(timeSlot) => setBookingData({ ...bookingData, scheduled_time: timeSlot })}
                     bookedSlots={allBookings}
                   />
 
@@ -315,35 +315,35 @@ export default function BookService() {
                     <label className="block text-sm font-medium text-slate-700 mb-2">Special Instructions</label>
                     <Textarea
                       value={bookingData.customer_notes}
-                      onChange={(e) => setBookingData({...bookingData, customer_notes: e.target.value})}
+                      onChange={(e) => setBookingData({ ...bookingData, customer_notes: e.target.value })}
                       placeholder="Any special instructions, access codes, or requirements..."
                       rows={3}
                     />
                   </div>
 
                   <div className="flex items-center justify-between pt-4">
-                     <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
-                       <ArrowLeft className="w-4 h-4" /> Back
-                     </Button>
-                     <Button
-                       onClick={() => setStep(3)}
-                       className="bg-emerald-600 hover:bg-emerald-700 gap-2"
-                     >
-                       Review Booking <ArrowRight className="w-4 h-4" />
-                     </Button>
-                   </div>
-                  </CardContent>
-                  </Card>
-                  )}
+                    <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
+                      <ArrowLeft className="w-4 h-4" /> Back
+                    </Button>
+                    <Button
+                      onClick={() => setStep(3)}
+                      className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+                    >
+                      Review Booking <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
-                  {/* AI Recommendations after Step 1 property selection */}
-                  {step === 1 && selectedProperty && (
-                  <AIServiceRecommendation
-                  user={user}
-                  currentServiceId={serviceId}
-                  selectedProperty={selectedProperty}
-                  />
-                  )}
+            {/* AI Recommendations after Step 1 property selection */}
+            {step === 1 && selectedProperty && (
+              <AIServiceRecommendation
+                user={user}
+                currentServiceId={serviceId}
+                selectedProperty={selectedProperty}
+              />
+            )}
 
             {/* STEP 3: Review & Confirm */}
             {step === 3 && (

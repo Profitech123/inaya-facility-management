@@ -15,36 +15,50 @@ export default function AuthGuard({ requiredRole = 'any', children }) {
   }, []);
 
   const checkAuth = async () => {
-    const isAuth = await base44.auth.isAuthenticated();
-    if (!isAuth) {
-      // Not logged in — redirect to login, then back to current page
-      setState('redirecting');
-      base44.auth.redirectToLogin(window.location.href);
-      return;
-    }
+    try {
+      const isAuth = await base44.auth.isAuthenticated();
+      if (!isAuth) {
+        // Not logged in — redirect to login
+        setState('redirecting');
+        if (requiredRole === 'admin') {
+          window.location.href = createPageUrl('AdminLogin');
+        } else {
+          base44.auth.redirectToLogin(window.location.href);
+        }
+        return;
+      }
 
-    const user = await base44.auth.me();
+      const user = await base44.auth.me();
 
-    if (requiredRole === 'any') {
+      if (requiredRole === 'any') {
+        setState('authorized');
+        return;
+      }
+
+      if (requiredRole === 'admin' && user.role !== 'admin') {
+        // Non-admin trying to access admin page
+        setState('redirecting');
+        window.location.href = createPageUrl('Dashboard');
+        return;
+      }
+
+      if (requiredRole === 'customer' && user.role === 'admin') {
+        // Admin trying to access customer-only page
+        setState('redirecting');
+        window.location.href = createPageUrl('AdminDashboard');
+        return;
+      }
+
       setState('authorized');
-      return;
-    }
-
-    if (requiredRole === 'admin' && user.role !== 'admin') {
-      // Customer trying to access admin page
+    } catch (error) {
+      // Auth check failed — redirect to login
       setState('redirecting');
-      window.location.href = createPageUrl('Dashboard');
-      return;
+      if (requiredRole === 'admin') {
+        window.location.href = createPageUrl('AdminLogin');
+      } else {
+        base44.auth.redirectToLogin(window.location.href);
+      }
     }
-
-    if (requiredRole === 'customer' && user.role === 'admin') {
-      // Admin trying to access customer page
-      setState('redirecting');
-      window.location.href = createPageUrl('AdminDashboard');
-      return;
-    }
-
-    setState('authorized');
   };
 
   if (state === 'loading' || state === 'redirecting') {

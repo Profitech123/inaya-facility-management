@@ -15,7 +15,7 @@ export default function Subscriptions() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    base44.auth.me().then(setUser).catch(() => { });
   }, []);
 
   const { data: packages = [] } = useQuery({
@@ -23,7 +23,7 @@ export default function Subscriptions() {
     queryFn: async () => {
       try {
         const allPackages = await base44.entities.SubscriptionPackage.list();
-        return allPackages.filter(pkg => pkg.is_active === true);
+        return allPackages.filter(pkg => pkg.is_active !== false);
       } catch (error) {
         console.error('Error fetching packages:', error);
         return [];

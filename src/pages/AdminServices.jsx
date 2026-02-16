@@ -21,7 +21,7 @@ function AdminServicesContent() {
     description: '',
     price: '',
     duration_minutes: '',
-    image_url: '',
+    image: '',
     features: '',
     is_active: true,
     available_for_subscription: true
@@ -29,16 +29,12 @@ function AdminServicesContent() {
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: () => base44.entities.Service.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.Service.list()
   });
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => base44.entities.ServiceCategory.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.Service.list()
   });
 
   const createMutation = useMutation({
@@ -74,7 +70,7 @@ function AdminServicesContent() {
       description: '',
       price: '',
       duration_minutes: '',
-      image_url: '',
+      image: '',
       features: '',
       is_active: true,
       available_for_subscription: true
@@ -134,13 +130,13 @@ function AdminServicesContent() {
                     <label className="block text-sm font-medium text-slate-700 mb-2">Service Name</label>
                     <Input
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
-                    <Select value={formData.category_id} onValueChange={(val) => setFormData({...formData, category_id: val})}>
+                    <Select value={formData.category_id} onValueChange={(val) => setFormData({ ...formData, category_id: val })}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
@@ -157,7 +153,7 @@ function AdminServicesContent() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
                   <Textarea
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
                   />
                 </div>
@@ -168,7 +164,7 @@ function AdminServicesContent() {
                     <Input
                       type="number"
                       value={formData.price}
-                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                       required
                     />
                   </div>
@@ -177,16 +173,25 @@ function AdminServicesContent() {
                     <Input
                       type="number"
                       value={formData.duration_minutes}
-                      onChange={(e) => setFormData({...formData, duration_minutes: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, duration_minutes: e.target.value })}
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
+                  <Input
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    placeholder="https://example.com/image.jpg"
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Features (one per line)</label>
                   <Textarea
                     value={formData.features}
-                    onChange={(e) => setFormData({...formData, features: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, features: e.target.value })}
                     rows={4}
                     placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
                   />
@@ -224,9 +229,9 @@ function AdminServicesContent() {
                     <Edit className="w-4 h-4 mr-1" />
                     Edit
                   </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
+                  <Button
+                    size="sm"
+                    variant="outline"
                     className="text-red-600 hover:text-red-700"
                     onClick={() => {
                       if (confirm('Delete this service?')) {

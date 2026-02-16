@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
+import { useAuth } from '@/lib/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
 import {
@@ -13,33 +14,37 @@ import {
 import CustomerChatWidget from './components/chat/CustomerChatWidget';
 import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
+import TechnicianLayout from './Layouts/TechnicianLayout';
 
 export default function Layout({ children, currentPageName }) {
-  const [user, setUser] = useState(null);
+  const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    base44.auth.me()
-      .then(setUser)
-      .catch((error) => {
-        if (error?.status === 401) {
-          setUser(null);
-        } else {
-          setUser(null);
-        }
-      });
-  }, []);
 
   // Admin pages get their own separate layout
   const isAdminPage = currentPageName?.startsWith('Admin');
-  
-  if (isAdminPage && user && user.role !== 'admin') {
-    window.location.href = createPageUrl('Dashboard');
-    return null;
+
+  // AdminLogin renders standalone (no sidebar)
+  if (currentPageName === 'AdminLogin') {
+    return children;
   }
-  
+
+  // Login page renders fullscreen (no header/footer)
+  if (currentPageName === 'Login') {
+    return children;
+  }
+
   if (isAdminPage) {
+    const isAdminSession = localStorage.getItem('inaya_admin_session') === 'true';
+    if (!isAdminSession) {
+      window.location.href = createPageUrl('AdminLogin');
+      return null;
+    }
     return <AdminLayout currentPage={currentPageName}>{children}</AdminLayout>;
+  }
+
+  // Technician pages get the Technician layout
+  if (currentPageName?.startsWith('Technician')) {
+    return <TechnicianLayout>{children}</TechnicianLayout>;
   }
 
   const handleLogout = () => {
@@ -47,7 +52,7 @@ export default function Layout({ children, currentPageName }) {
   };
 
   const isActivePage = (pageName) => currentPageName === pageName;
-  const navLinkClass = (pageName) => 
+  const navLinkClass = (pageName) =>
     `transition-colors text-sm font-medium ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`;
 
   return (
@@ -57,9 +62,9 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 flex-shrink-0">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
-                alt="INAYA Facilities Management" 
+              <img
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
+                alt="INAYA Facilities Management"
                 className="h-10"
               />
             </Link>
@@ -68,7 +73,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="hidden lg:flex items-center gap-7 flex-1 justify-center">
               <Link to={createPageUrl('Home')} className={navLinkClass('Home')}>Home</Link>
               <DropdownMenu>
-                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['About','OurPeople','BusinessExcellence'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['About', 'OurPeople', 'BusinessExcellence'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
                   About
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -78,7 +83,7 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
-                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['IntegratedFM','HardServices','SoftServices','ProjectManagement'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['IntegratedFM', 'HardServices', 'SoftServices', 'ProjectManagement'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
                   Services
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -90,7 +95,7 @@ export default function Layout({ children, currentPageName }) {
               </DropdownMenu>
               <Link to={createPageUrl('OnDemandServices')} className={navLinkClass('OnDemandServices')}>On-Demand</Link>
               <DropdownMenu>
-                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['Subscriptions','PackageBuilder'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
+                <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['Subscriptions', 'PackageBuilder'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
                   Packages
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -146,24 +151,24 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenu>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                    variant="ghost"
+                    size="sm"
                     className="text-slate-600"
                   >
                     Sign In
                   </Button>
-                  <Button 
-                    onClick={() => base44.auth.redirectToLogin(window.location.href)} 
-                    size="sm" 
+                  <Button
+                    onClick={() => base44.auth.redirectToSignup(window.location.href)}
+                    size="sm"
                     className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   >
                     Create Account
                   </Button>
                 </div>
               )}
-              
+
               <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -209,9 +214,9 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             <div>
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
-                alt="INAYA Facilities Management" 
+              <img
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
+                alt="INAYA Facilities Management"
                 className="h-12 mb-4"
               />
               <p className="text-slate-400 text-sm">
@@ -219,7 +224,7 @@ export default function Layout({ children, currentPageName }) {
               </p>
               <p className="text-slate-500 text-xs mt-2">A Member of Belhasa Group</p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Services</h3>
               <div className="space-y-2 text-sm text-slate-400">
@@ -230,7 +235,7 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl('OnDemandServices')} className="block hover:text-white">On-Demand Services</Link>
               </div>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
               <div className="space-y-2 text-sm text-slate-400">
@@ -242,7 +247,7 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl('Contact')} className="block hover:text-white">Contact</Link>
               </div>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-sm text-slate-400">
@@ -254,7 +259,7 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-slate-800/60 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
             <div className="flex items-center gap-4">

@@ -7,7 +7,7 @@ import { createPageUrl } from '@/utils';
 
 export default function PlanCards({ packages, currentPkgId }) {
   // Sort packages by price
-  const sorted = [...packages].sort((a, b) => (a.monthly_price || 0) - (b.monthly_price || 0));
+  const sorted = [...packages].sort((a, b) => (a.monthly_amount || 0) - (b.monthly_amount || 0));
 
   return (
     <div className="grid md:grid-cols-3 gap-6 items-start">
@@ -18,11 +18,10 @@ export default function PlanCards({ packages, currentPkgId }) {
         return (
           <div
             key={pkg.id}
-            className={`relative rounded-2xl border-2 bg-white p-6 transition-all ${
-              isPopular
+            className={`relative rounded-2xl border-2 bg-white p-6 transition-all ${isPopular
                 ? 'border-emerald-500 shadow-xl shadow-emerald-100/50 scale-[1.03] z-10'
                 : 'border-slate-200 hover:border-slate-300'
-            }`}
+              }`}
           >
             {/* Popular badge */}
             {isPopular && (
@@ -38,7 +37,7 @@ export default function PlanCards({ packages, currentPkgId }) {
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-sm text-slate-400">AED</span>
               <span className={`text-4xl font-bold ${isPopular ? 'text-emerald-600' : 'text-slate-900'}`}>
-                {pkg.monthly_price}
+                {pkg.monthly_amount}
               </span>
               <span className="text-sm text-slate-400">/mo</span>
             </div>

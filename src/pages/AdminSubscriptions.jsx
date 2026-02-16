@@ -21,37 +21,27 @@ function AdminSubscriptionsContent() {
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['allSubscriptions'],
-    queryFn: () => base44.entities.Subscription.list('-created_date'),
-    initialData: [],
-    staleTime: 30000
+    queryFn: () => base44.entities.Subscription.list('-created_date')
   });
 
   const { data: packages = [] } = useQuery({
     queryKey: ['packages'],
-    queryFn: () => base44.entities.SubscriptionPackage.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.SubscriptionPackage.list()
   });
 
   const { data: services = [] } = useQuery({
     queryKey: ['allServices'],
-    queryFn: () => base44.entities.Service.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.Service.list()
   });
 
   const { data: users = [] } = useQuery({
     queryKey: ['allUsers'],
-    queryFn: () => base44.entities.User.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.User.list()
   });
 
   const { data: allProperties = [] } = useQuery({
     queryKey: ['allProperties'],
-    queryFn: () => base44.entities.Property.list(),
-    initialData: [],
-    staleTime: 60000
+    queryFn: () => base44.entities.Property.list()
   });
 
   const createPkgMutation = useMutation({
@@ -251,9 +241,9 @@ function AdminSubscriptionsContent() {
                           )}
                           <Badge className={
                             subscription.status === 'active' ? 'bg-green-100 text-green-800' :
-                            subscription.status === 'paused' ? 'bg-yellow-100 text-yellow-800' :
-                            subscription.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                            'bg-slate-100 text-slate-800'
+                              subscription.status === 'paused' ? 'bg-yellow-100 text-yellow-800' :
+                                subscription.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                  'bg-slate-100 text-slate-800'
                           }>
                             {subscription.status}
                           </Badge>

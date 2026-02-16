@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, Settings } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Zap, Clock, Users, BarChart3, TrendingUp, CalendarDays, Settings, MessageSquare, FileText } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', page: 'AdminDashboard', icon: LayoutDashboard },
-  { label: 'Service Requests', page: 'AdminBookings', icon: Zap },
+  { label: 'Services', page: 'AdminServices', icon: Zap },
+  { label: 'Service Requests', page: 'AdminBookings', icon: CalendarDays },
   { label: 'Subscriptions', page: 'AdminSubscriptions', icon: Clock },
   { label: 'Technicians', page: 'AdminTechnicians', icon: Users },
+  { label: 'Inquiries', page: 'AdminInquiries', icon: MessageSquare },
+  { label: 'Content (CMS)', page: 'AdminContent', icon: FileText },
+  { label: 'Customers', page: 'AdminCustomers', icon: Users },
   { label: 'Tech Schedules', page: 'AdminTechSchedule', icon: CalendarDays },
   { label: 'Analytics', page: 'AdminAnalytics', icon: TrendingUp },
   { label: 'Reports', page: 'AdminReports', icon: BarChart3 },
@@ -18,8 +22,9 @@ const navItems = [
 export default function AdminLayout({ children, currentPage }) {
   const [sidebarOpen, setMobileMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    base44.auth.logout();
+  const handleLogout = async () => {
+    await base44.auth.adminLogout();
+    window.location.href = createPageUrl('AdminLogin');
   };
 
   return (
@@ -28,7 +33,7 @@ export default function AdminLayout({ children, currentPage }) {
       <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-slate-200 flex flex-col transition-all duration-300 overflow-hidden`}>
         {/* Logo */}
         <div className="h-20 border-b border-slate-200 flex items-center justify-center">
-          <img 
+          <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
             alt="INAYA"
             className={`${sidebarOpen ? 'h-8' : 'h-6'} transition-all`}
@@ -44,11 +49,10 @@ export default function AdminLayout({ children, currentPage }) {
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
-                  isActive
-                    ? 'bg-emerald-50 text-emerald-600'
-                    : 'text-slate-600 hover:bg-slate-50'
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive
+                  ? 'bg-emerald-50 text-emerald-600'
+                  : 'text-slate-600 hover:bg-slate-50'
+                  }`}
                 title={item.label}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />

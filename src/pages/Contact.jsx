@@ -20,6 +20,7 @@ export default function Contact() {
     e.preventDefault();
     setSending(true);
     try {
+      // 1. Send Simulated Email
       await base44.integrations.Core.SendEmail({
         to: "info@inaya.ae",
         subject: `Contact Form: ${formData.name}`,
@@ -31,9 +32,20 @@ export default function Contact() {
           <p><strong>Message:</strong><br/>${formData.message}</p>
         `
       });
+
+      // 2. Save to Database
+      await base44.entities.ContactSubmission.create({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        status: 'new'
+      });
+
       toast.success('Message sent! We will contact you shortly.');
-    } catch {
-      toast.success('Message received! We will contact you shortly.');
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to send message. Please try again.');
     }
     setFormData({ name: '', email: '', phone: '', message: '' });
     setSending(false);
@@ -81,7 +93,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Name</label>
                   <Input
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                   />
                 </div>
@@ -90,7 +102,7 @@ export default function Contact() {
                   <Input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
@@ -99,14 +111,14 @@ export default function Contact() {
                   <Input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
                   <Textarea
                     value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     rows={5}
                     required
                   />
