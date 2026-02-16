@@ -114,99 +114,142 @@ function AdminAnalyticsContent() {
             <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
           </div>
         ) : (
-          <div className="space-y-6">
-            {/* Enhanced KPIs with CLV, Churn, Completion Time, Utilization */}
-            <EnhancedKPICards
-              bookings={bookings}
-              subscriptions={subscriptions}
-              providers={providers}
-              users={users}
-              services={services}
-              startDate={startDate}
-              endDate={endDate}
-            />
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="bg-white border">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="ai-demand" className="gap-1.5">
+                <Brain className="w-3.5 h-3.5" /> AI Demand
+              </TabsTrigger>
+              <TabsTrigger value="ai-providers" className="gap-1.5">
+                <Brain className="w-3.5 h-3.5" /> AI Providers
+              </TabsTrigger>
+              <TabsTrigger value="ai-financial" className="gap-1.5">
+                <Brain className="w-3.5 h-3.5" /> AI Financial
+              </TabsTrigger>
+            </TabsList>
 
-            {/* Revenue Over Time - full width */}
-            <RevenueOverTimeChart
-              bookings={bookings}
-              subscriptions={subscriptions}
-              startDate={startDate}
-              endDate={endDate}
-            />
-
-            {/* Churn Analysis + Service Completion Time - two cols */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <ChurnRateChart
+            {/* OVERVIEW TAB */}
+            <TabsContent value="overview" className="space-y-6">
+              <EnhancedKPICards
+                bookings={bookings}
                 subscriptions={subscriptions}
-                startDate={startDate}
-                endDate={endDate}
-              />
-              <ServiceCompletionTimeChart
-                bookings={bookings}
+                providers={providers}
+                users={users}
                 services={services}
                 startDate={startDate}
                 endDate={endDate}
               />
-            </div>
 
-            {/* Popular Services + Customer Acquisition - two cols */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <PopularServicesChart
-                bookings={bookings}
-                services={services}
-                startDate={startDate}
-                endDate={endDate}
-              />
-              <CustomerAcquisitionChart
+              <RevenueOverTimeChart
                 bookings={bookings}
                 subscriptions={subscriptions}
                 startDate={startDate}
                 endDate={endDate}
               />
-            </div>
 
-            {/* Technician Performance + Subscription Growth - two cols */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <TechnicianPerformanceChart
+              <div className="grid lg:grid-cols-2 gap-6">
+                <ChurnRateChart
+                  subscriptions={subscriptions}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+                <ServiceCompletionTimeChart
+                  bookings={bookings}
+                  services={services}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-6">
+                <PopularServicesChart
+                  bookings={bookings}
+                  services={services}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+                <CustomerAcquisitionChart
+                  bookings={bookings}
+                  subscriptions={subscriptions}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-6">
+                <TechnicianPerformanceChart
+                  providers={providers}
+                  bookings={bookings}
+                  reviews={reviews}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+                <SubscriptionGrowthChart
+                  subscriptions={subscriptions}
+                  packages={packages}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-6">
+                <CustomerLifetimeValue
+                  bookings={bookings}
+                  subscriptions={subscriptions}
+                />
+                <CohortRetentionChart
+                  bookings={bookings}
+                />
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-6">
+                <DemandPrediction
+                  bookings={bookings}
+                  services={services}
+                  providers={providers}
+                />
+                <TechnicianUtilization
+                  providers={providers}
+                  bookings={bookings}
+                  services={services}
+                />
+              </div>
+            </TabsContent>
+
+            {/* AI DEMAND TAB */}
+            <TabsContent value="ai-demand" className="space-y-6">
+              <AIDemandPredictor
+                bookings={bookings}
+                services={services}
+                providers={providers}
+                subscriptions={subscriptions}
+              />
+            </TabsContent>
+
+            {/* AI PROVIDERS TAB */}
+            <TabsContent value="ai-providers" className="space-y-6">
+              <AIProviderInsights
                 providers={providers}
                 bookings={bookings}
                 reviews={reviews}
+                services={services}
                 startDate={startDate}
                 endDate={endDate}
               />
-              <SubscriptionGrowthChart
+            </TabsContent>
+
+            {/* AI FINANCIAL TAB */}
+            <TabsContent value="ai-financial" className="space-y-6">
+              <AIFinancialForecasting
+                bookings={bookings}
                 subscriptions={subscriptions}
+                services={services}
                 packages={packages}
                 startDate={startDate}
                 endDate={endDate}
               />
-            </div>
-
-            {/* CLV + Cohort Retention */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <CustomerLifetimeValue
-                bookings={bookings}
-                subscriptions={subscriptions}
-              />
-              <CohortRetentionChart
-                bookings={bookings}
-              />
-            </div>
-
-            {/* Demand Prediction + Technician Utilization */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <DemandPrediction
-                bookings={bookings}
-                services={services}
-                providers={providers}
-              />
-              <TechnicianUtilization
-                providers={providers}
-                bookings={bookings}
-                services={services}
-              />
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
         )}
       </div>
     </div>
