@@ -110,9 +110,9 @@ function ProviderOnboardingContent() {
                 <li>• Complete jobs professionally for great reviews</li>
               </ul>
             </div>
-            <Link to={createPageUrl('Home')}>
+            <Link to={createPageUrl('ProviderDashboard')}>
               <Button className="bg-emerald-600 hover:bg-emerald-700 mt-2">
-                Go to Homepage <ArrowRight className="w-4 h-4 ml-2" />
+                Go to Dashboard <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </CardContent>

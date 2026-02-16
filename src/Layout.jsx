@@ -30,6 +30,11 @@ export default function Layout({ children, currentPageName }) {
       });
   }, []);
 
+  // Provider dashboard gets its own layout (no nav/footer)
+  if (currentPageName === 'ProviderDashboard') {
+    return <>{children}</>;
+  }
+
   // Admin pages get their own separate layout
   const isAdminPage = currentPageName?.startsWith('Admin');
   
