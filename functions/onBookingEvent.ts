@@ -13,6 +13,20 @@ Deno.serve(async (req) => {
 
     console.log(`Booking event: ${event.type} for ${event.entity_id}`);
 
+    // Helper: create in-app notification + send email
+    async function createNotification({ userId, type, title, message, linkPage, linkParams, relatedType, relatedId }) {
+      await base44.asServiceRole.entities.Notification.create({
+        user_id: userId,
+        type,
+        title,
+        message,
+        link_page: linkPage || 'MyBookings',
+        link_params: linkParams || '',
+        related_entity_type: relatedType || 'Booking',
+        related_entity_id: relatedId || event.entity_id,
+      });
+    }
+
     // === 1. NEW BOOKING CREATED → Send Confirmation ===
     if (event.type === 'create') {
       const booking = data;
@@ -32,6 +46,15 @@ Deno.serve(async (req) => {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
       const confirmNum = `INY-${event.entity_id.substring(0, 8).toUpperCase()}`;
+
+      // In-app notification
+      await createNotification({
+        userId: booking.customer_id,
+        type: 'booking_confirmed',
+        title: `Booking Confirmed — ${service.name}`,
+        message: `Your ${service.name} on ${bookingDate}${booking.scheduled_time ? ' at ' + booking.scheduled_time : ''} has been confirmed. Confirmation #${confirmNum}.`,
+        linkPage: 'MyBookings',
+      });
 
       const emailBody = `
 <!DOCTYPE html>
@@ -90,7 +113,7 @@ Deno.serve(async (req) => {
         from_name: 'INAYA Facilities Management'
       });
 
-      console.log(`Confirmation email sent to ${customer.email}`);
+      console.log(`Confirmation email + notification sent to ${customer.email}`);
       return Response.json({ success: true, action: 'confirmation_sent' });
     }
 
@@ -109,7 +132,44 @@ Deno.serve(async (req) => {
         return Response.json({ skipped: true, reason: 'No customer email' });
       }
 
-      // Generate AI-powered personalized status update
+      // Map status to notification type
+      const statusNotifMap = {
+        confirmed: 'booking_confirmed',
+        en_route: 'technician_en_route',
+        in_progress: 'service_in_progress',
+        completed: 'service_completed',
+        cancelled: 'booking_cancelled',
+        delayed: 'booking_delayed',
+      };
+
+      const statusMessages = {
+        confirmed: `Your ${service.name} booking has been confirmed.`,
+        en_route: `Your technician is on the way for ${service.name}. Please ensure property access.`,
+        in_progress: `Your ${service.name} service has started. The technician is now working on-site.`,
+        completed: `Your ${service.name} service is complete! We'd love to hear your feedback.`,
+        cancelled: `Your ${service.name} booking has been cancelled. Contact us if you need to rebook.`,
+        delayed: `Your ${service.name} has been delayed. ${booking.delay_reason || 'We apologize for the inconvenience.'}`,
+      };
+
+      const statusTitles = {
+        confirmed: `Booking Confirmed`,
+        en_route: `Technician En Route 🚗`,
+        in_progress: `Service In Progress 🔧`,
+        completed: `Service Completed ✓`,
+        cancelled: `Booking Cancelled`,
+        delayed: `Service Delayed ⚠️`,
+      };
+
+      // Create in-app notification
+      await createNotification({
+        userId: booking.customer_id,
+        type: statusNotifMap[newStatus] || 'general',
+        title: statusTitles[newStatus] || `Booking Update — ${service.name}`,
+        message: statusMessages[newStatus] || `Your booking status changed to ${newStatus}.`,
+        linkPage: 'MyBookings',
+      });
+
+      // Generate AI email
       const aiResponse = await base44.asServiceRole.integrations.Core.InvokeLLM({
         prompt: `Write a brief, friendly email body (HTML, no subject line) notifying a customer about their booking status change:
 - Customer: ${customer.full_name}
@@ -119,14 +179,15 @@ Deno.serve(async (req) => {
 - Scheduled date: ${booking.scheduled_date}
 - Time: ${booking.scheduled_time || 'N/A'}
 ${newStatus === 'cancelled' ? '- Include info about how to rebook or contact us for help' : ''}
-${newStatus === 'in_progress' ? '- Let them know the technician is on their way or has started' : ''}
+${newStatus === 'in_progress' ? '- Let them know the technician has started' : ''}
+${newStatus === 'en_route' ? '- Let them know the technician is on the way and to ensure property access' : ''}
 ${newStatus === 'completed' ? '- Thank them and mention they can leave a review in their dashboard' : ''}
 
 Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management.`,
       });
 
       const statusEmojis = {
-        confirmed: '✅', in_progress: '🔧', completed: '✓', cancelled: '❌', pending: '⏳'
+        confirmed: '✅', en_route: '🚗', in_progress: '🔧', completed: '✓', cancelled: '❌', pending: '⏳', delayed: '⚠️'
       };
 
       const emailBody = `
@@ -167,9 +228,9 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
         from_name: 'INAYA Facilities Management'
       });
 
-      console.log(`Status update email sent to ${customer.email}: ${oldStatus} → ${newStatus}`);
+      console.log(`Status update email + notification sent: ${oldStatus} → ${newStatus}`);
 
-      // === 2b. DELAYED → Alert admins immediately ===
+      // === 2b. DELAYED → Alert admins ===
       if (newStatus === 'delayed') {
         const admins = (await base44.asServiceRole.entities.User.list()).filter(u => u.role === 'admin' && u.email);
         const provider = booking.assigned_provider_id
@@ -206,18 +267,27 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
       return Response.json({ success: true, action: 'status_update_sent', from: oldStatus, to: newStatus });
     }
 
-    // === 3. PROVIDER ASSIGNED → Smart notification to provider ===
+    // === 3. PROVIDER ASSIGNED → Notify customer + provider ===
     if (event.type === 'update' && old_data && data.assigned_provider_id && data.assigned_provider_id !== old_data.assigned_provider_id) {
       const booking = data;
       const providers = await base44.asServiceRole.entities.Provider.list();
       const provider = providers.find(p => p.id === booking.assigned_provider_id);
 
+      // Notify customer about provider assignment
+      const service = await base44.asServiceRole.entities.Service.read(booking.service_id);
+      await createNotification({
+        userId: booking.customer_id,
+        type: 'provider_assigned',
+        title: `Technician Assigned`,
+        message: `${provider?.full_name || 'A technician'} has been assigned to your ${service.name} service.`,
+        linkPage: 'MyBookings',
+      });
+
       if (!provider?.email) {
         return Response.json({ skipped: true, reason: 'No provider email' });
       }
 
-      const [service, property, customer] = await Promise.all([
-        base44.asServiceRole.entities.Service.read(booking.service_id),
+      const [property, customer] = await Promise.all([
         base44.asServiceRole.entities.Property.read(booking.property_id),
         base44.asServiceRole.entities.User.read(booking.customer_id),
       ]);
@@ -235,8 +305,7 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
 - Customer notes: ${booking.customer_notes || 'None'}
 - Amount: AED ${booking.total_amount}
 
-Include: what tools/materials to prepare for this service, estimated travel considerations for Dubai, and a reminder to update job status via the provider dashboard.
-Keep it professional and actionable.`,
+Include: what tools/materials to prepare, and a reminder to update job status. Keep it professional.`,
       });
 
       await base44.asServiceRole.integrations.Core.SendEmail({
@@ -256,7 +325,7 @@ Keep it professional and actionable.`,
         from_name: 'INAYA Dispatch'
       });
 
-      console.log(`Assignment notification sent to provider ${provider.full_name} (${provider.email})`);
+      console.log(`Assignment notification sent to provider ${provider.full_name}`);
       return Response.json({ success: true, action: 'provider_assignment_sent' });
     }
 
