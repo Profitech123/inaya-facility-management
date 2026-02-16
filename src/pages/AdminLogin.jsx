@@ -22,7 +22,6 @@ export default function AdminLogin() {
           window.location.href = createPageUrl('AdminDashboard');
           return;
         }
-        // Non-admin user tried admin login — show access denied
         setDenied(true);
         setChecking(false);
         return;
@@ -34,7 +33,6 @@ export default function AdminLogin() {
   };
 
   const handleLogin = () => {
-    // After platform login, return to AdminLogin — checkExistingAuth will route admin to dashboard
     base44.auth.redirectToLogin(createPageUrl('AdminLogin'));
   };
 

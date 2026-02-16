@@ -73,6 +73,7 @@ import IntegratedFM from './pages/IntegratedFM';
 import MyBookings from './pages/MyBookings';
 import MyProperties from './pages/MyProperties';
 import MySubscriptions from './pages/MySubscriptions';
+import Notifications from './pages/Notifications';
 import OnDemandServices from './pages/OnDemandServices';
 import OurPeople from './pages/OurPeople';
 import PackageBuilder from './pages/PackageBuilder';
@@ -90,7 +91,6 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import Notifications from './pages/Notifications';
 import __Layout from './Layout.jsx';
 
 
@@ -121,6 +121,7 @@ export const PAGES = {
     "MyBookings": MyBookings,
     "MyProperties": MyProperties,
     "MySubscriptions": MySubscriptions,
+    "Notifications": Notifications,
     "OnDemandServices": OnDemandServices,
     "OurPeople": OurPeople,
     "PackageBuilder": PackageBuilder,
@@ -138,7 +139,6 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "Notifications": Notifications,
 }
 
 export const pagesConfig = {
