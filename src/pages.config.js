@@ -54,7 +54,6 @@ import AdminBookings from './pages/AdminBookings';
 import AdminCSVMigration from './pages/AdminCSVMigration';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLiveChat from './pages/AdminLiveChat';
-import AdminLogin from './pages/AdminLogin';
 import AdminProviderDetail from './pages/AdminProviderDetail';
 import AdminReports from './pages/AdminReports';
 import AdminServices from './pages/AdminServices';
@@ -102,7 +101,6 @@ export const PAGES = {
     "AdminCSVMigration": AdminCSVMigration,
     "AdminDashboard": AdminDashboard,
     "AdminLiveChat": AdminLiveChat,
-    "AdminLogin": AdminLogin,
     "AdminProviderDetail": AdminProviderDetail,
     "AdminReports": AdminReports,
     "AdminServices": AdminServices,
