@@ -6,6 +6,7 @@ import { CalendarDots, Package as PhPackage, CurrencyCircleDollar, UsersThree, C
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 import AuthGuard from '../components/AuthGuard';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 import AdminNotifications from '../components/admin/AdminNotifications';
@@ -13,11 +14,15 @@ import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
 import DashboardRevenueByService from '../components/admin/DashboardRevenueByService';
 import DashboardMiniSubscriptions from '../components/admin/DashboardMiniSubscriptions';
 import DashboardTechPerformance from '../components/admin/DashboardTechPerformance';
+import ActiveJobsMap from '../components/admin/ActiveJobsMap';
+import CreateJobDialog from '../components/admin/CreateJobDialog';
+import AdminReportingSummary from '../components/admin/AdminReportingSummary';
 import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
+  const [showCreateJob, setShowCreateJob] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -50,6 +55,14 @@ function AdminDashboardContent() {
   const { data: providers = [] } = useQuery({
     queryKey: ['providers'],
     queryFn: () => base44.entities.Provider.list(),
+    enabled: !!user,
+    initialData: [],
+    staleTime: 60000
+  });
+
+  const { data: properties = [] } = useQuery({
+    queryKey: ['adminProperties'],
+    queryFn: () => base44.entities.Property.list(),
     enabled: !!user,
     initialData: [],
     staleTime: 60000
@@ -93,9 +106,14 @@ function AdminDashboardContent() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
-          <p className="text-slate-500">Business overview and critical alerts</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+            <p className="text-slate-500">Business overview and critical alerts</p>
+          </div>
+          <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2" onClick={() => setShowCreateJob(true)}>
+            <Plus className="w-4 h-4" /> Create Job
+          </Button>
         </div>
 
         {/* Onboarding Checklist */}
@@ -133,6 +151,16 @@ function AdminDashboardContent() {
           />
         </div>
 
+        {/* Real-Time Active Jobs Map */}
+        <div className="mb-8">
+          <ActiveJobsMap
+            bookings={bookings}
+            services={services}
+            properties={properties}
+            providers={providers}
+          />
+        </div>
+
         {/* Charts Row 1: Booking Trends + Revenue by Service */}
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           <DashboardBookingTrends bookings={bookings} />
@@ -148,6 +176,16 @@ function AdminDashboardContent() {
         {/* AI Feedback Summary */}
         <div className="mb-8">
           <AIFeedbackSummarizer reviews={reviews} tickets={tickets} bookings={bookings} />
+        </div>
+
+        {/* Reporting Summary */}
+        <div className="mb-8">
+          <AdminReportingSummary
+            bookings={bookings}
+            services={services}
+            providers={providers}
+            subscriptions={subscriptions}
+          />
         </div>
 
         {/* Quick Actions + Recent Bookings */}
@@ -214,6 +252,7 @@ function AdminDashboardContent() {
             </CardContent>
           </Card>
         </div>
+        <CreateJobDialog open={showCreateJob} onClose={() => setShowCreateJob(false)} />
       </div>
     </div>
   );
