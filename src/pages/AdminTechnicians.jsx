@@ -51,9 +51,11 @@ function AdminTechniciansContent() {
     );
   }
 
-  // KPI calculations
+  // KPI calculations — use real booking data
   const totalTechnicians = providers.length;
-  const activeOnJob = providers.filter(p => p.is_active && Math.random() > 0.5).length;
+  const activeOnJob = providers.filter(p => {
+    return bookings.some(b => b.assigned_provider_id === p.id && ['en_route', 'in_progress'].includes(b.status));
+  }).length;
   const available = providers.filter(p => p.is_active).length - activeOnJob;
   const offDuty = providers.filter(p => !p.is_active).length;
 
@@ -78,7 +80,8 @@ function AdminTechniciansContent() {
 
   const getStatusBadge = (provider) => {
     if (!provider.is_active) return <Badge className="bg-slate-100 text-slate-700">Off-duty</Badge>;
-    if (Math.random() > 0.5) return <Badge className="bg-emerald-100 text-emerald-700">Live</Badge>;
+    const hasActiveJob = bookings.some(b => b.assigned_provider_id === provider.id && ['en_route', 'in_progress'].includes(b.status));
+    if (hasActiveJob) return <Badge className="bg-emerald-100 text-emerald-700">On Job</Badge>;
     return <Badge className="bg-blue-100 text-blue-700">Available</Badge>;
   };
 
