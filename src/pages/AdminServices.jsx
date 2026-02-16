@@ -50,6 +50,20 @@ function AdminServicesContent() {
     staleTime: 60000
   });
 
+  const { data: allBookings = [] } = useQuery({
+    queryKey: ['admin-bookings-for-pricing'],
+    queryFn: () => base44.entities.Booking.list('-created_date', 200),
+    initialData: [],
+    staleTime: 120000
+  });
+
+  const { data: allProviders = [] } = useQuery({
+    queryKey: ['admin-providers-for-pricing'],
+    queryFn: () => base44.entities.Provider.list(),
+    initialData: [],
+    staleTime: 120000
+  });
+
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Service.create(data),
     onSuccess: () => {
@@ -313,6 +327,14 @@ function AdminServicesContent() {
                   />
                 </div>
 
+                {/* AI Categorizer */}
+                <AIServiceCategorizer
+                  serviceName={formData.name}
+                  serviceDescription={formData.description}
+                  categories={categories}
+                  onApply={(updates) => setFormData(prev => ({ ...prev, ...updates }))}
+                />
+
                 <div className="flex gap-3">
                   <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
                     {editingService ? 'Update Service' : 'Create Service'}
@@ -367,6 +389,20 @@ function AdminServicesContent() {
             </Card>
           ))}
         </div>
+          </TabsContent>
+
+          <TabsContent value="ai-insights" className="mt-6 space-y-6">
+            <AIDynamicPricing
+              services={services}
+              categories={categories}
+              bookings={allBookings}
+              providers={allProviders}
+            />
+            <AIBundleRecommendations
+              services={services}
+              categories={categories}
+              bookings={allBookings}
+            />
           </TabsContent>
         </Tabs>
       </div>
