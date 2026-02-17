@@ -2,7 +2,15 @@ import React, { useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Calendar, Clock, MapPin, Printer, ArrowRight, PlusCircle, Headphones, Users } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+
+function formatBookingDate(dateStr) {
+  if (!dateStr) return '—';
+  try {
+    const d = dateStr.includes('T') ? parseISO(dateStr) : new Date(dateStr + 'T00:00:00');
+    return format(d, 'MMMM d, yyyy');
+  } catch { return dateStr; }
+}
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Link } from 'react-router-dom';
@@ -43,7 +51,7 @@ export default function BookingConfirmation({ booking, service, property, provid
           <div class="grid">
             <div class="grid-item">
               <div class="label">SCHEDULED DATE</div>
-              <div class="value">${booking?.scheduled_date ? format(new Date(booking.scheduled_date), 'MMMM d, yyyy') : '—'}</div>
+              <div class="value">${booking?.scheduled_date ? formatBookingDate(booking.scheduled_date) : '—'}</div>
             </div>
             <div class="grid-item">
               <div class="label">ARRIVAL WINDOW</div>
@@ -116,7 +124,7 @@ export default function BookingConfirmation({ booking, service, property, provid
                         <Calendar className="w-3 h-3" /> Scheduled Date
                       </div>
                       <div className="text-sm font-semibold text-slate-800">
-                        {booking?.scheduled_date ? format(new Date(booking.scheduled_date), 'MMMM d, yyyy') : '—'}
+                       {formatBookingDate(booking?.scheduled_date)}
                       </div>
                     </div>
                     <div>

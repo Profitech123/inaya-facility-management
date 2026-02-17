@@ -5,7 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin, ChevronRight, User, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { format, parseISO } from 'date-fns';
 import BookingTimeline from '../booking/BookingTimeline';
+
+function formatBookingDate(dateStr) {
+  if (!dateStr) return '—';
+  try {
+    const d = dateStr.includes('T') ? parseISO(dateStr) : new Date(dateStr + 'T00:00:00');
+    return format(d, 'MMMM d, yyyy');
+  } catch { return dateStr; }
+}
 
 const statusConfig = {
   pending: { label: 'Pending', className: 'bg-amber-100 text-amber-800 border-amber-200' },
@@ -36,7 +45,7 @@ export default function BookingCard({ booking, serviceName, propertyAddress, pro
               </div>
               <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-slate-500">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" /> {booking.scheduled_date}
+                    <Calendar className="w-3.5 h-3.5 text-slate-400" /> {formatBookingDate(booking.scheduled_date)}
                 </span>
                 {booking.scheduled_time && (
                   <span className="flex items-center gap-1.5">

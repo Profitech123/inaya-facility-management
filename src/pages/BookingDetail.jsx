@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import AuthGuard from '../components/AuthGuard';
 import BookingStatusTracker from '../components/bookings/BookingStatusTracker';
 import TechnicianCard from '../components/bookings/TechnicianCard';
@@ -145,7 +145,7 @@ function BookingDetailContent() {
             <div>
               <h1 className="text-3xl font-bold mb-1">{service?.name || 'Booking Details'}</h1>
               <div className="flex items-center gap-3 text-slate-300 text-sm">
-                <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{booking.scheduled_date}</span>
+                <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{booking.scheduled_date ? format(booking.scheduled_date.includes('T') ? parseISO(booking.scheduled_date) : new Date(booking.scheduled_date + 'T00:00:00'), 'MMMM d, yyyy') : '—'}</span>
                 {booking.scheduled_time && <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{booking.scheduled_time}</span>}
               </div>
             </div>
@@ -288,7 +288,7 @@ function BookingDetailContent() {
                     <Calendar className="w-4 h-4 text-amber-600" />
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900 text-sm">{booking.scheduled_date}</p>
+                    <p className="font-semibold text-slate-900 text-sm">{booking.scheduled_date ? format(booking.scheduled_date.includes('T') ? parseISO(booking.scheduled_date) : new Date(booking.scheduled_date + 'T00:00:00'), 'MMMM d, yyyy') : '—'}</p>
                     {booking.scheduled_time && <p className="text-xs text-slate-400">{booking.scheduled_time}</p>}
                   </div>
                 </div>
