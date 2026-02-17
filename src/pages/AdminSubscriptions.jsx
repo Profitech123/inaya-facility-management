@@ -12,6 +12,7 @@ import AdminPackageForm from '../components/subscriptions/AdminPackageForm';
 import AdminSubscriptionForm from '../components/subscriptions/AdminSubscriptionForm';
 import ScheduledServicesList from '../components/admin/ScheduledServicesList';
 import AuthGuard from '../components/AuthGuard';
+import { logAuditEvent } from '../components/admin/AuditLogger';
 
 function AdminSubscriptionsContent() {
   const [showPackageForm, setShowPackageForm] = useState(false);
