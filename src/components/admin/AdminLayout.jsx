@@ -24,6 +24,13 @@ const navSections = [
     ],
   },
   {
+    label: 'Customers & Billing',
+    items: [
+      { label: 'Customers', page: 'AdminCustomers', icon: UserList },
+      { label: 'Invoices', page: 'AdminInvoices', icon: Invoice },
+    ],
+  },
+  {
     label: 'Insights',
     items: [
       { label: 'Analytics', page: 'AdminAnalytics', icon: ChartLineUp },
