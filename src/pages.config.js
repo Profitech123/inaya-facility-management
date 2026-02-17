@@ -90,6 +90,9 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
+import AdminCustomers from './pages/AdminCustomers';
+import AdminInvoices from './pages/AdminInvoices';
+import AdminServiceAreas from './pages/AdminServiceAreas';
 import __Layout from './Layout.jsx';
 
 
@@ -137,6 +140,9 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
+    "AdminCustomers": AdminCustomers,
+    "AdminInvoices": AdminInvoices,
+    "AdminServiceAreas": AdminServiceAreas,
 }
 
 export const pagesConfig = {
