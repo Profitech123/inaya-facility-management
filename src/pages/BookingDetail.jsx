@@ -190,7 +190,7 @@ function BookingDetailContent() {
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center gap-3">
                 <CalendarCheck className="w-5 h-5 text-blue-500 flex-shrink-0" />
                 <div className="text-sm">
-                  <p className="font-medium text-blue-700">Rescheduled from {booking.rescheduled_from_date} {booking.rescheduled_from_time && `(${booking.rescheduled_from_time})`}</p>
+                  <p className="font-medium text-blue-700">Rescheduled from {booking.rescheduled_from_date ? format(booking.rescheduled_from_date.includes('T') ? parseISO(booking.rescheduled_from_date) : new Date(booking.rescheduled_from_date + 'T00:00:00'), 'MMMM d, yyyy') : booking.rescheduled_from_date} {booking.rescheduled_from_time && `(${booking.rescheduled_from_time})`}</p>
                   <p className="text-blue-500 text-xs">Rescheduled {booking.reschedule_count} time(s)</p>
                 </div>
               </div>
