@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, ArrowLeft } from 'lucide-react';
+import { Calendar, ArrowLeft, ClipboardList } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
+import BookingCard from '../components/bookings/BookingCard';
+
+const TABS = [
+  { key: 'upcoming', label: 'Upcoming' },
+  { key: 'past', label: 'Past' },
+  { key: 'cancelled', label: 'Cancelled' },
+];
 
 function MyBookingsContent() {
   const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('upcoming');
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -36,16 +43,24 @@ function MyBookingsContent() {
     initialData: []
   });
 
+  const { data: providers = [] } = useQuery({
+    queryKey: ['providers'],
+    queryFn: () => base44.entities.Provider.list(),
+    initialData: []
+  });
+
   const getServiceName = (id) => services.find(s => s.id === id)?.name || 'Service';
   const getPropertyAddress = (id) => properties.find(p => p.id === id)?.address || '';
+  const getProviderName = (id) => providers.find(p => p.id === id)?.full_name || '';
 
-  const statusColor = (status) => ({
-    completed: 'bg-green-100 text-green-800',
-    confirmed: 'bg-blue-100 text-blue-800',
-    in_progress: 'bg-purple-100 text-purple-800',
-    cancelled: 'bg-red-100 text-red-800',
-    pending: 'bg-yellow-100 text-yellow-800'
-  }[status] || 'bg-slate-100 text-slate-800');
+  const today = new Date().toISOString().split('T')[0];
+
+  const filtered = bookings.filter(b => {
+    if (activeTab === 'cancelled') return b.status === 'cancelled';
+    if (activeTab === 'past') return b.status === 'completed' || (b.scheduled_date < today && b.status !== 'cancelled');
+    // upcoming: pending, confirmed, en_route, in_progress, delayed with future/today date
+    return ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status) && b.scheduled_date >= today;
+  });
 
   if (!user || isLoading) {
     return (
@@ -63,70 +78,83 @@ function MyBookingsContent() {
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Dashboard
           </Link>
           <h1 className="text-4xl font-bold mb-2">My Bookings</h1>
-          <p className="text-slate-300">View and track all your service bookings.</p>
+          <p className="text-slate-300">Manage, reschedule, or cancel your upcoming services.</p>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        {bookings.length === 0 ? (
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        {/* Tabs */}
+        <div className="flex gap-1 bg-white rounded-xl border border-slate-200 p-1 mb-6 w-fit">
+          {TABS.map(tab => {
+            const count = bookings.filter(b => {
+              if (tab.key === 'cancelled') return b.status === 'cancelled';
+              if (tab.key === 'past') return b.status === 'completed' || (b.scheduled_date < today && b.status !== 'cancelled');
+              return ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status) && b.scheduled_date >= today;
+            }).length;
+
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  activeTab === tab.key
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                {tab.label}
+                {count > 0 && (
+                  <span className={`ml-2 text-xs px-1.5 py-0.5 rounded-full ${
+                    activeTab === tab.key ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+                  }`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {filtered.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center text-center py-16 px-6">
               <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-5">
-                <Calendar className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+                {activeTab === 'upcoming' ? (
+                  <Calendar className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+                ) : (
+                  <ClipboardList className="w-10 h-10 text-slate-400" strokeWidth={1.5} />
+                )}
               </div>
-              <h3 className="text-xl font-semibold text-slate-800 mb-2">No bookings yet</h3>
-              <p className="text-slate-500 mb-2 max-w-sm leading-relaxed">
-                You haven't booked any services yet. Browse our catalogue and schedule your first home maintenance visit in minutes.
+              <h3 className="text-xl font-semibold text-slate-800 mb-2">
+                {activeTab === 'upcoming' ? 'No upcoming bookings' : activeTab === 'past' ? 'No past bookings' : 'No cancelled bookings'}
+              </h3>
+              <p className="text-slate-500 mb-4 max-w-sm leading-relaxed">
+                {activeTab === 'upcoming'
+                  ? 'Schedule your next home maintenance visit in minutes.'
+                  : 'Your booking history will appear here.'}
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                <Link to={createPageUrl('OnDemandServices')}>
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Services</Button>
-                </Link>
-                <Link to={createPageUrl('Subscriptions')}>
-                  <Button variant="outline">View Packages</Button>
-                </Link>
-              </div>
+              {activeTab === 'upcoming' && (
+                <div className="flex gap-3">
+                  <Link to={createPageUrl('OnDemandServices')}>
+                    <Button className="bg-emerald-600 hover:bg-emerald-700">Browse Services</Button>
+                  </Link>
+                  <Link to={createPageUrl('Subscriptions')}>
+                    <Button variant="outline">View Packages</Button>
+                  </Link>
+                </div>
+              )}
             </CardContent>
           </Card>
         ) : (
           <div className="space-y-4">
-            {bookings.map(booking => (
-              <Card key={booking.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-5">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-slate-900 text-lg">{getServiceName(booking.service_id)}</h3>
-                        <Badge className={statusColor(booking.status)}>{booking.status?.replace('_', ' ')}</Badge>
-                      </div>
-                      <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5" /> {booking.scheduled_date}
-                        </span>
-                        {booking.scheduled_time && (
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" /> {booking.scheduled_time}
-                          </span>
-                        )}
-                        {getPropertyAddress(booking.property_id) && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5" /> {getPropertyAddress(booking.property_id)}
-                          </span>
-                        )}
-                      </div>
-                      {booking.customer_notes && (
-                        <p className="text-sm text-slate-400 mt-2 italic">"{booking.customer_notes}"</p>
-                      )}
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <div className="text-xl font-bold text-slate-900">AED {booking.total_amount}</div>
-                      <Badge variant="outline" className="mt-1">
-                        {booking.payment_status === 'paid' ? '✓ Paid' : booking.payment_status}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            {filtered.map(booking => (
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                serviceName={getServiceName(booking.service_id)}
+                propertyAddress={getPropertyAddress(booking.property_id)}
+                providerName={getProviderName(booking.assigned_provider_id)}
+              />
             ))}
           </div>
         )}
