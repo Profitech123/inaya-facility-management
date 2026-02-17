@@ -8,6 +8,7 @@ import { X, Loader2, Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { logAuditEvent } from './AuditLogger';
 
 const SPECIALIZATIONS = [
   'AC Maintenance', 'Plumbing', 'Electrical', 'Cleaning',
