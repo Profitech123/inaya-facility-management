@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
 import AddonSelector from './AddonSelector';
-import TechnicianSelector from './TechnicianSelector';
 
 export default function CustomizeStep({
   bookingData,
@@ -29,23 +28,6 @@ export default function CustomizeStep({
             serviceId={serviceId}
             selectedIds={bookingData.addon_ids || []}
             onChange={(ids) => setBookingData(prev => ({ ...prev, addon_ids: ids }))}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Technician */}
-      <Card className="border-slate-200 shadow-sm">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Choose a Technician</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <TechnicianSelector
-            serviceId={serviceId}
-            selectedProviderId={bookingData.assigned_provider_id || ''}
-            onChange={(id) => setBookingData(prev => ({ ...prev, assigned_provider_id: id }))}
-            selectedDate={bookingData.scheduled_date}
-            selectedTimeSlot={bookingData.scheduled_time}
-            allBookings={allBookings}
           />
         </CardContent>
       </Card>
