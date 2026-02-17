@@ -52,10 +52,14 @@ import AdminAnalytics from './pages/AdminAnalytics';
 import AdminAuditLogs from './pages/AdminAuditLogs';
 import AdminBookings from './pages/AdminBookings';
 import AdminCSVMigration from './pages/AdminCSVMigration';
+import AdminCustomers from './pages/AdminCustomers';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminEmailTemplates from './pages/AdminEmailTemplates';
+import AdminInvoices from './pages/AdminInvoices';
 import AdminLiveChat from './pages/AdminLiveChat';
 import AdminProviderDetail from './pages/AdminProviderDetail';
 import AdminReports from './pages/AdminReports';
+import AdminServiceAreas from './pages/AdminServiceAreas';
 import AdminServices from './pages/AdminServices';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminSupport from './pages/AdminSupport';
@@ -90,10 +94,7 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import AdminCustomers from './pages/AdminCustomers';
-import AdminInvoices from './pages/AdminInvoices';
-import AdminServiceAreas from './pages/AdminServiceAreas';
-import AdminEmailTemplates from './pages/AdminEmailTemplates';
+import BookService from './pages/BookService';
 import __Layout from './Layout.jsx';
 
 
@@ -103,10 +104,14 @@ export const PAGES = {
     "AdminAuditLogs": AdminAuditLogs,
     "AdminBookings": AdminBookings,
     "AdminCSVMigration": AdminCSVMigration,
+    "AdminCustomers": AdminCustomers,
     "AdminDashboard": AdminDashboard,
+    "AdminEmailTemplates": AdminEmailTemplates,
+    "AdminInvoices": AdminInvoices,
     "AdminLiveChat": AdminLiveChat,
     "AdminProviderDetail": AdminProviderDetail,
     "AdminReports": AdminReports,
+    "AdminServiceAreas": AdminServiceAreas,
     "AdminServices": AdminServices,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminSupport": AdminSupport,
@@ -141,10 +146,7 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "AdminCustomers": AdminCustomers,
-    "AdminInvoices": AdminInvoices,
-    "AdminServiceAreas": AdminServiceAreas,
-    "AdminEmailTemplates": AdminEmailTemplates,
+    "BookService": BookService,
 }
 
 export const pagesConfig = {
