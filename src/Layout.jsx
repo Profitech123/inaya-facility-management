@@ -53,8 +53,9 @@ export default function Layout({ children, currentPageName }) {
     return <>{children}</>;
   }
 
-  const handleLogout = () => {
-    base44.auth.logout(createPageUrl('Home'));
+  const handleLogout = async () => {
+    const homeUrl = window.location.origin + createPageUrl('Home');
+    await base44.auth.logout(homeUrl);
   };
 
   const isActivePage = (pageName) => currentPageName === pageName;
