@@ -15,6 +15,7 @@ import AuthGuard from '../components/AuthGuard';
 import AIServiceCategorizer from '../components/admin/AIServiceCategorizer';
 import AIDynamicPricing from '../components/admin/AIDynamicPricing';
 import AIBundleRecommendations from '../components/admin/AIBundleRecommendations';
+import { logAuditEvent } from '../components/admin/AuditLogger';
 
 function AdminServicesContent() {
   const queryClient = useQueryClient();
