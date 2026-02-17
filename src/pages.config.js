@@ -61,6 +61,7 @@ import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminSupport from './pages/AdminSupport';
 import AdminTechSchedule from './pages/AdminTechSchedule';
 import AdminTechnicians from './pages/AdminTechnicians';
+import BookingDetail from './pages/BookingDetail';
 import BusinessExcellence from './pages/BusinessExcellence';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
@@ -89,7 +90,6 @@ import Support from './pages/Support';
 import TechnicianProfile from './pages/TechnicianProfile';
 import TermsOfService from './pages/TermsOfService';
 import UserProfile from './pages/UserProfile';
-import BookingDetail from './pages/BookingDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -108,6 +108,7 @@ export const PAGES = {
     "AdminSupport": AdminSupport,
     "AdminTechSchedule": AdminTechSchedule,
     "AdminTechnicians": AdminTechnicians,
+    "BookingDetail": BookingDetail,
     "BusinessExcellence": BusinessExcellence,
     "Contact": Contact,
     "Dashboard": Dashboard,
@@ -136,7 +137,6 @@ export const PAGES = {
     "TechnicianProfile": TechnicianProfile,
     "TermsOfService": TermsOfService,
     "UserProfile": UserProfile,
-    "BookingDetail": BookingDetail,
 }
 
 export const pagesConfig = {
