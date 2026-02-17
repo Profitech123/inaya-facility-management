@@ -11,11 +11,18 @@ import AuthGuard from '../components/AuthGuard';
 
 const ACTION_COLORS = {
   booking_status_changed: 'bg-blue-100 text-blue-800',
+  booking_refunded: 'bg-orange-100 text-orange-800',
   provider_assigned: 'bg-purple-100 text-purple-800',
+  subscription_created: 'bg-green-100 text-green-800',
   subscription_updated: 'bg-amber-100 text-amber-800',
+  subscription_deleted: 'bg-red-100 text-red-800',
   service_created: 'bg-green-100 text-green-800',
   service_updated: 'bg-teal-100 text-teal-800',
   service_deleted: 'bg-red-100 text-red-800',
+  category_created: 'bg-lime-100 text-lime-800',
+  category_updated: 'bg-lime-100 text-lime-800',
+  category_deleted: 'bg-red-100 text-red-800',
+  technician_created: 'bg-violet-100 text-violet-800',
   ticket_resolved: 'bg-emerald-100 text-emerald-800',
   package_created: 'bg-indigo-100 text-indigo-800',
   package_updated: 'bg-cyan-100 text-cyan-800',
