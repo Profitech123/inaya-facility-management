@@ -43,6 +43,7 @@ const navSections = [
       { label: 'Live Chat', page: 'AdminLiveChat', icon: ChatCircleDots },
       { label: 'Support Tickets', page: 'AdminSupport', icon: ShieldCheck },
       { label: 'Audit Logs', page: 'AdminAuditLogs', icon: FileText },
+      { label: 'CSV Import', page: 'AdminCSVMigration', icon: UploadSimple },
     ],
   },
 ];
