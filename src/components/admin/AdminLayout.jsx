@@ -20,6 +20,7 @@ const navSections = [
       { label: 'Services & Pricing', page: 'AdminServices', icon: Wrench },
       { label: 'Technicians', page: 'AdminTechnicians', icon: UsersThree },
       { label: 'Tech Schedules', page: 'AdminTechSchedule', icon: CalendarDots },
+      { label: 'Service Areas', page: 'AdminServiceAreas', icon: MapPin },
     ],
   },
   {
