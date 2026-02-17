@@ -59,8 +59,9 @@ function AdminSubscriptionsContent() {
 
   const createPkgMutation = useMutation({
     mutationFn: (data) => base44.entities.SubscriptionPackage.create(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['packages'] });
+      logAuditEvent({ action: 'package_created', entity_type: 'SubscriptionPackage', entity_id: '-', details: `Package "${variables.name}" created at AED ${variables.monthly_price}/mo` });
       setShowPackageForm(false);
       toast.success('Package created');
     }
@@ -68,8 +69,9 @@ function AdminSubscriptionsContent() {
 
   const updatePkgMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.SubscriptionPackage.update(id, data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['packages'] });
+      logAuditEvent({ action: 'package_updated', entity_type: 'SubscriptionPackage', entity_id: variables.id, details: `Package "${variables.data.name}" updated` });
       setShowPackageForm(false);
       setEditingPkg(null);
       toast.success('Package updated');
@@ -78,16 +80,19 @@ function AdminSubscriptionsContent() {
 
   const deletePkgMutation = useMutation({
     mutationFn: (id) => base44.entities.SubscriptionPackage.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
+      const pkg = packages.find(p => p.id === id);
       queryClient.invalidateQueries({ queryKey: ['packages'] });
+      logAuditEvent({ action: 'package_deleted', entity_type: 'SubscriptionPackage', entity_id: id, details: `Package "${pkg?.name || id}" deleted` });
       toast.success('Package deleted');
     }
   });
 
   const createSubMutation = useMutation({
     mutationFn: (data) => base44.entities.Subscription.create(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      logAuditEvent({ action: 'subscription_created', entity_type: 'Subscription', entity_id: '-', details: `Subscription created for customer ${variables.customer_id} – AED ${variables.monthly_amount}/mo` });
       setShowSubForm(false);
       toast.success('Subscription created');
     }
@@ -95,8 +100,9 @@ function AdminSubscriptionsContent() {
 
   const updateSubMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Subscription.update(id, data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      logAuditEvent({ action: 'subscription_updated', entity_type: 'Subscription', entity_id: variables.id, details: `Subscription #${variables.id.slice(0,8)} updated (status: ${variables.data.status})`, old_value: editingSub?.status || '', new_value: variables.data.status || '' });
       setShowSubForm(false);
       setEditingSub(null);
       toast.success('Subscription updated');
@@ -105,8 +111,9 @@ function AdminSubscriptionsContent() {
 
   const deleteSubMutation = useMutation({
     mutationFn: (id) => base44.entities.Subscription.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['allSubscriptions'] });
+      logAuditEvent({ action: 'subscription_deleted', entity_type: 'Subscription', entity_id: id, details: `Subscription #${id.slice(0,8)} deleted` });
       toast.success('Subscription deleted');
     }
   });
