@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Menu, X, ChevronLeft } from 'lucide-react';
-import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, ChartLineUp, ChartBar, Wrench, SignOut, ChatCircleDots, Gear, FileText, ShieldCheck, Invoice, MapPin, UserList, UploadSimple } from '@phosphor-icons/react';
+import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, ChartLineUp, ChartBar, Wrench, SignOut, ChatCircleDots, Gear, FileText, ShieldCheck, Invoice, MapPin, UserList, UploadSimple, EnvelopeSimple } from '@phosphor-icons/react';
 
 const navSections = [
   {
@@ -42,6 +42,7 @@ const navSections = [
     items: [
       { label: 'Live Chat', page: 'AdminLiveChat', icon: ChatCircleDots },
       { label: 'Support Tickets', page: 'AdminSupport', icon: ShieldCheck },
+      { label: 'Email Templates', page: 'AdminEmailTemplates', icon: EnvelopeSimple },
       { label: 'Audit Logs', page: 'AdminAuditLogs', icon: FileText },
       { label: 'CSV Import', page: 'AdminCSVMigration', icon: UploadSimple },
     ],
