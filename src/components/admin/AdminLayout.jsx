@@ -54,7 +54,7 @@ export default function AdminLayout({ children, currentPage }) {
   const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = () => {
-    base44.auth.logout();
+    base44.auth.logout(createPageUrl('Home'));
   };
 
   return (
