@@ -52,7 +52,7 @@ export default function DashboardSidebar({ currentPage }) {
       {/* Logout */}
       <div className="p-3 border-t border-slate-100">
         <button
-          onClick={() => base44.auth.logout()}
+          onClick={() => base44.auth.logout(window.location.origin + createPageUrl('Home'))}
           className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all w-full"
         >
           <SignOut className="w-[18px] h-[18px]" weight="duotone" />
