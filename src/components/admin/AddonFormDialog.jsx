@@ -14,8 +14,10 @@ export default function AddonFormDialog({ open, onOpenChange, addon, services, o
   const isEditing = !!addon;
 
   useEffect(() => {
-    if (addon) {
+    if (addon?.id) {
       setForm({ ...addon, price: String(addon.price || '') });
+    } else if (addon?.service_id) {
+      setForm({ ...emptyForm, service_id: addon.service_id });
     } else {
       setForm(emptyForm);
     }
