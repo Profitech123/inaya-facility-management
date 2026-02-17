@@ -37,8 +37,9 @@ export default function AddTechnicianDialog({ open, onClose }) {
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Provider.create(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['providers'] });
+      logAuditEvent({ action: 'technician_created', entity_type: 'Provider', entity_id: '-', details: `Technician "${variables.full_name}" added (${variables.email})` });
       toast.success('Technician added successfully');
       setForm({ full_name: '', email: '', phone: '', specialization: [], assigned_service_ids: [] });
       onClose();
