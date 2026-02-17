@@ -67,8 +67,9 @@ function AdminServicesContent() {
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Service.create(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries(['services']);
+      logAuditEvent({ action: 'service_created', entity_type: 'Service', entity_id: '-', details: `Service "${variables.name}" created at AED ${variables.price}` });
       resetForm();
       toast.success('Service created successfully');
     }
@@ -76,8 +77,9 @@ function AdminServicesContent() {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Service.update(id, data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries(['services']);
+      logAuditEvent({ action: 'service_updated', entity_type: 'Service', entity_id: variables.id, details: `Service "${variables.data.name}" updated` });
       resetForm();
       toast.success('Service updated successfully');
     }
@@ -85,23 +87,25 @@ function AdminServicesContent() {
 
   const deleteMutation = useMutation({
     mutationFn: (id) => base44.entities.Service.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries(['services']);
+      const svc = services.find(s => s.id === id);
+      logAuditEvent({ action: 'service_deleted', entity_type: 'Service', entity_id: id, details: `Service "${svc?.name || id}" deleted` });
       toast.success('Service deleted');
     }
   });
 
   const createCatMutation = useMutation({
     mutationFn: (data) => base44.entities.ServiceCategory.create(data),
-    onSuccess: () => { queryClient.invalidateQueries(['categories']); resetCatForm(); toast.success('Category created'); }
+    onSuccess: (_, variables) => { queryClient.invalidateQueries(['categories']); logAuditEvent({ action: 'category_created', entity_type: 'ServiceCategory', entity_id: '-', details: `Category "${variables.name}" created` }); resetCatForm(); toast.success('Category created'); }
   });
   const updateCatMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.ServiceCategory.update(id, data),
-    onSuccess: () => { queryClient.invalidateQueries(['categories']); resetCatForm(); toast.success('Category updated'); }
+    onSuccess: (_, variables) => { queryClient.invalidateQueries(['categories']); logAuditEvent({ action: 'category_updated', entity_type: 'ServiceCategory', entity_id: variables.id, details: `Category "${variables.data.name}" updated` }); resetCatForm(); toast.success('Category updated'); }
   });
   const deleteCatMutation = useMutation({
     mutationFn: (id) => base44.entities.ServiceCategory.delete(id),
-    onSuccess: () => { queryClient.invalidateQueries(['categories']); toast.success('Category deleted'); }
+    onSuccess: (_, id) => { const cat = categories.find(c => c.id === id); queryClient.invalidateQueries(['categories']); logAuditEvent({ action: 'category_deleted', entity_type: 'ServiceCategory', entity_id: id, details: `Category "${cat?.name || id}" deleted` }); toast.success('Category deleted'); }
   });
 
   const resetCatForm = () => { setCatForm({ name: '', slug: '', description: '', icon: '', display_order: 0 }); setEditingCategory(null); setShowCatForm(false); };
