@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import clientAuth from '@/lib/clientAuth';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { CheckCircle, Puzzle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -15,72 +13,45 @@ import { STATIC_PACKAGES } from '@/data/services';
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    clientAuth.me().then(setUser).catch(() => {});
-  }, []);
+  useEffect(() => { clientAuth.me().then(setUser).catch(() => {}); }, []);
 
   const { data: packages = [] } = useQuery({
     queryKey: ['subscriptionPackages'],
-    queryFn: async () => {
-      try {
-        const allPackages = await base44.entities.SubscriptionPackage.list();
-        return allPackages.filter(pkg => pkg.is_active === true);
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-        return [];
-      }
-    },
+    queryFn: async () => { try { return (await base44.entities.SubscriptionPackage.list()).filter(pkg => pkg.is_active); } catch { return []; } },
     initialData: []
   });
-
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['userSubscriptions', user?.id],
-    queryFn: async () => {
-      if (!user?.id) return [];
-      try {
-        const allSubs = await base44.entities.Subscription.list();
-        return allSubs.filter(sub => sub.customer_id === user.id && sub.status === 'active');
-      } catch (error) {
-        console.error('Error fetching subscriptions:', error);
-        return [];
-      }
-    },
-    enabled: !!user?.id,
-    initialData: []
+    queryFn: async () => { if (!user?.id) return []; try { return (await base44.entities.Subscription.list()).filter(sub => sub.customer_id === user.id && sub.status === 'active'); } catch { return []; } },
+    enabled: !!user?.id, initialData: []
   });
 
-  // Fallback to static data when API returns empty
   const displayPackages = packages.length > 0 ? packages : STATIC_PACKAGES;
-
   const currentSub = subscriptions[0];
   const currentPkg = currentSub ? displayPackages.find(p => p.id === currentSub.package_id) : null;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ backgroundColor: 'hsl(40,20%,98%)' }}>
       {/* Hero */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-14">
-          <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+      <div className="bg-white border-b border-[hsl(40,10%,90%)]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-8">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3">
-                Upgrade Your Comfort
+              <p className="text-[hsl(160,60%,38%)] text-xs font-semibold uppercase tracking-[0.2em] mb-4">Subscription Packages</p>
+              <h1 className="text-4xl lg:text-5xl font-serif font-bold text-[hsl(210,20%,10%)] mb-4 leading-tight">
+                Upgrade your <em className="text-[hsl(160,60%,38%)] not-italic">comfort</em>
               </h1>
-              <p className="text-slate-500 max-w-lg text-lg">
-                Professional home maintenance tailored to your needs. Choose a plan that ensures peace of mind for you and your family.
+              <p className="text-[hsl(210,10%,55%)] text-lg max-w-lg leading-relaxed">
+                Professional home maintenance tailored to your needs. Choose a plan that ensures peace of mind.
               </p>
             </div>
-
-            {/* Current plan badge */}
             {currentPkg && (
-              <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 flex items-center gap-3 flex-shrink-0">
-                <CheckCircle className="w-6 h-6 text-emerald-500" />
+              <div className="bg-[hsl(40,15%,96%)] rounded-2xl border border-[hsl(40,10%,90%)] p-5 flex items-center gap-4 flex-shrink-0">
+                <CheckCircle className="w-7 h-7 text-[hsl(160,60%,38%)]" />
                 <div>
-                  <div className="text-[10px] font-bold text-emerald-600 tracking-wider">CURRENT PLAN</div>
-                  <div className="font-bold text-slate-900">{currentPkg.name}</div>
-                  {currentSub?.end_date && (
-                    <div className="text-xs text-slate-400">Renewing {currentSub.end_date}</div>
-                  )}
+                  <div className="text-[10px] font-bold text-[hsl(160,60%,38%)] tracking-[0.15em] uppercase">Current Plan</div>
+                  <div className="font-bold text-[hsl(210,20%,10%)]">{currentPkg.name}</div>
+                  {currentSub?.end_date && <div className="text-xs text-[hsl(210,10%,55%)]">Renewing {currentSub.end_date}</div>}
                 </div>
               </div>
             )}
@@ -88,45 +59,45 @@ export default function Subscriptions() {
         </div>
       </div>
 
-      {/* Custom Package Builder CTA */}
-      <div className="max-w-6xl mx-auto px-6 pt-10 pb-0">
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4 text-white shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-              <Puzzle className="w-6 h-6" />
+      {/* Custom Package Builder */}
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-10">
+        <div className="rounded-2xl p-6 lg:p-8 flex flex-col md:flex-row items-center justify-between gap-6" style={{ background: 'linear-gradient(135deg, hsl(160,60%,38%), hsl(160,80%,28%))' }}>
+          <div className="flex items-center gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center flex-shrink-0">
+              <Puzzle className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold">Build Your Own Package</h3>
-              <p className="text-emerald-100 text-sm">Mix & match services, set frequencies, and save custom plans tailored to your home.</p>
+              <h3 className="text-lg font-bold text-white">Build Your Own Package</h3>
+              <p className="text-white/70 text-sm">Mix and match services, set frequencies, and save custom plans.</p>
             </div>
           </div>
           <Link to={createPageUrl('PackageBuilder')}>
-            <Button className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold gap-2 px-6 shadow-md">
+            <button className="flex items-center gap-2 px-6 py-3 bg-white text-[hsl(160,60%,30%)] rounded-full text-sm font-semibold hover:shadow-lg transition-all">
               Start Building <ArrowRight className="w-4 h-4" />
-            </Button>
+            </button>
           </Link>
         </div>
       </div>
 
-      {/* AI Package Suggestion */}
-      <div className="max-w-6xl mx-auto px-6 pt-8 pb-0">
+      {/* AI Suggestion */}
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-8">
         <AIPackageSuggestion packages={displayPackages} />
       </div>
 
       {/* Plan Cards */}
-      <div className="max-w-6xl mx-auto px-6 py-14">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16">
         <PlanCards packages={displayPackages} currentPkgId={currentPkg?.id} />
       </div>
 
       {/* Comparison Table */}
-      <div className="bg-white border-y border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-14">
+      <div className="bg-white border-y border-[hsl(40,10%,90%)]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16">
           <ComparisonTable packages={displayPackages} />
         </div>
       </div>
 
-      {/* Plan Management / FAQ */}
-      <div className="max-w-6xl mx-auto px-6 py-14">
+      {/* Plan Management */}
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16">
         <PlanManagement />
       </div>
     </div>
