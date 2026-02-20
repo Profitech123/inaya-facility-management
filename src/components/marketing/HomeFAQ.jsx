@@ -1,6 +1,5 @@
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -27,25 +26,31 @@ const topFaqs = [
 
 export default function HomeFAQ() {
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <motion.span
+    <section className="py-24 lg:py-32" style={{ backgroundColor: 'hsl(40,20%,98%)' }}>
+      <div className="max-w-3xl mx-auto px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block text-emerald-500 font-bold text-sm uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 mb-4"
           >
-            Common Questions
-          </motion.span>
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'hsl(160,60%,38%)' }} />
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase" style={{ color: 'hsl(160,60%,38%)' }}>
+              FAQ
+            </span>
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'hsl(160,60%,38%)' }} />
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl font-extrabold text-slate-900 mt-2"
+            className="text-4xl lg:text-5xl font-bold"
+            style={{ color: 'hsl(210,20%,10%)', fontFamily: 'Georgia, "Times New Roman", serif' }}
           >
-            Frequently Asked Questions
+            Common{' '}
+            <span className="italic" style={{ color: 'hsl(160,60%,38%)' }}>questions.</span>
           </motion.h2>
         </div>
 
@@ -55,13 +60,18 @@ export default function HomeFAQ() {
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          <Accordion type="single" collapsible className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
+          <Accordion type="single" collapsible className="space-y-3">
             {topFaqs.map((item, idx) => (
-              <AccordionItem key={idx} value={`faq-${idx}`} className="border-b border-slate-200 last:border-0">
-                <AccordionTrigger className="px-6 py-5 hover:bg-slate-100 text-left font-semibold text-slate-900 text-base">
+              <AccordionItem
+                key={idx}
+                value={`faq-${idx}`}
+                className="bg-white rounded-2xl border px-6 overflow-hidden data-[state=open]:shadow-sm transition-all"
+                style={{ borderColor: 'hsl(40,10%,92%)' }}
+              >
+                <AccordionTrigger className="py-5 hover:no-underline text-left font-semibold text-base" style={{ color: 'hsl(210,20%,10%)' }}>
                   {item.q}
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-5 text-slate-600 leading-relaxed">
+                <AccordionContent className="pb-5 leading-relaxed" style={{ color: 'hsl(210,10%,46%)' }}>
                   {item.a}
                 </AccordionContent>
               </AccordionItem>
@@ -74,12 +84,10 @@ export default function HomeFAQ() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="text-center mt-8"
+          className="text-center mt-10"
         >
-          <Link to={createPageUrl('FAQ')}>
-            <Button variant="link" className="text-emerald-600 font-semibold gap-2">
-              View All FAQs <ArrowRight className="w-4 h-4" />
-            </Button>
+          <Link to={createPageUrl('FAQ')} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors" style={{ color: 'hsl(160,60%,38%)' }}>
+            View all questions <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
       </div>

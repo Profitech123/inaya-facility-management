@@ -6,21 +6,21 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 
 const propertyTypes = [
-  { label: "Studio / 1BR Apartment", baseMultiplier: 0.7 },
-  { label: "2BR Apartment", baseMultiplier: 1 },
-  { label: "3BR Apartment", baseMultiplier: 1.3 },
-  { label: "3BR Villa / Townhouse", baseMultiplier: 1.6 },
+  { label: "Studio / 1BR", baseMultiplier: 0.7 },
+  { label: "2BR Apt", baseMultiplier: 1 },
+  { label: "3BR Apt", baseMultiplier: 1.3 },
+  { label: "3BR Villa", baseMultiplier: 1.6 },
   { label: "4BR Villa", baseMultiplier: 2 },
   { label: "5+ BR Villa", baseMultiplier: 2.5 },
 ];
 
 const serviceOptions = [
   { label: "AC Maintenance", monthlyPrice: 80, id: "ac" },
-  { label: "Plumbing Coverage", monthlyPrice: 60, id: "plumbing" },
-  { label: "Electrical Coverage", monthlyPrice: 55, id: "electrical" },
+  { label: "Plumbing", monthlyPrice: 60, id: "plumbing" },
+  { label: "Electrical", monthlyPrice: 55, id: "electrical" },
   { label: "Pest Control", monthlyPrice: 40, id: "pest" },
-  { label: "General Cleaning", monthlyPrice: 120, id: "cleaning" },
-  { label: "Pool Maintenance", monthlyPrice: 150, id: "pool" },
+  { label: "Cleaning", monthlyPrice: 120, id: "cleaning" },
+  { label: "Pool Care", monthlyPrice: 150, id: "pool" },
 ];
 
 export default function PricingCalculator() {
@@ -50,36 +50,31 @@ export default function PricingCalculator() {
   }, [propertyIndex, selectedServices]);
 
   return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <motion.span
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 text-emerald-500 font-bold text-sm uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 mb-4"
           >
-            <Calculator className="w-4 h-4" />
-            Savings Calculator
-          </motion.span>
+            <Calculator className="w-4 h-4" style={{ color: 'hsl(160,60%,38%)' }} />
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase" style={{ color: 'hsl(160,60%,38%)' }}>
+              Savings Calculator
+            </span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl font-extrabold text-slate-900 mt-2"
+            className="text-4xl lg:text-5xl font-bold"
+            style={{ color: 'hsl(210,20%,10%)', fontFamily: 'Georgia, "Times New Roman", serif' }}
           >
-            Calculate Your Annual Savings
+            Calculate your{' '}
+            <span className="italic" style={{ color: 'hsl(160,60%,38%)' }}>savings.</span>
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mt-4 text-slate-500"
-          >
-            See how much you could save by switching to a subscription plan.
-          </motion.p>
         </div>
 
         <motion.div
@@ -87,23 +82,25 @@ export default function PricingCalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm"
+          className="bg-white rounded-3xl border p-8 lg:p-10 shadow-sm"
+          style={{ borderColor: 'hsl(40,10%,90%)' }}
         >
           {/* Property Type */}
-          <div className="mb-8">
-            <label className="block text-sm font-semibold text-slate-900 mb-3">
+          <div className="mb-10">
+            <label className="block text-sm font-semibold mb-4" style={{ color: 'hsl(210,20%,10%)' }}>
               Property Type
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
               {propertyTypes.map((pt, i) => (
                 <button
                   key={i}
                   onClick={() => setPropertyIndex(i)}
-                  className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    i === propertyIndex
-                      ? 'bg-emerald-500 text-white'
-                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                  }`}
+                  className="px-3 py-3 rounded-xl text-xs font-medium transition-all duration-300"
+                  style={{
+                    backgroundColor: i === propertyIndex ? 'hsl(210,20%,6%)' : 'transparent',
+                    color: i === propertyIndex ? 'white' : 'hsl(210,10%,46%)',
+                    border: i === propertyIndex ? 'none' : '1px solid hsl(40,10%,90%)',
+                  }}
                 >
                   {pt.label}
                 </button>
@@ -112,24 +109,26 @@ export default function PricingCalculator() {
           </div>
 
           {/* Services */}
-          <div className="mb-8">
-            <label className="block text-sm font-semibold text-slate-900 mb-3">
-              Select Services You Need
+          <div className="mb-10">
+            <label className="block text-sm font-semibold mb-4" style={{ color: 'hsl(210,20%,10%)' }}>
+              Select Services
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {serviceOptions.map((s) => (
                 <button
                   key={s.id}
                   onClick={() => toggleService(s.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left ${
-                    selectedServices.includes(s.id)
-                      ? 'bg-emerald-50 text-emerald-700 border-2 border-emerald-500'
-                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                  }`}
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-left"
+                  style={{
+                    backgroundColor: selectedServices.includes(s.id) ? 'hsl(160,60%,95%)' : 'transparent',
+                    color: selectedServices.includes(s.id) ? 'hsl(160,60%,28%)' : 'hsl(210,10%,46%)',
+                    border: selectedServices.includes(s.id) ? '2px solid hsl(160,60%,38%)' : '1px solid hsl(40,10%,90%)',
+                  }}
                 >
-                  <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 ${
-                    selectedServices.includes(s.id) ? 'bg-emerald-500 text-white' : 'bg-slate-200'
-                  }`}>
+                  <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{
+                    backgroundColor: selectedServices.includes(s.id) ? 'hsl(160,60%,38%)' : 'hsl(40,10%,90%)',
+                    color: 'white',
+                  }}>
                     {selectedServices.includes(s.id) && <Check className="w-3 h-3" />}
                   </div>
                   {s.label}
@@ -140,25 +139,25 @@ export default function PricingCalculator() {
 
           {/* Results */}
           {selectedServices.length > 0 && (
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="rounded-2xl p-8" style={{ backgroundColor: 'hsl(40,20%,98%)', border: '1px solid hsl(40,10%,90%)' }}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <p className="text-sm text-slate-500 mb-1">On-Demand (Annual)</p>
-                  <p className="text-2xl font-bold text-slate-400 line-through">AED {onDemandCost.toLocaleString()}</p>
+                  <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'hsl(210,10%,46%)' }}>On-Demand (Annual)</p>
+                  <p className="text-2xl font-bold line-through" style={{ color: 'hsl(210,10%,70%)' }}>AED {onDemandCost.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500 mb-1">Subscription (Annual)</p>
-                  <p className="text-2xl font-bold text-emerald-600">AED {subscriptionCost.toLocaleString()}</p>
+                  <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'hsl(210,10%,46%)' }}>Subscription (Annual)</p>
+                  <p className="text-2xl font-bold" style={{ color: 'hsl(160,60%,38%)' }}>AED {subscriptionCost.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500 mb-1">You Save</p>
-                  <p className="text-2xl font-bold text-emerald-500">AED {savings.toLocaleString()}/yr</p>
+                  <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'hsl(210,10%,46%)' }}>You Save</p>
+                  <p className="text-2xl font-bold" style={{ color: 'hsl(160,60%,30%)' }}>AED {savings.toLocaleString()}/yr</p>
                 </div>
               </div>
-              <div className="text-center mt-6">
+              <div className="text-center mt-8">
                 <Link to={createPageUrl('Subscriptions')}>
-                  <Button className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 h-auto rounded-xl font-bold shadow-lg shadow-emerald-200 gap-2">
-                    View Subscription Plans <ArrowRight className="w-4 h-4" />
+                  <Button className="text-white px-10 py-5 h-auto rounded-full font-semibold text-sm tracking-wide transition-all duration-300 hover:shadow-xl" style={{ backgroundColor: 'hsl(160,60%,38%)' }}>
+                    View Plans <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
               </div>
@@ -166,7 +165,7 @@ export default function PricingCalculator() {
           )}
 
           {selectedServices.length === 0 && (
-            <div className="text-center py-6 text-slate-400 text-sm">
+            <div className="text-center py-8 text-sm" style={{ color: 'hsl(210,10%,60%)' }}>
               Select at least one service to see your estimated savings.
             </div>
           )}

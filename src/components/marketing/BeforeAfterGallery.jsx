@@ -32,48 +32,56 @@ export default function BeforeAfterGallery() {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <motion.span
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="max-w-5xl mx-auto px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block text-emerald-500 font-bold text-sm uppercase tracking-wider"
+            className="flex items-center justify-center gap-3 mb-4"
           >
-            Our Work
-          </motion.span>
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'hsl(160,60%,38%)' }} />
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase" style={{ color: 'hsl(160,60%,38%)' }}>
+              Our Work
+            </span>
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'hsl(160,60%,38%)' }} />
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl font-extrabold text-slate-900 mt-2"
+            className="text-4xl lg:text-5xl font-bold"
+            style={{ color: 'hsl(210,20%,10%)', fontFamily: 'Georgia, "Times New Roman", serif' }}
           >
-            See the Difference
+            See the{' '}
+            <span className="italic" style={{ color: 'hsl(160,60%,38%)' }}>difference.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 text-slate-500"
+            className="mt-4"
+            style={{ color: 'hsl(210,10%,46%)' }}
           >
             Drag the slider to compare before and after results.
           </motion.p>
         </div>
 
         {/* Project Tabs */}
-        <div className="flex justify-center gap-3 mb-8">
+        <div className="flex justify-center gap-3 mb-10">
           {projects.map((p, i) => (
             <button
               key={i}
               onClick={() => { setActiveProject(i); setSliderPos(50); }}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-                i === activeProject
-                  ? 'bg-emerald-500 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+              className="px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
+              style={{
+                backgroundColor: i === activeProject ? 'hsl(210,20%,6%)' : 'transparent',
+                color: i === activeProject ? 'white' : 'hsl(210,10%,46%)',
+                border: i === activeProject ? 'none' : '1px solid hsl(40,10%,90%)',
+              }}
             >
               {p.title}
             </button>
@@ -85,7 +93,8 @@ export default function BeforeAfterGallery() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 aspect-[16/9] select-none cursor-col-resize"
+          className="relative rounded-3xl overflow-hidden shadow-xl border aspect-[16/9] select-none cursor-col-resize"
+          style={{ borderColor: 'hsl(40,10%,90%)' }}
           onMouseDown={() => setIsDragging(true)}
           onMouseUp={() => setIsDragging(false)}
           onMouseLeave={() => setIsDragging(false)}
@@ -94,14 +103,12 @@ export default function BeforeAfterGallery() {
           onTouchEnd={() => setIsDragging(false)}
           onTouchMove={handleMove}
         >
-          {/* After (full background) */}
           <img
             src={project.after}
             alt={`${project.title} - After`}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
           />
-          {/* Before (clipped) */}
           <div
             className="absolute inset-0 overflow-hidden"
             style={{ width: `${sliderPos}%` }}
@@ -114,29 +121,27 @@ export default function BeforeAfterGallery() {
               loading="lazy"
             />
           </div>
-          {/* Slider Line */}
           <div
-            className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10"
+            className="absolute top-0 bottom-0 w-0.5 bg-white/80 z-10"
             style={{ left: `${sliderPos}%`, transform: 'translateX(-50%)' }}
           >
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-slate-600">
-                <path d="M7 4L3 10L7 16M13 4L17 10L13 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M7 4L3 10L7 16M13 4L17 10L13 16" stroke="hsl(210,20%,10%)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
           </div>
-          {/* Labels */}
-          <div className="absolute top-4 left-4 bg-slate-900/70 text-white text-xs font-bold px-3 py-1.5 rounded-full z-20">
+          <div className="absolute top-4 left-4 text-white text-xs font-semibold px-4 py-2 rounded-full z-20 tracking-wide" style={{ backgroundColor: 'hsl(210,20%,6%)', opacity: 0.9 }}>
             Before
           </div>
-          <div className="absolute top-4 right-4 bg-emerald-500/90 text-white text-xs font-bold px-3 py-1.5 rounded-full z-20">
+          <div className="absolute top-4 right-4 text-white text-xs font-semibold px-4 py-2 rounded-full z-20 tracking-wide" style={{ backgroundColor: 'hsl(160,60%,38%)', opacity: 0.9 }}>
             After
           </div>
         </motion.div>
 
-        <div className="text-center mt-6">
-          <p className="font-bold text-slate-900">{project.title}</p>
-          <p className="text-sm text-slate-500">{project.location}</p>
+        <div className="text-center mt-8">
+          <p className="font-bold" style={{ color: 'hsl(210,20%,10%)' }}>{project.title}</p>
+          <p className="text-sm mt-1" style={{ color: 'hsl(210,10%,46%)' }}>{project.location}</p>
         </div>
       </div>
     </section>

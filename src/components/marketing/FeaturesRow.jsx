@@ -1,47 +1,63 @@
 import React from 'react';
-import { ShieldCheck, CalendarCheck, MapPin } from 'lucide-react';
+import { ShieldCheck, CalendarCheck, MapPin, Headphones } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const features = [
   {
     icon: ShieldCheck,
-    title: "Reliable Technicians",
-    description: "Vetted professionals ensuring high-quality service every time.",
+    title: "Verified Professionals",
+    description: "Every technician is licensed, background-checked, and trained to deliver excellence.",
+    stat: "100%",
+    statLabel: "vetted"
   },
   {
     icon: CalendarCheck,
-    title: "Easy Slot Booking",
-    description: "Schedule services at your convenience through our app or web.",
+    title: "Effortless Scheduling",
+    description: "Book any service in under 60 seconds. Choose your slot, confirm, and relax.",
+    stat: "60s",
+    statLabel: "to book"
   },
   {
     icon: MapPin,
-    title: "Real-time Tracking",
-    description: "Track your technician's arrival in real-time for peace of mind.",
+    title: "Live Tracking",
+    description: "Follow your technician in real time. Know exactly when they arrive.",
+    stat: "Real-time",
+    statLabel: "updates"
+  },
+  {
+    icon: Headphones,
+    title: "24/7 Support",
+    description: "Round-the-clock assistance for emergencies. We are always just a call away.",
+    stat: "24/7",
+    statLabel: "available"
   },
 ];
 
 export default function FeaturesRow() {
   return (
-    <section className="bg-white py-12 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section className="py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, idx) => {
             const Icon = feature.icon;
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-start gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors"
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="group p-8 rounded-2xl border transition-all duration-300 hover:shadow-lg"
+                style={{ borderColor: 'hsl(40,10%,92%)' }}
               >
-                <div className="flex-shrink-0 w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-500">
-                  <Icon className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300" style={{ backgroundColor: 'hsl(160,60%,38%)', color: 'white' }}>
+                  <Icon className="w-5 h-5" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg mb-1">{feature.title}</h3>
-                  <p className="text-sm text-slate-500">{feature.description}</p>
+                <h3 className="font-bold text-lg mb-2" style={{ color: 'hsl(210,20%,10%)' }}>{feature.title}</h3>
+                <p className="text-sm leading-relaxed mb-6" style={{ color: 'hsl(210,10%,46%)' }}>{feature.description}</p>
+                <div className="pt-4 border-t" style={{ borderColor: 'hsl(40,10%,92%)' }}>
+                  <span className="text-2xl font-bold" style={{ color: 'hsl(160,60%,38%)' }}>{feature.stat}</span>
+                  <span className="text-xs uppercase tracking-wider ml-2" style={{ color: 'hsl(210,10%,46%)' }}>{feature.statLabel}</span>
                 </div>
               </motion.div>
             );
