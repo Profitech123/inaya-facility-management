@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import clientAuth from '@/lib/clientAuth';
 
 const AuthContext = createContext();
@@ -7,16 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
-  const [authError, setAuthError] = useState(null);
-  const [appPublicSettings, setAppPublicSettings] = useState(null);
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    setIsLoadingAuth(true);
+  const checkAuth = useCallback(async () => {
     try {
       const currentUser = await clientAuth.me();
       setUser(currentUser);
@@ -24,9 +16,14 @@ export const AuthProvider = ({ children }) => {
     } catch {
       setUser(null);
       setIsAuthenticated(false);
+    } finally {
+      setIsLoadingAuth(false);
     }
-    setIsLoadingAuth(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   const logout = (shouldRedirect = true) => {
     clientAuth.logout();
@@ -37,20 +34,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const navigateToLogin = () => {
-    window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
-  };
-
   return (
     <AuthContext.Provider value={{ 
       user, 
       isAuthenticated, 
       isLoadingAuth,
-      isLoadingPublicSettings,
-      authError,
-      appPublicSettings,
       logout,
-      navigateToLogin,
       checkAppState: checkAuth
     }}>
       {children}
