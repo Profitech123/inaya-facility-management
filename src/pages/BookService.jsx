@@ -143,10 +143,7 @@ export default function BookService() {
         payment_status: 'paid'
       });
 
-      await base44.functions.invoke('sendBookingConfirmation', {
-        booking_id: newBooking.id
-      });
-
+      // TODO: Wire up booking confirmation email via Supabase Edge Function
       setConfirmedBooking(newBooking);
       setIsProcessingPayment(false);
       setStep('success');

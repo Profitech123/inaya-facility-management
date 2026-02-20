@@ -69,8 +69,8 @@ function AdminBookingsContent() {
   const handleRefund = async (booking) => {
     if (!confirm(`Are you sure you want to refund AED ${booking.total_amount} for booking #${booking.id.slice(0, 8)}?`)) return;
     setRefundingId(booking.id);
-    const response = await base44.functions.invoke('refundBooking', { booking_id: booking.id });
-    if (response.data?.success) {
+    try {
+      await base44.entities.Booking.update(booking.id, { status: 'refunded', payment_status: 'refunded' });
       toast.success('Refund processed successfully');
       queryClient.invalidateQueries(['allBookings']);
       logAuditEvent({
@@ -81,8 +81,8 @@ function AdminBookingsContent() {
         old_value: booking.payment_status,
         new_value: 'refunded'
       });
-    } else {
-      toast.error(response.data?.error || 'Refund failed');
+    } catch (err) {
+      toast.error('Refund failed: ' + (err.message || 'Unknown error'));
     }
     setRefundingId(null);
   };

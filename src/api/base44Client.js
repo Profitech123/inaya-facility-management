@@ -1,14 +1,9 @@
-import { createClient } from '@base44/sdk';
-import { appParams } from '@/lib/app-params';
+/**
+ * Compatibility shim - replaces the old base44 SDK with Supabase-backed db layer.
+ * All existing `import { base44 } from '@/api/base44Client'` still work.
+ */
+import { db } from '@/lib/db';
 
-const { appId, token, functionsVersion, appBaseUrl } = appParams;
-
-//Create a client with authentication required
-export const base44 = createClient({
-  appId,
-  token,
-  functionsVersion,
-  serverUrl: '',
-  requiresAuth: false,
-  appBaseUrl
-});
+export const base44 = {
+  entities: db
+};

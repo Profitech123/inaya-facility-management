@@ -1,67 +1,52 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import clientAuth from '@/lib/clientAuth';
 import { createPageUrl } from '@/utils';
 
 /**
- * AuthGuard - protects pages by role
- * @param {string} requiredRole - "admin" | "customer" | "any"
- * @param {React.ReactNode} children
+ * AuthGuard - protects pages by role.
+ * Admin auth is synchronous (sessionStorage), customer auth is async.
+ * Hooks are always called in the same order to avoid React violations.
  */
 export default function AuthGuard({ requiredRole = 'any', children }) {
-  const hasChecked = useRef(false);
+  const isAdmin = requiredRole === 'admin';
   
-  // For admin, check sessionStorage synchronously to prevent any flicker
-  if (requiredRole === 'admin') {
-    const adminToken = sessionStorage.getItem('inaya_admin_session');
-    if (adminToken !== 'authenticated' && !hasChecked.current) {
-      hasChecked.current = true;
-      window.location.href = createPageUrl('AdminLogin');
-      return null;
-    }
-    // Authorized admin - render immediately without loading state
-    return children;
-  }
+  // Synchronous admin check - read once, no state needed
+  const adminOk = isAdmin && sessionStorage.getItem('inaya_admin_session') === 'authenticated';
 
-  // For customer auth, use async check with state
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  // Customer auth state - hooks always called regardless of role
+  const [customerOk, setCustomerOk] = useState(false);
+  const [checking, setChecking] = useState(!isAdmin);
 
   useEffect(() => {
+    if (isAdmin) return; // Skip async check for admin
     let mounted = true;
-    
-    const checkCustomerAuth = async () => {
-      try {
-        const user = await clientAuth.me();
-        if (user && mounted) {
-          setIsAuthorized(true);
-          setIsChecking(false);
-        } else if (mounted) {
-          window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
-        }
-      } catch {
-        if (mounted) {
-          window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
-        }
-      }
-    };
+    clientAuth.me()
+      .then(user => {
+        if (!mounted) return;
+        if (user) { setCustomerOk(true); setChecking(false); }
+        else window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+      })
+      .catch(() => {
+        if (mounted) window.location.href = `/Login?returnUrl=${encodeURIComponent(window.location.pathname)}`;
+      });
+    return () => { mounted = false; };
+  }, [isAdmin]);
 
-    checkCustomerAuth();
+  // Admin path - synchronous, no loading state
+  if (isAdmin) {
+    if (adminOk) return children;
+    window.location.href = createPageUrl('AdminLogin');
+    return null;
+  }
 
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (isChecking) {
+  // Customer path
+  if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-slate-500">Loading...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'hsl(40,20%,98%)' }}>
+        <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  return isAuthorized ? children : null;
+  return customerOk ? children : null;
 }

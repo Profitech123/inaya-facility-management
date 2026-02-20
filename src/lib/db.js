@@ -130,7 +130,7 @@ export const db = {
   SubscriptionPackage: createTable('packages'),
   Property: createTable('properties'),
   Provider: createTable('providers'),
-  SupportTicket: createTable('chat_messages'), // Map to chat_messages until we add support_tickets
+  SupportTicket: createTable('support_tickets'),
   Invoice: createTable('payments'),
   ProviderReview: createTable('reviews'),
   AuditLog: createTable('audit_logs'),
