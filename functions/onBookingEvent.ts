@@ -281,7 +281,7 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
       const provider = providers.find(p => p.id === booking.assigned_provider_id);
 
       // Notify customer about provider assignment
-      const service = await base44.asServiceRole.entities.Service.read(booking.service_id);
+      const service = await getById('Service', booking.service_id);
       await createNotification({
         userId: booking.customer_id,
         type: 'provider_assigned',
