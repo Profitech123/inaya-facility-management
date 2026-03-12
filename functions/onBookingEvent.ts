@@ -132,8 +132,8 @@ Deno.serve(async (req) => {
 
       console.log(`Status change: ${oldStatus} → ${newStatus}`);
 
-      const customer = await base44.asServiceRole.entities.User.read(booking.customer_id);
-      const service = await base44.asServiceRole.entities.Service.read(booking.service_id);
+      const customer = await getById('User', booking.customer_id);
+      const service = await getById('Service', booking.service_id);
 
       if (!customer?.email) {
         return Response.json({ skipped: true, reason: 'No customer email' });
