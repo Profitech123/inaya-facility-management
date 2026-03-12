@@ -39,9 +39,9 @@ Deno.serve(async (req) => {
       const booking = data;
       
       const [customer, service, property] = await Promise.all([
-        base44.asServiceRole.entities.User.read(booking.customer_id),
-        base44.asServiceRole.entities.Service.read(booking.service_id),
-        base44.asServiceRole.entities.Property.read(booking.property_id),
+        getById('User', booking.customer_id),
+        getById('Service', booking.service_id),
+        getById('Property', booking.property_id),
       ]);
 
       if (!customer?.email) {
