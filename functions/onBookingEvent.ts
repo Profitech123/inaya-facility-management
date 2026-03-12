@@ -13,6 +13,13 @@ Deno.serve(async (req) => {
 
     console.log(`Booking event: ${event.type} for ${event.entity_id}`);
 
+    // Helper: fetch a single entity by ID
+    async function getById(entityName, id) {
+      if (!id) return null;
+      const results = await base44.asServiceRole.entities[entityName].filter({ id });
+      return results?.[0] || null;
+    }
+
     // Helper: create in-app notification + send email
     async function createNotification({ userId, type, title, message, linkPage, linkParams, relatedType, relatedId }) {
       await base44.asServiceRole.entities.Notification.create({
