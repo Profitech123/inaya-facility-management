@@ -243,7 +243,7 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
         const provider = booking.assigned_provider_id
           ? (await base44.asServiceRole.entities.Provider.list()).find(p => p.id === booking.assigned_provider_id)
           : null;
-        const property = await base44.asServiceRole.entities.Property.read(booking.property_id);
+        const property = await getById('Property', booking.property_id);
 
         for (const admin of admins) {
           await base44.asServiceRole.integrations.Core.SendEmail({
