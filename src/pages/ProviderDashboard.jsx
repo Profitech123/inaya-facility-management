@@ -146,8 +146,12 @@ function ProviderDashboardContent() {
   const getProperty = (id) => properties.find(p => p.id === id);
   const getCustomer = (id) => customers.find(u => u.id === id);
 
-  // Mobile view (screens smaller than lg)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   if (isMobile) {
     return (
