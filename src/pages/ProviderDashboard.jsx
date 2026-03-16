@@ -146,6 +146,22 @@ function ProviderDashboardContent() {
   const getProperty = (id) => properties.find(p => p.id === id);
   const getCustomer = (id) => customers.find(u => u.id === id);
 
+  // Mobile view (screens smaller than lg)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
+  if (isMobile) {
+    return (
+      <MobileTechView
+        provider={provider}
+        bookings={bookings}
+        services={services}
+        properties={properties}
+        customers={customers}
+        onRefresh={refetchBookings}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Provider Header Bar */}
