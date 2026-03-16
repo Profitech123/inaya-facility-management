@@ -121,7 +121,7 @@ export default function MobileTechView({ provider, bookings, services, propertie
               onClick={() => setTab(id)}
               className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 relative transition-colors ${active ? 'text-emerald-600' : 'text-slate-400'}`}
             >
-              <Icon className="w-5 h-5" />
+              <TabIcon className="w-5 h-5" />
               <span className="text-[10px] font-medium">{label}</span>
               {badge > 0 && (
                 <span className="absolute top-2 right-[calc(50%-16px)] w-4 h-4 bg-emerald-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">
