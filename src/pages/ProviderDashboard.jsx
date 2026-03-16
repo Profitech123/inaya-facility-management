@@ -13,6 +13,7 @@ import ProviderJobDetail from '../components/provider-dashboard/ProviderJobDetai
 import ProviderJobMap from '../components/provider-dashboard/ProviderJobMap';
 import ProviderEarnings from '../components/provider-dashboard/ProviderEarnings';
 import ProviderAvailability from '../components/provider-dashboard/ProviderAvailability';
+import MobileTechView from '../components/provider-dashboard/MobileTechView';
 
 function ProviderDashboardContent() {
   const [selectedBooking, setSelectedBooking] = useState(null);
