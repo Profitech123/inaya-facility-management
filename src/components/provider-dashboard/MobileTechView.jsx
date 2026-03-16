@@ -112,7 +112,7 @@ export default function MobileTechView({ provider, bookings, services, propertie
 
       {/* Bottom tab bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex safe-bottom z-50">
-        {TABS.map(({ id, label, Icon }) => {
+        {TABS.map(({ id, label, Icon: TabIcon }) => {
           const active = tab === id;
           const badge = id === 'jobs' ? activeJobs.length : id === 'done' ? doneJobs.length : 0;
           return (
