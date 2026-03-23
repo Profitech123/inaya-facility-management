@@ -18,7 +18,7 @@ export default function OurPeople() {
     <div className="min-h-screen">
       <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <img src="https://www.inaya.ae/wp-content/uploads/2023/04/our-people.jpg" alt="" className="w-full h-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&h=600&fit=crop" alt="" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-slate-900/70" />
         <div className="relative max-w-7xl mx-auto px-6">
@@ -67,14 +67,14 @@ export default function OurPeople() {
           {/* Team Photos Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {[
-              "https://www.inaya.ae/wp-content/uploads/2018/02/6.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/5.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/4.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/3.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/2.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/1.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/27.jpg",
-              "https://www.inaya.ae/wp-content/uploads/2018/02/26.jpg",
+              "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1622674777904-74f66df33bd7?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+              "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=400&h=300&fit=crop",
             ].map((src, idx) => (
               <div key={idx} className="rounded-lg overflow-hidden h-48">
                 <img src={src} alt="INAYA Team" className="w-full h-full object-cover hover:scale-105 transition-transform" />
