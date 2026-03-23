@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, Mail, MapPin, Clock, Globe, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import AIQuoteWidget from '../components/service-finder/AIQuoteWidget';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -69,6 +70,13 @@ export default function Contact() {
               ))}
             </div>
             <p className="text-sm text-slate-500 mt-2 font-medium">(A Member of Belhasa Group)</p>
+          </div>
+
+          {/* AI Quote Widget */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Get an Instant AI Quote</h2>
+            <p className="text-slate-600 mb-4">Describe your problem in plain language and get an instant price estimate before booking.</p>
+            <AIQuoteWidget />
           </div>
 
           <div className="grid md:grid-cols-2 gap-12">
