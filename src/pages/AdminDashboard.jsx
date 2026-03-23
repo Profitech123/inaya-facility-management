@@ -24,6 +24,7 @@ import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 function AdminDashboardContent() {
   const [user, setUser] = useState(null);
   const [showCreateJob, setShowCreateJob] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
