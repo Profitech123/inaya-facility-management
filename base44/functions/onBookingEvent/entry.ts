@@ -237,11 +237,14 @@ Keep it 3-5 sentences. Professional and warm. Brand: INAYA Facilities Management
 
       console.log(`Status update email + notification sent: ${oldStatus} → ${newStatus}`);
 
-      // === Auto-generate invoice PDF when job is completed ===
+      // === Auto-generate invoice PDF + AI service report when job is completed ===
       if (newStatus === 'completed') {
-        console.log(`Job completed — triggering invoice generation for booking ${event.entity_id}`);
-        await base44.asServiceRole.functions.invoke('generateInvoicePDF', { booking_id: event.entity_id });
-        console.log('Invoice generated and emailed to customer');
+        console.log(`Job completed — triggering invoice + AI service report for booking ${event.entity_id}`);
+        await Promise.all([
+          base44.asServiceRole.functions.invoke('generateInvoicePDF', { booking_id: event.entity_id }),
+          base44.asServiceRole.functions.invoke('aiServiceReport', { booking_id: event.entity_id }),
+        ]);
+        console.log('Invoice and AI service report generated and emailed to customer');
       }
 
       // === 2b. DELAYED → Alert admins ===
