@@ -244,8 +244,8 @@ export default function Layout({ children, currentPageName }) {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Services</h3>
-              <div className="space-y-2 text-sm text-slate-400">
+              <h3 className="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">Services</h3>
+              <div className="space-y-2.5 text-[13px] text-slate-400">
                 <Link to={createPageUrl('IntegratedFM')} className="block hover:text-white">Integrated FM</Link>
                 <Link to={createPageUrl('HardServices')} className="block hover:text-white">Hard Services</Link>
                 <Link to={createPageUrl('SoftServices')} className="block hover:text-white">Soft Services</Link>
