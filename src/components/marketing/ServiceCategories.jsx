@@ -38,9 +38,14 @@ const categories = [
 ];
 
 const lightMap = {
-  blue: { check: 'text-blue-600', bullet: 'bg-blue-100', eyebrow: 'text-blue-600' },
-  amber: { check: 'text-amber-600', bullet: 'bg-amber-100', eyebrow: 'text-amber-600' },
+  blue:   { check: 'text-blue-600',   bullet: 'bg-blue-100',   eyebrow: 'text-blue-600' },
+  amber:  { check: 'text-amber-600',  bullet: 'bg-amber-100',  eyebrow: 'text-amber-600' },
   purple: { check: 'text-purple-600', bullet: 'bg-purple-100', eyebrow: 'text-purple-600' },
+};
+
+const listItem = {
+  hidden: { opacity: 0, x: -12 },
+  show: (i) => ({ opacity: 1, x: 0, transition: { duration: 0.4, delay: i * 0.06, ease: 'easeOut' } })
 };
 
 export default function ServiceCategories() {
@@ -57,9 +62,10 @@ export default function ServiceCategories() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 relative">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mb-20"
         >
           <div className="inline-flex items-center gap-2.5 border border-slate-200 bg-white rounded-full px-4 py-1.5 mb-6">
@@ -67,12 +73,26 @@ export default function ServiceCategories() {
             <span className="text-slate-600 font-semibold text-[11px] tracking-[0.2em] uppercase">Our Services</span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2 className="font-display text-[2.75rem] lg:text-[3.5rem] font-bold text-slate-900 leading-tighter tracking-tight max-w-lg">
-              Complete Home<br />Care Solutions
-            </h2>
-            <p className="text-slate-500 max-w-sm leading-relaxed font-light text-[15px]">
+            <div className="overflow-hidden">
+              <motion.h2
+                initial={{ y: 50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-[2.75rem] lg:text-[3.5rem] font-bold text-slate-900 leading-tighter tracking-tight max-w-lg"
+              >
+                Complete Home<br />Care Solutions
+              </motion.h2>
+            </div>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-slate-500 max-w-sm leading-relaxed font-light text-[15px]"
+            >
               Everything your villa or apartment needs — available on-demand or through our subscription packages.
-            </p>
+            </motion.p>
           </div>
         </motion.div>
 
@@ -81,31 +101,37 @@ export default function ServiceCategories() {
           {categories.map((cat, idx) => {
             const Icon = cat.icon;
             const lm = lightMap[cat.accentLight];
-            const isHovered = hovered === idx;
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 32 }}
+                initial={{ opacity: 0, y: 48 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ delay: idx * 0.14, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -8 }}
                 onHoverStart={() => setHovered(idx)}
                 onHoverEnd={() => setHovered(null)}
-                className="group relative bg-white rounded-[1.75rem] overflow-hidden border border-slate-100 hover:border-transparent hover:shadow-luxury-xl transition-all duration-500 cursor-default flex flex-col"
+                style={{ transition: 'box-shadow 0.4s ease' }}
+                className={`group relative bg-white rounded-[1.75rem] overflow-hidden border border-slate-100 hover:border-transparent hover:shadow-luxury-xl cursor-default flex flex-col ${hovered === idx ? 'shadow-luxury-xl border-transparent' : ''}`}
               >
                 {/* Image header */}
                 <div className="relative h-44 overflow-hidden">
-                  <img
+                  <motion.img
                     src={cat.image}
                     alt={cat.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover"
+                    animate={{ scale: hovered === idx ? 1.07 : 1 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50" />
                   <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between">
-                    <span className={`text-[10px] font-bold tracking-[0.2em] uppercase text-white/80`}>{cat.eyebrow}</span>
-                    <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/20">
+                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/80">{cat.eyebrow}</span>
+                    <motion.div
+                      whileHover={{ rotate: 12, scale: 1.1 }}
+                      className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/20"
+                    >
                       <Icon className="w-4 h-4 text-white" strokeWidth={1.8} />
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
 
@@ -114,22 +140,35 @@ export default function ServiceCategories() {
                   <h3 className="font-display text-[1.5rem] font-bold text-slate-900 mb-3 tracking-tight">{cat.title}</h3>
                   <p className="text-slate-500 text-[13px] leading-relaxed mb-6 font-light">{cat.description}</p>
 
-                  <ul className="space-y-2.5 mb-8 flex-1">
+                  <motion.ul
+                    className="space-y-2.5 mb-8 flex-1"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                  >
                     {cat.services.map((svc, i) => (
-                      <li key={i} className="flex items-center gap-2.5 text-[13px] text-slate-700 font-medium">
+                      <motion.li
+                        key={i}
+                        custom={i}
+                        variants={listItem}
+                        className="flex items-center gap-2.5 text-[13px] text-slate-700 font-medium"
+                      >
                         <div className={`w-5 h-5 rounded-full ${lm.bullet} flex items-center justify-center flex-shrink-0`}>
                           <Check className={`w-3 h-3 ${lm.check}`} strokeWidth={3} />
                         </div>
                         {svc}
-                      </li>
+                      </motion.li>
                     ))}
-                  </ul>
+                  </motion.ul>
 
                   <Link to={createPageUrl('OnDemandServices')}>
-                    <button className="w-full flex items-center justify-between px-5 py-3.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-200 group/btn">
+                    <motion.button
+                      whileHover={{ x: 2 }}
+                      className="w-full flex items-center justify-between px-5 py-3.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-200 group/btn"
+                    >
                       <span className="text-[13px] font-semibold text-slate-800">View Services</span>
                       <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover/btn:text-slate-800 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
-                    </button>
+                    </motion.button>
                   </Link>
                 </div>
               </motion.div>
