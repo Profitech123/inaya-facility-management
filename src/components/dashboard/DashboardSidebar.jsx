@@ -6,6 +6,7 @@ import { base44 } from '@/api/base44Client';
 
 const navItems = [
   { label: 'Dashboard', icon: SquaresFour, page: 'Dashboard' },
+  { label: 'Client Portal', icon: Monitor, page: 'ClientPortal' },
   { label: 'My Subscriptions', icon: PhPackage, page: 'MySubscriptions' },
   { label: 'My Bookings', icon: CalendarDots, page: 'MyBookings' },
   { label: 'Settings', icon: GearSix, page: 'UserProfile' },
