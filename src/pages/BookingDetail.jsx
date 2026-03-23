@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft, Calendar, Clock, MapPin, Home, User, FileText,
-  Wrench, Image, CalendarCheck, XCircle, RefreshCw, ArrowRight
+  Wrench, Image, CalendarCheck, XCircle, RefreshCw, ArrowRight, Loader2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
