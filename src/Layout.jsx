@@ -64,9 +64,9 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-100/80">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
+      <nav className="bg-white/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-[4.5rem]">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 flex-shrink-0">
               <img 
