@@ -1,91 +1,47 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Wrench, Zap, Droplets, Wind, Paintbrush, Flame, Gauge, Phone, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import QuoteRequestForm from '../components/services/QuoteRequestForm';
+import { Wind, Zap, Droplets, Wrench, Flame, Gauge, Paintbrush, MoveVertical } from 'lucide-react';
+import ServicePageTemplate from '../components/services/ServicePageTemplate';
 
-const hardServices = [
-  { icon: Wind, title: "HVAC Maintenance", desc: "Complete air conditioning and ventilation system maintenance, repair and installation for optimal indoor climate control." },
-  { icon: Zap, title: "Electrical Services", desc: "Full electrical maintenance including lighting, power distribution, panel boards, and emergency systems." },
-  { icon: Droplets, title: "Plumbing Services", desc: "Comprehensive plumbing maintenance covering water supply, drainage, sanitary fittings and water heaters." },
-  { icon: Wrench, title: "MEP Maintenance", desc: "Preventive and corrective maintenance for all mechanical, electrical and plumbing systems." },
-  { icon: Flame, title: "Fire & Life Safety", desc: "Fire alarm systems, fire fighting equipment, sprinklers, smoke detectors, and emergency evacuation systems." },
-  { icon: Gauge, title: "BMS & Controls", desc: "Building Management System monitoring, maintenance and optimization for energy efficiency." },
-  { icon: Paintbrush, title: "Civil & Painting Works", desc: "Structural repairs, masonry, waterproofing, tiling, plastering and internal/external painting." },
-  { icon: Wrench, title: "Elevator & Escalator", desc: "Lift and escalator maintenance, modernization and emergency rescue services." },
+const subServices = [
+  { icon: Wind, title: "HVAC Maintenance", desc: "Complete air conditioning and ventilation system maintenance, repair and installation for optimal indoor climate control.", color: "bg-sky-100 text-sky-600" },
+  { icon: Zap, title: "Electrical Services", desc: "Full electrical maintenance including lighting, power distribution, panel boards, and emergency systems.", color: "bg-yellow-100 text-yellow-600" },
+  { icon: Droplets, title: "Plumbing Services", desc: "Comprehensive plumbing covering water supply, drainage, sanitary fittings and water heaters.", color: "bg-blue-100 text-blue-600" },
+  { icon: Wrench, title: "MEP Maintenance", desc: "Preventive and corrective maintenance for all mechanical, electrical and plumbing systems.", color: "bg-orange-100 text-orange-600" },
+  { icon: Flame, title: "Fire & Life Safety", desc: "Fire alarm systems, fire fighting equipment, sprinklers, smoke detectors, and emergency evacuation systems.", color: "bg-red-100 text-red-600" },
+  { icon: Gauge, title: "BMS & Controls", desc: "Building Management System monitoring, maintenance and optimization for energy efficiency.", color: "bg-emerald-100 text-emerald-600" },
+  { icon: Paintbrush, title: "Civil & Painting Works", desc: "Structural repairs, masonry, waterproofing, tiling, plastering and internal/external painting.", color: "bg-purple-100 text-purple-600" },
+  { icon: MoveVertical, title: "Elevator & Escalator", desc: "Lift and escalator maintenance, modernization and emergency rescue services.", color: "bg-slate-100 text-slate-600" },
+];
+
+const highlights = [
+  "24/7 emergency response team on standby",
+  "Certified and experienced technicians for every discipline",
+  "Scheduled preventive maintenance programs",
+  "Energy efficiency optimization across all systems",
+  "Full compliance with Dubai & UAE local codes",
+  "Comprehensive reporting & digital analytics",
+  "Rapid fault diagnosis and same-day rectification",
+  "Trusted by Dubai's leading developers and communities",
+];
+
+const description = [
+  "Our Hard Services cover all aspects of building maintenance including MEP systems, HVAC, electrical, plumbing, fire safety and civil works. We ensure your property's technical systems operate at peak performance year-round.",
+  "With certified technicians across every discipline and a 24/7 emergency response capability, INAYA delivers hard services that protect the value and functionality of your assets.",
 ];
 
 export default function HardServices() {
   return (
-    <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-emerald-400 font-semibold mb-2">Facilities Management</p>
-          <h1 className="text-5xl font-bold mb-6">Hard Services</h1>
-          <p className="text-xl text-slate-300 max-w-3xl">
-            Our hard services cover all aspects of building maintenance including MEP systems, HVAC, electrical, plumbing, fire safety, civil works and more. We ensure your property's technical systems operate at peak performance.
-          </p>
-        </div>
-      </div>
-
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hardServices.map((service, idx) => {
-              const Icon = service.icon;
-              return (
-                <Card key={idx} className="hover:shadow-lg transition-all hover:-translate-y-1">
-                  <CardContent className="pt-6">
-                    <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center mb-4">
-                      <Icon className="w-6 h-6 text-orange-600" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 mb-2">{service.title}</h3>
-                    <p className="text-sm text-slate-600">{service.desc}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          <div className="mt-16 bg-slate-50 rounded-2xl p-8 md:p-12">
-            <h3 className="text-2xl font-bold text-slate-900 mb-4">Why Choose Our Hard Services?</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                "24/7 emergency response team",
-                "Certified and experienced technicians",
-                "Preventive maintenance programs",
-                "Energy efficiency optimization",
-                "Full compliance with local codes",
-                "Comprehensive reporting & analytics"
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
-                  <span className="text-slate-700">{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-12 text-center mb-16">
-            <Link to={createPageUrl('OnDemandServices')}>
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 mr-4">
-                Book a Hard Service <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <a href="#quote-form">
-              <Button size="lg" variant="outline">
-                Request a Quote
-              </Button>
-            </a>
-          </div>
-
-          <div id="quote-form">
-            <QuoteRequestForm serviceName="Hard Services" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <ServicePageTemplate
+      category="Facilities Management"
+      title="Hard Services"
+      subtitle="Expert technical maintenance for all building systems — MEP, HVAC, electrical, plumbing, fire safety and civil works — by ISO-certified professionals."
+      heroImage="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80"
+      description={description}
+      subServices={subServices}
+      highlights={highlights}
+      highlightsTitle="Why Choose Our Hard Services?"
+      ctaLink="OnDemandServices"
+      ctaLabel="Book a Hard Service"
+    />
   );
 }
