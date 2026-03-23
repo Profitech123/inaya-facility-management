@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import AuthGuard from '../components/AuthGuard';
 import AIFeedbackSummarizer from '../components/admin/AIFeedbackSummarizer';
 import AdminNotifications from '../components/admin/AdminNotifications';
