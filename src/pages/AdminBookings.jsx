@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Loader2, Calendar, Plus } from 'lucide-react';
+import { Loader2, Calendar, Plus, Sparkles } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BookingTimeline from '../components/booking/BookingTimeline';
 import AdminBookingCalendar from '../components/admin/AdminBookingCalendar';
@@ -21,6 +21,19 @@ function AdminBookingsContent() {
   const [viewMode, setViewMode] = useState('calendar');
   const [showCreateJob, setShowCreateJob] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [autoAssigning, setAutoAssigning] = useState(null);
+
+  const handleAutoAssign = async (bookingId) => {
+    setAutoAssigning(bookingId);
+    const res = await base44.functions.invoke('aiAutoAssignTechnician', { booking_id: bookingId });
+    if (res.data?.success) {
+      toast.success(`AI assigned: ${res.data.reason}`);
+      queryClient.invalidateQueries(['allBookings']);
+    } else {
+      toast.error('Auto-assign failed: ' + (res.data?.reason || 'Unknown error'));
+    }
+    setAutoAssigning(null);
+  };
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['allBookings'],
@@ -187,7 +200,19 @@ function AdminBookingsContent() {
                     </div>
                     
                     <div>
-                      <div className="text-sm text-slate-600 mb-2">Assign Provider</div>
+                      <div className="text-sm text-slate-600 mb-2 flex items-center justify-between">
+                        <span>Assign Provider</span>
+                        {!booking.assigned_provider_id && (
+                          <button
+                            onClick={() => handleAutoAssign(booking.id)}
+                            disabled={autoAssigning === booking.id}
+                            className="text-xs text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-medium"
+                          >
+                            {autoAssigning === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                            AI Auto-Assign
+                          </button>
+                        )}
+                      </div>
                       <Select 
                         value={booking.assigned_provider_id || ''} 
                         onValueChange={(val) => {
