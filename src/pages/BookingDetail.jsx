@@ -208,6 +208,16 @@ function BookingDetailContent() {
               </CardContent>
             </Card>
 
+            {/* Review prompt for completed bookings */}
+            {needsReview && (
+              <ReviewPrompt
+                booking={booking}
+                provider={provider}
+                userId={user?.id}
+                onDone={() => setReviewDone(true)}
+              />
+            )}
+
             {/* Reschedule notice */}
             {booking.rescheduled_from_date && (
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center gap-3">
