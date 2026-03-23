@@ -156,33 +156,13 @@ export default function BookService() {
       addons_amount: addonsTotal > 0 ? addonsTotal : 0,
     });
 
-    // Check if running in iframe
-    const isIframe = window.self !== window.top;
-    if (isIframe) {
-      alert('Payment checkout works only from the published app. Please open the app directly.');
-      setIsProcessingPayment(false);
-      setConfirmedBooking(booking);
-      setStep(5);
-      return;
-    }
+    // Dummy payment — mark as paid immediately
+    await base44.entities.Booking.update(booking.id, { payment_status: 'paid' });
+    booking.payment_status = 'paid';
 
-    // Stripe checkout
-    const response = await base44.functions.invoke('createCheckoutSession', {
-      booking_id: booking.id,
-      service_name: service.name,
-      total_amount: grandTotal,
-      success_url: `${window.location.origin}${createPageUrl('BookService')}?payment=success&booking_id=${booking.id}`,
-      cancel_url: `${window.location.origin}${createPageUrl('BookService')}?payment=cancelled&booking_id=${booking.id}&service=${serviceId}`,
-    });
-
-    if (response.data?.checkout_url) {
-      window.location.href = response.data.checkout_url;
-    } else {
-      // Fallback: show confirmation without payment
-      setIsProcessingPayment(false);
-      setConfirmedBooking(booking);
-      setStep(5);
-    }
+    setIsProcessingPayment(false);
+    setConfirmedBooking(booking);
+    setStep(5);
   };
 
   const handleStartBooking = () => {
