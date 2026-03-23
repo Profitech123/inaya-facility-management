@@ -278,7 +278,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           
-          <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+          <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-slate-600">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('TermsOfService')} className="hover:text-white transition-colors">Terms of Service</Link>
