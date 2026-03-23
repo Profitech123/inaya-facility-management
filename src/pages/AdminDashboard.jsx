@@ -151,13 +151,17 @@ function AdminDashboardContent() {
           />
         </div>
 
-        {/* Real-Time Active Jobs Map */}
+        {/* Dispatch Map */}
         <div className="mb-8">
-          <ActiveJobsMap
+          <DispatchMap
             bookings={bookings}
             services={services}
             properties={properties}
             providers={providers}
+            onRefresh={() => {
+              // triggers react-query refetch via staleTime expiry on next mount
+              window.location.reload();
+            }}
           />
         </div>
 
