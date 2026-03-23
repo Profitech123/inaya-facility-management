@@ -60,7 +60,7 @@ export default function Layout({ children, currentPageName }) {
 
   const isActivePage = (pageName) => currentPageName === pageName;
   const navLinkClass = (pageName) => 
-    `transition-colors text-sm font-medium ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`;
+    `transition-colors duration-200 text-[13px] font-medium tracking-[-0.01em] ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-900'}`;
 
   return (
     <div className="min-h-screen flex flex-col">
