@@ -111,8 +111,7 @@ export default function ServiceCategories() {
                 whileHover={{ y: -8 }}
                 onHoverStart={() => setHovered(idx)}
                 onHoverEnd={() => setHovered(null)}
-                style={{ transition: 'box-shadow 0.4s ease' }}
-                className={`group relative bg-white rounded-[1.75rem] overflow-hidden border border-slate-100 hover:border-transparent hover:shadow-luxury-xl cursor-default flex flex-col ${hovered === idx ? 'shadow-luxury-xl border-transparent' : ''}`}
+                className="group relative bg-white rounded-[1.75rem] overflow-hidden border border-slate-100 hover:border-transparent hover:shadow-luxury-xl cursor-default flex flex-col transition-shadow duration-400"
               >
                 {/* Image header */}
                 <div className="relative h-44 overflow-hidden">

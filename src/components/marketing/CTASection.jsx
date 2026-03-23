@@ -40,7 +40,7 @@ export default function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2.5 bg-white/8 backdrop-blur-sm border border-white/10 rounded-full px-5 py-2 mb-10"
+          className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full px-5 py-2 mb-10"
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-emerald-300 font-semibold text-[11px] uppercase tracking-[0.25em]">Get Started Today</span>
@@ -102,7 +102,7 @@ export default function CTASection() {
               whileHover={{ y: -3, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-              className="group flex items-center justify-center gap-3 bg-white/8 hover:bg-white/12 backdrop-blur-sm text-white border border-white/15 hover:border-white/25 px-10 py-4 rounded-2xl text-[15px] font-semibold transition-all duration-300 w-full"
+              className="group flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/15 hover:border-white/25 px-10 py-4 rounded-2xl text-[15px] font-semibold transition-all duration-300 w-full"
             >
               <Phone className="w-4 h-4" />
               Call 800-INAYA

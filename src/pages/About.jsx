@@ -61,7 +61,7 @@ export default function About() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 bg-white/8 border border-white/10 rounded-full px-4 py-1.5 mb-8"
+            className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-emerald-300 font-semibold text-[11px] tracking-[0.2em] uppercase">About INAYA</span>
@@ -135,8 +135,7 @@ export default function About() {
                     key={i}
                     variants={fadeUp}
                     custom={i}
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    whileHover={{ y: -4, scale: 1.02, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                     className={`${s.bg} p-7 rounded-2xl border border-white`}
                   >
                     <Icon className={`w-10 h-10 ${s.iconColor} mb-3`} />
@@ -159,7 +158,7 @@ export default function About() {
             <div className="absolute top-0 right-0 w-72 h-72 bg-emerald-700/20 rounded-full blur-[100px]" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-800/15 rounded-full blur-[80px]" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 bg-white/8 border border-white/10 rounded-full px-4 py-1.5 mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span className="text-emerald-300 font-semibold text-[11px] tracking-[0.2em] uppercase">Technical Excellence</span>
               </div>
@@ -205,8 +204,7 @@ export default function About() {
                     key={idx}
                     variants={fadeUp}
                     custom={idx}
-                    whileHover={{ y: -6 }}
-                    transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+                    whileHover={{ y: -6, transition: { type: 'spring', stiffness: 260, damping: 18 } }}
                     className="text-center group"
                   >
                     <div className="w-16 h-16 bg-emerald-100 group-hover:bg-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-5 transition-colors duration-300 shadow-sm group-hover:shadow-md group-hover:shadow-emerald-200/50">
