@@ -191,11 +191,33 @@ function ProviderDashboardContent() {
 
         <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); setSelectedBooking(null); }}>
           <TabsList className="bg-white border border-slate-200 p-1 h-auto flex-wrap">
-            <TabsTrigger value="jobs" className="text-sm px-5">My Jobs</TabsTrigger>
+            <TabsTrigger value="schedule" className="text-sm px-5">Today's Schedule</TabsTrigger>
+            <TabsTrigger value="jobs" className="text-sm px-5">All Jobs</TabsTrigger>
             <TabsTrigger value="map" className="text-sm px-5">Map View</TabsTrigger>
             <TabsTrigger value="earnings" className="text-sm px-5">Earnings</TabsTrigger>
             <TabsTrigger value="availability" className="text-sm px-5">Availability</TabsTrigger>
           </TabsList>
+
+          {/* Schedule Tab */}
+          <TabsContent value="schedule" className="mt-5">
+            {selectedBooking ? (
+              <ProviderJobDetail
+                booking={selectedBooking}
+                service={getService(selectedBooking.service_id)}
+                property={getProperty(selectedBooking.property_id)}
+                customer={getCustomer(selectedBooking.customer_id)}
+                onBack={() => setSelectedBooking(null)}
+                onUpdate={handleJobUpdate}
+              />
+            ) : (
+              <TodaySchedule
+                bookings={bookings}
+                services={services}
+                properties={properties}
+                onSelectBooking={(b) => setSelectedBooking(b)}
+              />
+            )}
+          </TabsContent>
 
           {/* Jobs Tab */}
           <TabsContent value="jobs" className="mt-5">
