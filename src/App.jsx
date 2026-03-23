@@ -8,6 +8,7 @@ import PageNotFound from './lib/PageNotFound';
 import AdminBookingCalendarPage from './pages/AdminBookingCalendarPage';
 import UserLogin from './pages/UserLogin';
 import AdminLogin from './pages/AdminLogin';
+import TechnicianLogin from './pages/TechnicianLogin';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
       <Route path="/AdminBookingCalendarPage" element={<LayoutWrapper currentPageName="AdminBookingCalendarPage"><AdminBookingCalendarPage /></LayoutWrapper>} />
       <Route path="/UserLogin" element={<UserLogin />} />
       <Route path="/AdminLogin" element={<AdminLogin />} />
+      <Route path="/TechnicianLogin" element={<TechnicianLogin />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
