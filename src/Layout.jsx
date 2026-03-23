@@ -267,8 +267,8 @@ export default function Layout({ children, currentPageName }) {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <div className="space-y-2 text-sm text-slate-400">
+              <h3 className="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">Contact</h3>
+              <div className="space-y-2.5 text-[13px] text-slate-400">
                 <p>28th Street, Belhasa HO Building, Office M03</p>
                 <p>Hor Al Anz East, PO Box 87074, Dubai, UAE</p>
                 <p>T: +971 4 882 7001 · F: +971 4 882 7002</p>
