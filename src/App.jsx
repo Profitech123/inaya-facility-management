@@ -62,6 +62,8 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/AdminBookingCalendarPage" element={<LayoutWrapper currentPageName="AdminBookingCalendarPage"><AdminBookingCalendarPage /></LayoutWrapper>} />
+      <Route path="/UserLogin" element={<UserLogin />} />
+      <Route path="/AdminLogin" element={<AdminLogin />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
