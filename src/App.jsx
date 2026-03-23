@@ -6,6 +6,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import AdminBookingCalendarPage from './pages/AdminBookingCalendarPage';
+import AdminMetricsDashboard from './pages/AdminMetricsDashboard';
 import ClientPortal from './pages/ClientPortal';
 import UserLogin from './pages/UserLogin';
 import AdminLogin from './pages/AdminLogin';
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/AdminBookingCalendarPage" element={<LayoutWrapper currentPageName="AdminBookingCalendarPage"><AdminBookingCalendarPage /></LayoutWrapper>} />
+      <Route path="/AdminMetricsDashboard" element={<LayoutWrapper currentPageName="AdminMetricsDashboard"><AdminMetricsDashboard /></LayoutWrapper>} />
       <Route path="/ClientPortal" element={<LayoutWrapper currentPageName="ClientPortal"><ClientPortal /></LayoutWrapper>} />
       <Route path="/UserLogin" element={<UserLogin />} />
       <Route path="/AdminLogin" element={<AdminLogin />} />
