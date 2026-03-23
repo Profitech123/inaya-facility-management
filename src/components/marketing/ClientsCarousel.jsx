@@ -46,16 +46,18 @@ export default function ClientsCarousel() {
       {/* Scrolling rows */}
       <div className="space-y-5">
         <div className="flex animate-scroll-left gap-6 px-6">
-          {[...clients, ...clients].map((src, idx) => (
-            <div key={idx} className="flex-shrink-0 w-40 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <img src={src} alt="Client" loading="lazy" decoding="async" className="max-w-full max-h-full object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" onError={(e) => { e.target.src = PLACEHOLDER; }} />
+          {[...clients, ...clients].map((name, idx) => (
+            <div key={idx} className="flex-shrink-0 w-44 h-24 bg-white rounded-2xl flex flex-col items-center justify-center gap-2 px-4 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+              <Building2 className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 transition-colors" />
+              <span className="text-sm font-semibold text-slate-400 group-hover:text-slate-700 transition-colors text-center leading-tight">{name}</span>
             </div>
           ))}
         </div>
         <div className="flex animate-scroll-right gap-6 px-6">
-          {[...clients.slice().reverse(), ...clients.slice().reverse()].map((src, idx) => (
-            <div key={idx} className="flex-shrink-0 w-40 h-24 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <img src={src} alt="Client" loading="lazy" decoding="async" className="max-w-full max-h-full object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" onError={(e) => { e.target.src = PLACEHOLDER; }} />
+          {[...clients.slice().reverse(), ...clients.slice().reverse()].map((name, idx) => (
+            <div key={idx} className="flex-shrink-0 w-44 h-24 bg-white rounded-2xl flex flex-col items-center justify-center gap-2 px-4 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+              <Building2 className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 transition-colors" />
+              <span className="text-sm font-semibold text-slate-400 group-hover:text-slate-700 transition-colors text-center leading-tight">{name}</span>
             </div>
           ))}
         </div>
