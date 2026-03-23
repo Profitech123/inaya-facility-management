@@ -27,6 +27,8 @@ function BookingDetailContent() {
   const [user, setUser] = useState(null);
   const [showCancel, setShowCancel] = useState(false);
   const [showReschedule, setShowReschedule] = useState(false);
+  const [reviewDone, setReviewDone] = useState(false);
+  const [payingNow, setPayingNow] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
