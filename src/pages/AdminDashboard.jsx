@@ -161,8 +161,8 @@ function AdminDashboardContent() {
             properties={properties}
             providers={providers}
             onRefresh={() => {
-              // triggers react-query refetch via staleTime expiry on next mount
-              window.location.reload();
+              queryClient.invalidateQueries({ queryKey: ['allBookings'] });
+              queryClient.invalidateQueries({ queryKey: ['providers'] });
             }}
           />
         </div>
