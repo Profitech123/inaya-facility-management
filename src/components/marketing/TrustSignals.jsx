@@ -3,17 +3,17 @@ import { Award, Shield, Users, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const stats = [
-  { icon: Users, value: "700+",  label: "Expert Team Members", color: "emerald" },
-  { icon: Clock, value: "24/7",  label: "Service & Maintenance", color: "blue" },
-  { icon: Award, value: "ISO",   label: "Certified Standards",   color: "amber" },
-  { icon: Shield, value: "549+", label: "Hectares Managed",      color: "purple" },
+  { icon: Users,  value: "700+",  label: "Expert Team Members", color: "emerald" },
+  { icon: Clock,  value: "24/7",  label: "Service & Maintenance", color: "blue" },
+  { icon: Award,  value: "ISO",   label: "Certified Standards",   color: "amber" },
+  { icon: Shield, value: "549+",  label: "Hectares Managed",      color: "purple" },
 ];
 
 const certifications = [
-  { name: "ISO 9001:2015", desc: "Quality Management" },
+  { name: "ISO 9001:2015",  desc: "Quality Management" },
   { name: "ISO 14001:2015", desc: "Environmental Mgmt" },
   { name: "ISO 45001:2018", desc: "OH&S Management" },
-  { name: "EFQM", desc: "Business Excellence" },
+  { name: "EFQM",           desc: "Business Excellence" },
 ];
 
 const colorMap = {
@@ -23,13 +23,31 @@ const colorMap = {
   purple:  'text-purple-400  bg-purple-400/10  ring-purple-400/20',
 };
 
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } }
+};
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
+};
+
 export default function TrustSignals() {
   return (
     <section className="py-32 bg-[#0B0F0E] text-white relative overflow-hidden">
-      {/* Deep atmospheric blobs */}
+      {/* Atmospheric blobs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[900px] h-[900px] bg-emerald-900/20 rounded-full blur-[250px] -translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-teal-900/15 rounded-full blur-[200px] translate-x-1/3 translate-y-1/3" />
+        <motion.div
+          animate={{ scale: [1, 1.06, 1], opacity: [0.2, 0.28, 0.2] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-0 left-0 w-[900px] h-[900px] bg-emerald-900/20 rounded-full blur-[250px] -translate-x-1/3 -translate-y-1/3"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.22, 0.15] }}
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-teal-900/15 rounded-full blur-[200px] translate-x-1/3 translate-y-1/3"
+        />
       </div>
       {/* Fine dot texture */}
       <div className="absolute inset-0 opacity-[0.035]" style={{
@@ -40,9 +58,10 @@ export default function TrustSignals() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 relative">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           className="mb-20"
         >
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6">
@@ -50,60 +69,103 @@ export default function TrustSignals() {
             <span className="text-emerald-400 font-semibold text-[11px] tracking-[0.2em] uppercase">Trusted Excellence</span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2 className="font-display text-[2.75rem] lg:text-[3.5rem] font-bold leading-tighter tracking-tight max-w-lg">
-              A Member of<br />Belhasa Group
-            </h2>
-            <p className="text-white/40 max-w-sm leading-relaxed font-light text-[15px]">
+            <div className="overflow-hidden">
+              <motion.h2
+                initial={{ y: 60, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-[2.75rem] lg:text-[3.5rem] font-bold leading-tighter tracking-tight max-w-lg"
+              >
+                A Member of<br />Belhasa Group
+              </motion.h2>
+            </div>
+            <motion.p
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65, delay: 0.2 }}
+              className="text-white/40 max-w-sm leading-relaxed font-light text-[15px]"
+            >
               One of the UAE's most established group of companies, with both the resources and solid financial base to offer leading expertise.
-            </p>
+            </motion.p>
           </div>
         </motion.div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-60px' }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
+        >
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             const cm = colorMap[stat.color];
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                className="group relative bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 hover:bg-white/[0.07] transition-all duration-500 hover:-translate-y-1 overflow-hidden"
+                variants={cardVariant}
+                whileHover={{ y: -6, backgroundColor: 'rgba(255,255,255,0.06)' }}
+                className="group relative bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 transition-colors duration-500 overflow-hidden cursor-default"
               >
-                {/* Subtle corner glow */}
+                {/* Corner glow */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/[0.04] to-transparent rounded-bl-full" />
 
-                <div className={`w-12 h-12 rounded-xl ${cm} ring-1 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                <motion.div
+                  whileHover={{ scale: 1.12, rotate: -4 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 16 }}
+                  className={`w-12 h-12 rounded-xl ${cm} ring-1 flex items-center justify-center mb-5`}
+                >
                   <Icon className={`w-5 h-5 ${cm.split(' ')[0]}`} strokeWidth={1.8} />
-                </div>
-                <div className="text-[2.5rem] font-extrabold mb-1 tracking-tight leading-none">{stat.value}</div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 + 0.3 }}
+                  className="text-[2.5rem] font-extrabold mb-1 tracking-tight leading-none"
+                >
+                  {stat.value}
+                </motion.div>
                 <div className="text-white/40 text-[12px] font-medium">{stat.label}</div>
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Certifications */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-40px' }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4"
         >
           {certifications.map((cert, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="bg-white/[0.025] border border-white/[0.05] rounded-xl px-6 py-5 flex items-center gap-4 hover:bg-white/[0.05] transition-all duration-300"
+              variants={{
+                hidden: { opacity: 0, x: -16 },
+                show: { opacity: 1, x: 0, transition: { duration: 0.55, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] } }
+              }}
+              whileHover={{ x: 4 }}
+              className="bg-white/[0.025] border border-white/[0.05] rounded-xl px-6 py-5 flex items-center gap-4 hover:bg-white/[0.05] transition-all duration-300 cursor-default"
             >
-              <div className="w-1 h-8 rounded-full bg-emerald-500/50 flex-shrink-0" />
+              <motion.div
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 + 0.3 }}
+                className="w-1 h-8 rounded-full bg-emerald-500/50 flex-shrink-0 origin-top"
+              />
               <div>
                 <div className="text-sm font-extrabold text-emerald-400">{cert.name}</div>
                 <div className="text-[11px] text-white/35 mt-0.5">{cert.desc}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
