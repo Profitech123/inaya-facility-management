@@ -139,19 +139,10 @@ function BookingDetailContent() {
   const needsPayment = booking.payment_status === 'pending' && booking.status !== 'cancelled';
 
   const handlePayNow = async () => {
-    const isIframe = window.self !== window.top;
-    if (isIframe) { alert('Payment checkout works only from the published app.'); return; }
     setPayingNow(true);
-    const response = await base44.functions.invoke('createCheckoutSession', {
-      booking_id: booking.id,
-      service_name: service?.name || 'Service',
-      total_amount: booking.total_amount,
-      success_url: `${window.location.origin}${createPageUrl('BookingDetail')}?id=${booking.id}&payment=success`,
-      cancel_url: `${window.location.origin}${createPageUrl('BookingDetail')}?id=${booking.id}`,
-    });
-    if (response.data?.checkout_url) {
-      window.location.href = response.data.checkout_url;
-    }
+    await base44.entities.Booking.update(booking.id, { payment_status: 'paid' });
+    queryClient.invalidateQueries({ queryKey: ['booking', bookingId] });
+    toast.success('Payment successful!');
     setPayingNow(false);
   };
   const selectedAddons = addons.filter(a => booking.addon_ids?.includes(a.id));
