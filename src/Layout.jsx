@@ -77,7 +77,7 @@ export default function Layout({ children, currentPageName }) {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-7 flex-1 justify-center">
+            <div className="hidden lg:flex items-center gap-6 flex-1 justify-center">
               <Link to={createPageUrl('Home')} className={navLinkClass('Home')}>Home</Link>
               <DropdownMenu>
                 <DropdownMenuTrigger className={`transition-colors text-sm font-medium cursor-pointer ${['About','OurPeople','BusinessExcellence'].includes(currentPageName) ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}>
