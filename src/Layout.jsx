@@ -117,7 +117,7 @@ export default function Layout({ children, currentPageName }) {
 
             {/* Right Section */}
             <div className="flex items-center gap-3">
-              <Link to={createPageUrl('ServiceFinder')} className="hidden lg:inline-flex bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:shadow-slate-900/20">
+              <Link to={createPageUrl('ServiceFinder')} className="hidden lg:inline-flex bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl text-[13px] font-semibold transition-all duration-200 shadow-luxury hover:-translate-y-0.5 hover:shadow-luxury-lg">
                 Find a Service
               </Link>
 
