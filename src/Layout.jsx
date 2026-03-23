@@ -225,7 +225,7 @@ export default function Layout({ children, currentPageName }) {
 
       <AIChatWidget />
 
-      <footer className="bg-slate-950 text-white py-20 relative overflow-hidden">
+      <footer className="bg-[#080C0A] text-white py-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[200px] -translate-x-1/3 -translate-y-1/3" />
         </div>
