@@ -134,6 +134,26 @@ function BookingDetailContent() {
   const cancellation = getCancellationDetails(booking);
   const rescheduleInfo = getRescheduleDetails(booking);
   const isActive = ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(booking.status);
+  const isCompleted = booking.status === 'completed';
+  const needsReview = isCompleted && booking.assigned_provider_id && !reviewDone;
+  const needsPayment = booking.payment_status === 'pending' && booking.status !== 'cancelled';
+
+  const handlePayNow = async () => {
+    const isIframe = window.self !== window.top;
+    if (isIframe) { alert('Payment checkout works only from the published app.'); return; }
+    setPayingNow(true);
+    const response = await base44.functions.invoke('createCheckoutSession', {
+      booking_id: booking.id,
+      service_name: service?.name || 'Service',
+      total_amount: booking.total_amount,
+      success_url: `${window.location.origin}${createPageUrl('BookingDetail')}?id=${booking.id}&payment=success`,
+      cancel_url: `${window.location.origin}${createPageUrl('BookingDetail')}?id=${booking.id}`,
+    });
+    if (response.data?.checkout_url) {
+      window.location.href = response.data.checkout_url;
+    }
+    setPayingNow(false);
+  };
   const selectedAddons = addons.filter(a => booking.addon_ids?.includes(a.id));
 
   return (
