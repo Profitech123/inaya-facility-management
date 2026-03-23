@@ -88,6 +88,16 @@ export default function MobileTechView({ provider, bookings, services, propertie
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto pb-24">
+        {tab === 'schedule' && (
+          <div className="px-4 py-3">
+            <TodaySchedule
+              bookings={bookings}
+              services={Object.values(serviceMap)}
+              properties={Object.values(propertyMap)}
+              onSelectBooking={setSelectedBooking}
+            />
+          </div>
+        )}
         {tab === 'jobs' && (
           <MobileJobList
             bookings={activeJobs}
