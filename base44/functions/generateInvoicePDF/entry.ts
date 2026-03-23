@@ -275,9 +275,13 @@ Deno.serve(async (req) => {
 
     // ─── Email invoice PDF to customer ──────────────────────────────
     if (customer?.email) {
-      // Upload PDF then attach link in email
-      const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file: pdfBlob });
+      // Convert ArrayBuffer to base64 for upload
+      const uint8 = new Uint8Array(pdfBytes);
+      let binary = '';
+      for (let i = 0; i < uint8.length; i++) binary += String.fromCharCode(uint8[i]);
+      const base64Pdf = btoa(binary);
+      const dataUrl = `data:application/pdf;base64,${base64Pdf}`;
+      const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file: dataUrl });
 
       const emailBody = `
 <!DOCTYPE html>
