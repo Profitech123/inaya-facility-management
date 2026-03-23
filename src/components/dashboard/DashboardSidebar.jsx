@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { SquaresFour, Package as PhPackage, CalendarDots, GearSix, SignOut } from '@phosphor-icons/react';
+import { SquaresFour, Package as PhPackage, CalendarDots, GearSix, SignOut, Monitor } from '@phosphor-icons/react';
 import { base44 } from '@/api/base44Client';
 
 const navItems = [

@@ -6,6 +6,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import AdminBookingCalendarPage from './pages/AdminBookingCalendarPage';
+import ClientPortal from './pages/ClientPortal';
 import UserLogin from './pages/UserLogin';
 import AdminLogin from './pages/AdminLogin';
 import TechnicianLogin from './pages/TechnicianLogin';
