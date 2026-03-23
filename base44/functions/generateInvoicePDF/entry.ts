@@ -311,8 +311,8 @@ Deno.serve(async (req) => {
       <div style="font-size:13px;color:#6b7280;margin-bottom:5px;">Total Amount</div>
       <div style="font-size:28px;font-weight:bold;color:#059669;">AED ${totalAmount.toFixed(2)}</div>
     </div>
-    <div style="text-align:center">
-      <a href="${file_url}" class="btn">Download Invoice PDF</a>
+    <div style="text-align:center;background:#f0fdf4;padding:12px;border-radius:6px;margin:15px 0;font-size:13px;color:#059669;">
+      Your invoice <strong>${invoiceNumber}</strong> is attached to this email.
     </div>
     <p style="font-size:13px;text-align:center;color:#6b7280;margin-top:20px;">
       Questions? Call <strong>+971 4 815 7300</strong> or email <strong>info@inaya.ae</strong>
