@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
-import { Briefcase, CheckCircle2, User, Camera } from 'lucide-react';
+import { Briefcase, CheckCircle2, User, CalendarDays } from 'lucide-react';
 import MobileJobList from './mobile/MobileJobList';
 import MobileJobDetail from './mobile/MobileJobDetail';
 import MobileProfile from './mobile/MobileProfile';
+import TodaySchedule from './TodaySchedule';
 
 const TABS = [
+  { id: 'schedule', label: 'Schedule', Icon: CalendarDays },
   { id: 'jobs',    label: 'Jobs',    Icon: Briefcase },
   { id: 'done',    label: 'Completed', Icon: CheckCircle2 },
   { id: 'profile', label: 'Profile', Icon: User },
