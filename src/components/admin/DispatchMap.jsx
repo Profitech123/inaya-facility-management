@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
