@@ -13,6 +13,7 @@ import { createPageUrl } from '@/utils';
 import { format, parseISO } from 'date-fns';
 import AuthGuard from '../components/AuthGuard';
 import BookingStatusTracker from '../components/bookings/BookingStatusTracker';
+import ReviewPrompt from '../components/bookings/ReviewPrompt';
 import TechnicianCard from '../components/bookings/TechnicianCard';
 import CancelBookingDialog from '../components/bookings/CancelBookingDialog';
 import RescheduleDialog from '../components/bookings/RescheduleDialog';
