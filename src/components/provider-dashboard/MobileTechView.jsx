@@ -15,7 +15,7 @@ const TABS = [
 ];
 
 export default function MobileTechView({ provider, bookings, services, properties, customers, onRefresh }) {
-  const [tab, setTab] = useState('jobs');
+  const [tab, setTab] = useState('schedule');
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   const serviceMap  = Object.fromEntries(services.map(s  => [s.id, s]));
