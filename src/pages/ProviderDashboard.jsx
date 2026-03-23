@@ -14,11 +14,12 @@ import ProviderJobMap from '../components/provider-dashboard/ProviderJobMap';
 import ProviderEarnings from '../components/provider-dashboard/ProviderEarnings';
 import ProviderAvailability from '../components/provider-dashboard/ProviderAvailability';
 import MobileTechView from '../components/provider-dashboard/MobileTechView';
+import TodaySchedule from '../components/provider-dashboard/TodaySchedule';
 
 function ProviderDashboardContent() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [jobFilter, setJobFilter] = useState('upcoming');
-  const [activeTab, setActiveTab] = useState('jobs');
+  const [activeTab, setActiveTab] = useState('schedule');
 
   // Get current user
   const { data: user } = useQuery({
