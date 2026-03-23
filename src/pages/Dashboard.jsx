@@ -10,6 +10,7 @@ import RecentHistoryCard from '../components/dashboard/RecentHistoryCard';
 import QuickActionsRow from '../components/dashboard/QuickActionsRow';
 import SupportBanner from '../components/dashboard/SupportBanner';
 import DashboardRecommendations from '../components/dashboard/DashboardRecommendations';
+import PropertyHealthScore from '../components/dashboard/PropertyHealthScore';
 import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 
@@ -60,6 +61,16 @@ function DashboardContent() {
         return [];
       }
     },
+    initialData: []
+  });
+
+  const { data: properties = [] } = useQuery({
+    queryKey: ['myProperties', user?.id],
+    queryFn: async () => {
+      const all = await base44.entities.Property.list();
+      return all.filter(p => p.owner_id === user?.id);
+    },
+    enabled: !!user?.id,
     initialData: []
   });
 
@@ -119,8 +130,11 @@ function DashboardContent() {
               </div>
             </div>
 
-            {/* AI Recommendations */}
-            <DashboardRecommendations user={user} bookings={bookings} />
+            {/* AI Property Health Score + Recommendations */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <PropertyHealthScore user={user} properties={properties} />
+              <DashboardRecommendations user={user} bookings={bookings} />
+            </div>
 
             {/* Quick actions */}
             <QuickActionsRow />
