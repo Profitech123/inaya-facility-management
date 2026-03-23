@@ -356,9 +356,22 @@ function BookingDetailContent() {
                     <span className="text-slate-900">Total</span>
                     <span className="text-slate-900">AED {booking.total_amount}</span>
                   </div>
-                  <Badge variant="outline" className="w-full justify-center py-1 mt-1">
-                    {booking.payment_status === 'paid' ? '✓ Paid' : booking.payment_status === 'refunded' ? '↩ Refunded' : 'Payment Pending'}
+                  <Badge
+                    variant="outline"
+                    className={`w-full justify-center py-1 mt-1 ${booking.payment_status === 'paid' ? 'border-emerald-300 text-emerald-700 bg-emerald-50' : booking.payment_status === 'refunded' ? 'border-slate-300 text-slate-500' : 'border-amber-300 text-amber-700 bg-amber-50'}`}
+                  >
+                    {booking.payment_status === 'paid' ? '✓ Paid' : booking.payment_status === 'refunded' ? '↩ Refunded' : '⏳ Payment Pending'}
                   </Badge>
+                  {needsPayment && (
+                    <Button
+                      onClick={handlePayNow}
+                      disabled={payingNow}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 gap-2 mt-2"
+                    >
+                      {payingNow ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                      Pay Now — AED {booking.total_amount}
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
