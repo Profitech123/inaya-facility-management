@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Handshake } from 'lucide-react';
+import { Handshake, Building2 } from 'lucide-react';
 
 const clients = [
   "Emaar",
