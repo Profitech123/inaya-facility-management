@@ -14,7 +14,7 @@ import DashboardBookingTrends from '../components/admin/DashboardBookingTrends';
 import DashboardRevenueByService from '../components/admin/DashboardRevenueByService';
 import DashboardMiniSubscriptions from '../components/admin/DashboardMiniSubscriptions';
 import DashboardTechPerformance from '../components/admin/DashboardTechPerformance';
-import ActiveJobsMap from '../components/admin/ActiveJobsMap';
+import DispatchMap from '../components/admin/DispatchMap';
 import CreateJobDialog from '../components/admin/CreateJobDialog';
 import AdminReportingSummary from '../components/admin/AdminReportingSummary';
 import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
