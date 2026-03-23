@@ -1,41 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const testimonials = [
   {
     name: "Sarah Al-Mansouri",
-    role: "Villa Owner, Arabian Ranches",
+    role: "Villa Owner",
+    location: "Arabian Ranches",
     rating: 5,
     text: "INAYA transformed how we manage our villa. Their subscription plan covers everything — AC, pool, landscaping — and the team is always punctual and professional.",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
   },
   {
     name: "James Peterson",
-    role: "Apartment Owner, Dubai Marina",
+    role: "Apartment Owner",
+    location: "Dubai Marina",
     rating: 5,
     text: "I was tired of calling different handymen. INAYA's one-stop service is a game changer. The app makes booking so easy, and the quality is consistently excellent.",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
   },
   {
     name: "Fatima Al-Rashidi",
-    role: "Property Manager, JBR",
+    role: "Property Manager",
+    location: "JBR",
     rating: 5,
     text: "Managing multiple units is effortless now. The real-time tracking and detailed reports keep my clients happy. Best FM partner we've worked with.",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
   },
   {
     name: "Raj Patel",
-    role: "Townhouse Owner, JVC",
+    role: "Townhouse Owner",
+    location: "JVC",
     rating: 5,
     text: "Their Gold package is worth every dirham. Emergency response is lightning fast, and the technicians always go above and beyond expectations.",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
   },
   {
     name: "Claudia Bianchi",
-    role: "Villa Owner, Palm Jumeirah",
+    role: "Villa Owner",
+    location: "Palm Jumeirah",
     rating: 5,
-    text: "After trying three different companies, INAYA is the only one that delivers consistently. Their attention to detail and proactive maintenance approach is outstanding.",
+    text: "After trying three different companies, INAYA is the only one that delivers consistently. Exceptional attention to detail and a truly proactive approach.",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
   },
 ];
@@ -52,72 +57,94 @@ export default function TestimonialsCarousel() {
   const t = testimonials[current];
 
   return (
-    <section className="py-28 bg-white relative overflow-hidden">
-      {/* Subtle background gradient */}
+    <section className="py-32 bg-slate-950 relative overflow-hidden">
+      {/* Rich dark background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-br from-emerald-50/40 to-blue-50/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-emerald-600/8 rounded-full blur-[200px] -translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/6 rounded-full blur-[180px] translate-x-1/4 translate-y-1/4" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)',
+          backgroundSize: '48px 48px'
+        }} />
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 relative">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10 relative">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-5 py-2 mb-5">
-            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-            <span className="text-amber-700 font-semibold text-xs uppercase tracking-widest">Testimonials</span>
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-6">
+            <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
+            <span className="text-white/60 font-semibold text-[11px] tracking-[0.2em] uppercase">Client Stories</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">What Our Customers Say</h2>
+          <h2 className="font-display text-[2.75rem] lg:text-[3.5rem] font-bold text-white tracking-tight">
+            What Our Customers Say
+          </h2>
         </motion.div>
 
+        {/* Testimonial card */}
         <div className="relative">
-          <div className="bg-slate-50 rounded-[2rem] p-10 lg:p-14 border border-slate-100 min-h-[300px] flex flex-col items-center justify-center text-center relative overflow-hidden">
-            {/* Large decorative quote */}
-            <Quote className="absolute top-6 left-8 w-20 h-20 text-slate-100 -rotate-6" />
+          <div className="bg-white/[0.04] backdrop-blur-md border border-white/[0.08] rounded-[2rem] p-10 lg:p-16 overflow-hidden">
+            {/* Giant decorative quote */}
+            <div className="absolute top-8 left-10 text-[10rem] leading-none font-display text-white/[0.04] select-none pointer-events-none">"</div>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={current}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-                className="relative z-10"
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10 text-center"
               >
-                <div className="flex justify-center gap-1 mb-6">
+                {/* Stars */}
+                <div className="flex justify-center gap-1 mb-8">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-5 h-5 ${i < t.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />
+                    <Star key={i} className={`w-5 h-5 ${i < t.rating ? 'fill-amber-400 text-amber-400' : 'text-white/10'}`} />
                   ))}
                 </div>
-                <p className="text-lg lg:text-xl text-slate-700 leading-relaxed mb-8 max-w-2xl mx-auto font-medium">
+
+                <p className="font-display text-xl lg:text-2xl text-white/90 leading-relaxed mb-10 max-w-3xl mx-auto font-normal italic">
                   "{t.text}"
                 </p>
-                <div className="flex items-center justify-center gap-3">
-                  <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md" />
+
+                <div className="flex items-center justify-center gap-4">
+                  <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-white/20 shadow-lg" />
                   <div className="text-left">
-                    <p className="font-bold text-slate-900">{t.name}</p>
-                    <p className="text-sm text-slate-400">{t.role}</p>
+                    <p className="font-bold text-white text-[15px]">{t.name}</p>
+                    <p className="text-sm text-white/40">{t.role} · {t.location}</p>
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Arrows */}
-          <button onClick={() => go(-1)} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 lg:-translate-x-5 w-11 h-11 bg-white rounded-full shadow-lg border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:shadow-xl transition-all hover:-translate-y-1/2 hover:scale-105">
-            <ChevronLeft className="w-5 h-5 text-slate-700" />
+          {/* Nav arrows */}
+          <button
+            onClick={() => go(-1)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 lg:-translate-x-7 w-11 h-11 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full border border-white/10 flex items-center justify-center transition-all duration-200 hover:scale-105"
+          >
+            <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <button onClick={() => go(1)} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 lg:translate-x-5 w-11 h-11 bg-white rounded-full shadow-lg border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:shadow-xl transition-all hover:-translate-y-1/2 hover:scale-105">
-            <ChevronRight className="w-5 h-5 text-slate-700" />
+          <button
+            onClick={() => go(1)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 lg:translate-x-7 w-11 h-11 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full border border-white/10 flex items-center justify-center transition-all duration-200 hover:scale-105"
+          >
+            <ChevronRight className="w-5 h-5 text-white" />
           </button>
         </div>
 
         {/* Dots */}
-        <div className="flex justify-center gap-2.5 mt-8">
+        <div className="flex justify-center gap-2 mt-8">
           {testimonials.map((_, idx) => (
-            <button key={idx} onClick={() => setCurrent(idx)} className={`h-2.5 rounded-full transition-all duration-300 ${idx === current ? 'bg-emerald-500 w-8' : 'bg-slate-300 w-2.5 hover:bg-slate-400'}`} />
+            <button
+              key={idx}
+              onClick={() => setCurrent(idx)}
+              className={`h-1.5 rounded-full transition-all duration-400 ${idx === current ? 'bg-emerald-400 w-8' : 'bg-white/20 w-1.5 hover:bg-white/40'}`}
+            />
           ))}
         </div>
       </div>
