@@ -23,7 +23,6 @@ const clients = [
   "Reportage",
 ];
 
-const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='144' height='96' fill='%23f1f5f9'%3E%3Crect width='144' height='96'/%3E%3C/svg%3E";
 
 export default function ClientsCarousel() {
   return (
