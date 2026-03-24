@@ -44,23 +44,13 @@ function DashboardContent() {
 
   const { data: packages = [] } = useQuery({
     queryKey: ['subPackages'],
-    queryFn: async () => {
-      try {
-        return await base44.entities.SubscriptionPackage.list();
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.SubscriptionPackage.list(),
     initialData: []
   });
 
   const { data: properties = [] } = useQuery({
     queryKey: ['myProperties', user?.id],
-    queryFn: async () => {
-      const all = await base44.entities.Property.list();
-      return all.filter(p => p.owner_id === user?.id);
-    },
+    queryFn: () => base44.entities.Property.filter({ owner_id: user.id }),
     enabled: !!user?.id,
     initialData: []
   });
@@ -90,19 +80,19 @@ function DashboardContent() {
   const nextBooking = bookings.find(b => ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status));
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-[#F8F9FB] flex">
       <DashboardSidebar currentPage="Dashboard" />
 
       {/* Main content */}
       <div className="flex-1 lg:ml-56">
-        <div className="max-w-5xl mx-auto px-6 py-8 pt-20 lg:pt-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 pt-20 lg:pt-8">
           <DashboardHeader user={user} hasActiveSub={!!activeSub} unreadCount={notifications.length} />
 
-          <div className="space-y-6">
-            {/* Onboarding Checklist */}
+          <div className="space-y-5">
+            {/* Onboarding */}
             <OnboardingChecklist userRole="customer" />
 
-            {/* Hero subscription card */}
+            {/* Hero */}
             <SubscriptionHeroCard
               subscription={activeSub}
               packageData={activePackage}
@@ -111,7 +101,7 @@ function DashboardContent() {
             />
 
             {/* Two-column: upcoming + history */}
-            <div className="grid lg:grid-cols-5 gap-6">
+            <div className="grid lg:grid-cols-5 gap-5">
               <div className="lg:col-span-3">
                 <UpcomingServicesCard bookings={bookings} services={services} isLoading={bookingsLoading} />
               </div>
@@ -121,7 +111,7 @@ function DashboardContent() {
             </div>
 
             {/* AI Property Health Score + Recommendations */}
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid lg:grid-cols-2 gap-5">
               <PropertyHealthScore user={user} properties={properties} />
               <DashboardRecommendations user={user} bookings={bookings} />
             </div>
