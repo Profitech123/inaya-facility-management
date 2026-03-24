@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Wrench, Droplets, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const serviceIcons = {
   'ac': Zap,
@@ -21,7 +22,7 @@ function getIcon(name) {
   return Wrench;
 }
 
-export default function UpcomingServicesCard({ bookings, services }) {
+export default function UpcomingServicesCard({ bookings, services, isLoading }) {
   const getServiceName = (id) => services.find(s => s.id === id)?.name || 'Service';
 
   const upcoming = bookings
@@ -42,7 +43,9 @@ export default function UpcomingServicesCard({ bookings, services }) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        {upcoming.length === 0 ? (
+        {isLoading ? (
+          [1,2].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)
+        ) : upcoming.length === 0 ? (
           <div className="flex flex-col items-center text-center py-10">
             <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
               <Calendar className="w-6 h-6 text-slate-400" strokeWidth={1.5} />
@@ -56,7 +59,7 @@ export default function UpcomingServicesCard({ bookings, services }) {
             </Link>
           </div>
         ) : (
-          upcoming.map(booking => {
+        ) : upcoming.map(booking => {
             const name = getServiceName(booking.service_id);
             const Icon = getIcon(name);
             const date = booking.scheduled_date
@@ -76,8 +79,7 @@ export default function UpcomingServicesCard({ bookings, services }) {
                 </Badge>
               </div>
             );
-          })
-        )}
+        })}
       </CardContent>
     </Card>
   );
