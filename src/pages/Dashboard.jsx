@@ -23,15 +23,7 @@ function DashboardContent() {
 
   const { data: bookings = [] } = useQuery({
     queryKey: ['myBookings', user?.id],
-    queryFn: async () => {
-      try {
-        const allBookings = await base44.entities.Booking.list('-scheduled_date', 100);
-        return allBookings.filter(b => b.customer_id === user?.id).slice(0, 10);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.Booking.filter({ customer_id: user.id }, '-scheduled_date', 50),
     enabled: !!user?.id,
     initialData: []
   });
@@ -97,7 +89,7 @@ function DashboardContent() {
 
   const activeSub = subscriptions[0] || null;
   const activePackage = activeSub ? packages.find(p => p.id === activeSub.package_id) : null;
-  const nextBooking = bookings.find(b => b.status !== 'completed' && b.status !== 'cancelled');
+  const nextBooking = bookings.find(b => ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status));
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -105,8 +97,8 @@ function DashboardContent() {
 
       {/* Main content */}
       <div className="flex-1 lg:ml-56">
-        <div className="max-w-5xl mx-auto px-6 py-8">
-          <DashboardHeader user={user} />
+        <div className="max-w-5xl mx-auto px-6 py-8 pt-20 lg:pt-8">
+          <DashboardHeader user={user} hasActiveSub={!!activeSub} />
 
           <div className="space-y-6">
             {/* Onboarding Checklist */}
