@@ -30,15 +30,14 @@ function DashboardContent() {
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['mySubscriptions', user?.id],
-    queryFn: async () => {
-      try {
-        const allSubs = await base44.entities.Subscription.list();
-        return allSubs.filter(s => s.customer_id === user?.id && s.status === 'active');
-      } catch (error) {
-        console.error('Error fetching subscriptions:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.Subscription.filter({ customer_id: user.id, status: 'active' }),
+    enabled: !!user?.id,
+    initialData: []
+  });
+
+  const { data: notifications = [] } = useQuery({
+    queryKey: ['myNotifications', user?.id],
+    queryFn: () => base44.entities.Notification.filter({ user_id: user.id, is_read: false }),
     enabled: !!user?.id,
     initialData: []
   });
