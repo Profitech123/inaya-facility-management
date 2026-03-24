@@ -200,6 +200,11 @@ function BookingDetailContent() {
               </CardContent>
             </Card>
 
+            {/* En Route ETA tracker */}
+            {booking.status === 'en_route' && (
+              <EnRouteTracker booking={booking} provider={provider} />
+            )}
+
             {/* Review prompt for completed bookings */}
             {needsReview && (
               <ReviewPrompt
