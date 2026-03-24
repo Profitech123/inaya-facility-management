@@ -21,7 +21,7 @@ function DashboardContent() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: bookings = [] } = useQuery({
+  const { data: bookings = [], isLoading: bookingsLoading } = useQuery({
     queryKey: ['myBookings', user?.id],
     queryFn: () => base44.entities.Booking.filter({ customer_id: user.id }, '-scheduled_date', 50),
     enabled: !!user?.id,
@@ -115,7 +115,7 @@ function DashboardContent() {
             {/* Two-column: upcoming + history */}
             <div className="grid lg:grid-cols-5 gap-6">
               <div className="lg:col-span-3">
-                <UpcomingServicesCard bookings={bookings} services={services} />
+                <UpcomingServicesCard bookings={bookings} services={services} isLoading={bookingsLoading} />
               </div>
               <div className="lg:col-span-2">
                 <RecentHistoryCard bookings={bookings} services={services} />
