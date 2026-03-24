@@ -116,7 +116,7 @@ function DashboardContent() {
                 <UpcomingServicesCard bookings={bookings} services={services} isLoading={bookingsLoading} />
               </div>
               <div className="lg:col-span-2">
-                <RecentHistoryCard bookings={bookings} services={services} />
+                <RecentHistoryCard bookings={bookings} services={services} providers={providers} />
               </div>
             </div>
 
