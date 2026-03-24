@@ -25,15 +25,7 @@ function MySubscriptionsContent() {
 
   const { data: subscriptions = [] } = useQuery({
     queryKey: ['mySubscriptions', user?.id],
-    queryFn: async () => {
-      try {
-        const allSubs = await base44.entities.Subscription.list('-created_date');
-        return allSubs.filter(s => s.customer_id === user?.id);
-      } catch (error) {
-        console.error('Error fetching subscriptions:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.Subscription.filter({ customer_id: user.id }, '-created_date'),
     enabled: !!user?.id,
     initialData: []
   });
