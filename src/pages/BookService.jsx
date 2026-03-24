@@ -131,38 +131,47 @@ export default function BookService() {
     }
   }, [paymentStatus, paymentBookingId]);
 
-  // Handle confirm & pay
+  // Handle confirm & pay via Stripe
   const handleConfirmBooking = async () => {
     if (!user) {
       base44.auth.redirectToLogin(window.location.href);
       return;
     }
 
+    // Block checkout inside iframe (Base44 preview)
+    if (window.self !== window.top) {
+      alert('Payment checkout is only available from the published app, not the preview.');
+      return;
+    }
+
     setIsProcessingPayment(true);
 
-    // Create booking
-    const booking = await base44.entities.Booking.create({
-      service_id: serviceId,
-      property_id: bookingData.property_id,
-      customer_id: user.id,
-      scheduled_date: bookingData.scheduled_date,
-      scheduled_time: bookingData.scheduled_time,
-      status: 'pending',
-      total_amount: grandTotal,
-      payment_status: 'pending',
-      assigned_provider_id: bookingData.assigned_provider_id || undefined,
-      customer_notes: bookingData.customer_notes || undefined,
-      addon_ids: bookingData.addon_ids?.length > 0 ? bookingData.addon_ids : undefined,
-      addons_amount: addonsTotal > 0 ? addonsTotal : 0,
+    const successUrl = `${window.location.origin}${window.location.pathname}?payment=success&booking_id=PENDING`;
+    const cancelUrl = window.location.href;
+
+    const response = await base44.functions.invoke('createBookingCheckout', {
+      booking_data: {
+        service_id: serviceId,
+        property_id: bookingData.property_id,
+        customer_id: user.id,
+        scheduled_date: bookingData.scheduled_date,
+        scheduled_time: bookingData.scheduled_time,
+        assigned_provider_id: bookingData.assigned_provider_id || '',
+        customer_notes: bookingData.customer_notes || '',
+        addon_ids: bookingData.addon_ids || [],
+        addons_amount: addonsTotal,
+        total_amount: grandTotal,
+        base_price: service?.price || 0,
+      },
+      success_url: successUrl,
+      cancel_url: cancelUrl,
     });
 
-    // Dummy payment — mark as paid immediately
-    await base44.entities.Booking.update(booking.id, { payment_status: 'paid' });
-    booking.payment_status = 'paid';
-
     setIsProcessingPayment(false);
-    setConfirmedBooking(booking);
-    setStep(5);
+
+    if (response.data?.url) {
+      window.location.href = response.data.url;
+    }
   };
 
   const handleStartBooking = () => {

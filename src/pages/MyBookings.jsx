@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
 import BookingCard from '../components/bookings/BookingCard';
+import ReviewPrompt from '../components/bookings/ReviewPrompt';
 
 const TABS = [
   { key: 'upcoming', label: 'Upcoming' },
