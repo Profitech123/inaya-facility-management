@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Download, DollarSign, FileText } from 'lucide-react';
+import { Calendar, Download, CreditCard, FileText, Receipt } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
 
