@@ -97,7 +97,7 @@ function DashboardContent() {
       {/* Main content */}
       <div className="flex-1 lg:ml-56">
         <div className="max-w-5xl mx-auto px-6 py-8 pt-20 lg:pt-8">
-          <DashboardHeader user={user} hasActiveSub={!!activeSub} />
+          <DashboardHeader user={user} hasActiveSub={!!activeSub} unreadCount={notifications.length} />
 
           <div className="space-y-6">
             {/* Onboarding Checklist */}

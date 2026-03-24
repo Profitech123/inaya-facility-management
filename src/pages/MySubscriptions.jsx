@@ -53,14 +53,7 @@ function MySubscriptionsContent() {
 
   const { data: properties = [] } = useQuery({
     queryKey: ['properties'],
-    queryFn: async () => {
-      try {
-        return await base44.entities.Property.list();
-      } catch (error) {
-        console.error('Error fetching properties:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.Property.filter({ owner_id: user.id }),
     initialData: []
   });
 

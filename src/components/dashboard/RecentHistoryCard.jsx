@@ -5,7 +5,7 @@ import { Clock, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function RecentHistoryCard({ bookings, services }) {
+export default function RecentHistoryCard({ bookings, services, providers = [] }) {
   const getServiceName = (id) => services.find(s => s.id === id)?.name || 'Service';
 
   const completed = bookings.filter(b => b.status === 'completed').slice(0, 3);
@@ -41,8 +41,10 @@ export default function RecentHistoryCard({ bookings, services }) {
                     <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   </div>
                   <div className="font-semibold text-slate-900 text-sm mb-1">{getServiceName(booking.service_id)}</div>
-                  {booking.assigned_provider && (
-                    <div className="text-xs text-slate-500">Technician: {booking.assigned_provider}</div>
+                  {booking.assigned_provider_id && (
+                    <div className="text-xs text-slate-500">
+                      Technician: {providers.find(p => p.id === booking.assigned_provider_id)?.full_name || booking.assigned_provider || '—'}
+                    </div>
                   )}
                 </div>
               );
