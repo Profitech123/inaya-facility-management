@@ -35,6 +35,7 @@ const navSections = [
     label: 'Insights',
     items: [
       { label: 'Analytics', page: 'AdminAnalytics', icon: ChartLineUp },
+      { label: 'Metrics Dashboard', page: 'AdminMetricsDashboard', icon: ChartBar },
       { label: 'Reports', page: 'AdminReports', icon: ChartBar },
     ],
   },
