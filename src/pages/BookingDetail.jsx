@@ -17,6 +17,7 @@ import ReviewPrompt from '../components/bookings/ReviewPrompt';
 import TechnicianCard from '../components/bookings/TechnicianCard';
 import CancelBookingDialog from '../components/bookings/CancelBookingDialog';
 import RescheduleDialog from '../components/bookings/RescheduleDialog';
+import EnRouteTracker from '../components/bookings/EnRouteTracker';
 import { getCancellationDetails, getRescheduleDetails } from '../components/bookings/CancellationPolicyHelper';
 import { toast } from 'sonner';
 
