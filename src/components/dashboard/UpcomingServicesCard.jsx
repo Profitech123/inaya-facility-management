@@ -24,7 +24,9 @@ function getIcon(name) {
 export default function UpcomingServicesCard({ bookings, services }) {
   const getServiceName = (id) => services.find(s => s.id === id)?.name || 'Service';
 
-  const upcoming = bookings.filter(b => b.status !== 'completed' && b.status !== 'cancelled').slice(0, 3);
+  const upcoming = bookings
+    .filter(b => ['pending', 'confirmed'].includes(b.status))
+    .slice(0, 3);
 
   return (
     <Card className="border-slate-200">

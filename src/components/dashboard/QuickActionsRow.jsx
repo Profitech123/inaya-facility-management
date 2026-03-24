@@ -6,7 +6,7 @@ import { createPageUrl } from '@/utils';
 export default function QuickActionsRow() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Link to={createPageUrl('Services')} className="group p-5 bg-emerald-50 border-2 border-emerald-100 rounded-2xl hover:border-emerald-300 transition-all hover:shadow-md">
+      <Link to={createPageUrl('OnDemandServices')} className="group p-5 bg-emerald-50 border-2 border-emerald-100 rounded-2xl hover:border-emerald-300 transition-all hover:shadow-md">
         <PlusCircle className="w-8 h-8 text-emerald-500 mb-3" weight="duotone" />
         <div className="font-semibold text-slate-900 text-sm mb-1">Book a One-off Service</div>
         <div className="text-xs text-slate-500 leading-relaxed">Need a quick fix? Schedule a single visit for any facility need.</div>
