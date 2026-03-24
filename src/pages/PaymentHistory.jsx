@@ -43,7 +43,7 @@ function PaymentHistoryContent() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Total Paid</CardTitle>
-              <DollarSign className="w-4 h-4 text-slate-400" />
+              <CreditCard className="w-4 h-4 text-slate-400" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-green-600">AED {totalPaid.toFixed(2)}</div>
@@ -53,7 +53,7 @@ function PaymentHistoryContent() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Pending</CardTitle>
-              <DollarSign className="w-4 h-4 text-slate-400" />
+              <Receipt className="w-4 h-4 text-slate-400" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-orange-600">AED {totalPending.toFixed(2)}</div>
