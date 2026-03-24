@@ -67,14 +67,13 @@ function DashboardContent() {
 
   const { data: services = [] } = useQuery({
     queryKey: ['services'],
-    queryFn: async () => {
-      try {
-        return await base44.entities.Service.list();
-      } catch (error) {
-        console.error('Error fetching services:', error);
-        return [];
-      }
-    },
+    queryFn: () => base44.entities.Service.list(),
+    initialData: []
+  });
+
+  const { data: providers = [] } = useQuery({
+    queryKey: ['providers'],
+    queryFn: () => base44.entities.Provider.list(),
     initialData: []
   });
 
