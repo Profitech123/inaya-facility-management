@@ -50,9 +50,18 @@ function MyBookingsContent() {
     initialData: []
   });
 
+  const { data: myReviews = [] } = useQuery({
+    queryKey: ['myReviews', user?.id],
+    queryFn: () => base44.entities.ProviderReview.filter({ customer_id: user?.id }),
+    enabled: !!user,
+    initialData: []
+  });
+
   const getServiceName = (id) => services.find(s => s.id === id)?.name || 'Service';
   const getPropertyAddress = (id) => properties.find(p => p.id === id)?.address || '';
   const getProviderName = (id) => providers.find(p => p.id === id)?.full_name || '';
+  const getProvider = (id) => providers.find(p => p.id === id) || null;
+  const hasReview = (bookingId) => myReviews.some(r => r.booking_id === bookingId);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -149,13 +158,21 @@ function MyBookingsContent() {
         ) : (
           <div className="space-y-4">
             {filtered.map(booking => (
-              <BookingCard
-                key={booking.id}
-                booking={booking}
-                serviceName={getServiceName(booking.service_id)}
-                propertyAddress={getPropertyAddress(booking.property_id)}
-                providerName={getProviderName(booking.assigned_provider_id)}
-              />
+              <div key={booking.id} className="space-y-3">
+                <BookingCard
+                  booking={booking}
+                  serviceName={getServiceName(booking.service_id)}
+                  propertyAddress={getPropertyAddress(booking.property_id)}
+                  providerName={getProviderName(booking.assigned_provider_id)}
+                />
+                {booking.status === 'completed' && booking.assigned_provider_id && !hasReview(booking.id) && (
+                  <ReviewPrompt
+                    booking={booking}
+                    provider={getProvider(booking.assigned_provider_id)}
+                    userId={user?.id}
+                  />
+                )}
+              </div>
             ))}
           </div>
         )}
