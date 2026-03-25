@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
@@ -12,7 +12,6 @@ Deno.serve(async (req) => {
 
     console.log(`Generating invoice PDF for booking: ${booking_id}`);
 
-    // Fetch booking and related data
     const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
     const booking = bookings?.[0];
     if (!booking) {
@@ -29,14 +28,13 @@ Deno.serve(async (req) => {
     const property = propertyArr?.[0] || {};
     const customer = customerArr?.[0] || {};
 
-    // Fetch provider if assigned
     let provider = null;
     if (booking.assigned_provider_id) {
       const provArr = await base44.asServiceRole.entities.Provider.filter({ id: booking.assigned_provider_id });
       provider = provArr?.[0] || null;
     }
 
-    // Calculate labor hours from started_at / completed_at
+    // Labor hours
     let laborHours = 0;
     let laborDisplay = 'N/A';
     if (booking.started_at && booking.completed_at) {
@@ -48,43 +46,38 @@ Deno.serve(async (req) => {
       laborDisplay = `${laborHours.toFixed(1)} hrs (estimated)`;
     }
 
-    // Pricing breakdown
+    // Pricing
     const servicePrice = service.price || booking.total_amount || 0;
     const addonsAmount = booking.addons_amount || 0;
     const subtotal = servicePrice + addonsAmount;
-    const vatRate = 0.05; // 5% UAE VAT
+    const vatRate = 0.05;
     const vatAmount = subtotal * vatRate;
     const totalAmount = subtotal + vatAmount;
 
-    // Invoice number
     const invoiceNumber = `INV-${booking_id.substring(0, 8).toUpperCase()}`;
     const invoiceDate = new Date().toLocaleDateString('en-AE', { year: 'numeric', month: 'long', day: 'numeric' });
     const serviceDate = booking.scheduled_date
       ? new Date(booking.scheduled_date).toLocaleDateString('en-AE', { year: 'numeric', month: 'long', day: 'numeric' })
       : 'N/A';
 
-    // ─── Build PDF ───────────────────────────────────────────────────
+    // ─── Build PDF ─────────────────────────────────────────────────────────
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pageW = 210;
     const margin = 18;
     const colRight = 130;
 
-    // Header background
-    doc.setFillColor(5, 150, 105); // emerald-600
+    doc.setFillColor(5, 150, 105);
     doc.rect(0, 0, pageW, 45, 'F');
 
-    // Company name (white)
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.text('INAYA Facilities Management', margin, 18);
-
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text('28th Street, Belhasa HO Building, Hor Al Anz East, Dubai, UAE', margin, 26);
     doc.text('+971 4 815 7300  |  info@inaya.ae  |  www.inaya.ae', margin, 32);
 
-    // INVOICE label (right side of header)
     doc.setFontSize(26);
     doc.setFont('helvetica', 'bold');
     doc.text('INVOICE', pageW - margin, 20, { align: 'right' });
@@ -93,10 +86,8 @@ Deno.serve(async (req) => {
     doc.text(invoiceNumber, pageW - margin, 28, { align: 'right' });
     doc.text(`Date: ${invoiceDate}`, pageW - margin, 34, { align: 'right' });
 
-    // Reset color
     doc.setTextColor(30, 30, 30);
 
-    // Bill To + Job Info boxes
     let y = 55;
     doc.setFillColor(248, 250, 252);
     doc.roundedRect(margin, y, 82, 38, 2, 2, 'F');
@@ -128,9 +119,8 @@ Deno.serve(async (req) => {
     doc.setFont('helvetica', 'normal');
     doc.text(booking.scheduled_time || 'N/A', colRight + 4, y + 34);
 
-    // Line items table
     y += 46;
-    doc.setFillColor(15, 23, 42); // slate-900
+    doc.setFillColor(15, 23, 42);
     doc.rect(margin, y, pageW - margin * 2, 9, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(9);
@@ -155,13 +145,7 @@ Deno.serve(async (req) => {
     ];
 
     if (addonsAmount > 0) {
-      rows.push({
-        desc: 'Add-on Services',
-        sub: '',
-        qty: '—',
-        unit: `AED ${addonsAmount.toFixed(2)}`,
-        amount: `AED ${addonsAmount.toFixed(2)}`,
-      });
+      rows.push({ desc: 'Add-on Services', sub: '', qty: '—', unit: `AED ${addonsAmount.toFixed(2)}`, amount: `AED ${addonsAmount.toFixed(2)}` });
     }
 
     rows.forEach((row, i) => {
@@ -186,7 +170,6 @@ Deno.serve(async (req) => {
       doc.text(row.amount, pageW - margin - 2, y + 2, { align: 'right' });
     });
 
-    // Totals section
     y += 18;
     doc.setDrawColor(229, 231, 235);
     doc.line(margin, y, pageW - margin, y);
@@ -212,7 +195,6 @@ Deno.serve(async (req) => {
     addTotalRow('VAT (5%)', `AED ${vatAmount.toFixed(2)}`);
     addTotalRow('TOTAL DUE', `AED ${totalAmount.toFixed(2)}`, true, true);
 
-    // Payment status badge
     y += 14;
     const isPaid = booking.payment_status === 'paid';
     doc.setFillColor(isPaid ? 209 : 254, isPaid ? 250 : 243, isPaid ? 229 : 199);
@@ -222,7 +204,6 @@ Deno.serve(async (req) => {
     doc.setTextColor(isPaid ? 5 : 180, isPaid ? 150 : 70, isPaid ? 105 : 0);
     doc.text(isPaid ? '✓ PAID' : 'PAYMENT PENDING', margin + 4, y + 7);
 
-    // Notes
     if (booking.provider_notes || booking.customer_notes) {
       y += 16;
       doc.setFillColor(255, 251, 235);
@@ -238,7 +219,6 @@ Deno.serve(async (req) => {
       doc.text(noteLines, margin + 4, y + 14);
     }
 
-    // Footer
     const footerY = 275;
     doc.setFillColor(248, 250, 252);
     doc.rect(0, footerY, pageW, 22, 'F');
@@ -251,7 +231,7 @@ Deno.serve(async (req) => {
 
     const pdfBytes = doc.output('arraybuffer');
 
-    // ─── Save Invoice record ─────────────────────────────────────────
+    // ─── Save Invoice record ─────────────────────────────────────────────────
     const existingInvoices = await base44.asServiceRole.entities.Invoice.filter({ booking_id });
     if (existingInvoices.length === 0) {
       await base44.asServiceRole.entities.Invoice.create({
@@ -263,72 +243,49 @@ Deno.serve(async (req) => {
         tax_amount: vatAmount,
         total_amount: totalAmount,
         status: booking.payment_status === 'paid' ? 'paid' : 'pending',
-        line_items: rows.map(r => ({
-          description: r.desc,
-          quantity: 1,
-          unit_price: servicePrice,
-          amount: servicePrice,
-        })),
+        line_items: rows.map(r => ({ description: r.desc, quantity: 1, unit_price: servicePrice, amount: servicePrice })),
       });
       console.log(`Invoice record created: ${invoiceNumber}`);
     }
 
-    // ─── Email invoice PDF to customer ──────────────────────────────
+    // ─── Email invoice using template ────────────────────────────────────────
     if (customer?.email) {
-      const file_url = null; // PDF returned directly; no hosted link needed
+      const templates = await base44.asServiceRole.entities.EmailTemplate.filter({ template_key: 'invoice_sent' });
+      const template = templates?.[0];
 
-      const emailBody = `
-<!DOCTYPE html>
-<html>
-<head><style>
-  body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; }
-  .container { max-width: 600px; margin: 0 auto; }
-  .header { background: linear-gradient(135deg, #059669, #047857); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-  .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px; }
-  .row { padding: 8px 0; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; }
-  .row:last-child { border-bottom: none; }
-  .total { background: #f0fdf4; padding: 15px; border-radius: 6px; text-align: center; margin: 20px 0; }
-  .btn { display: inline-block; background: #059669; color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 15px 0; }
-</style></head>
-<body>
-<div class="container">
-  <div class="header">
-    <h1 style="margin:0;font-size:22px;">✓ Service Completed — Invoice Ready</h1>
-    <p style="margin:5px 0 0;opacity:.85">${invoiceNumber}</p>
-  </div>
-  <div class="content">
-    <p>Hi ${customer.full_name},</p>
-    <p>Your <strong>${service.name}</strong> service has been completed. Please find your invoice details below.</p>
-    <div style="background:white;padding:15px;border-radius:6px;border-left:4px solid #059669;margin:15px 0">
-      <div class="row"><span style="font-weight:600;color:#6b7280">Service</span><span>${service.name}</span></div>
-      <div class="row"><span style="font-weight:600;color:#6b7280">Date</span><span>${serviceDate}</span></div>
-      <div class="row"><span style="font-weight:600;color:#6b7280">Technician</span><span>${provider?.full_name || 'INAYA Team'}</span></div>
-      <div class="row"><span style="font-weight:600;color:#6b7280">Labor Hours</span><span>${laborDisplay}</span></div>
-      <div class="row"><span style="font-weight:600;color:#6b7280">Subtotal</span><span>AED ${subtotal.toFixed(2)}</span></div>
-      <div class="row"><span style="font-weight:600;color:#6b7280">VAT (5%)</span><span>AED ${vatAmount.toFixed(2)}</span></div>
-    </div>
-    <div class="total">
-      <div style="font-size:13px;color:#6b7280;margin-bottom:5px;">Total Amount</div>
-      <div style="font-size:28px;font-weight:bold;color:#059669;">AED ${totalAmount.toFixed(2)}</div>
-    </div>
-    <div style="text-align:center;background:#f0fdf4;padding:12px;border-radius:6px;margin:15px 0;font-size:13px;color:#059669;">
-      Your invoice <strong>${invoiceNumber}</strong> is attached to this email.
-    </div>
-    <p style="font-size:13px;text-align:center;color:#6b7280;margin-top:20px;">
-      Questions? Call <strong>+971 4 815 7300</strong> or email <strong>info@inaya.ae</strong>
-    </p>
-  </div>
-</div>
-</body>
-</html>`;
-
-      await base44.asServiceRole.integrations.Core.SendEmail({
-        to: customer.email,
-        subject: `Invoice ${invoiceNumber} — ${service.name} Completed`,
-        body: emailBody,
-        from_name: 'INAYA Facilities Management'
-      });
-      console.log(`Invoice email sent to ${customer.email}`);
+      if (template && template.is_active !== false) {
+        let subject = template.subject || `Invoice ${invoiceNumber} — ${service.name} Completed`;
+        let body = template.body || '';
+        const vars = {
+          customer_name: customer.full_name,
+          customer_email: customer.email,
+          invoice_number: invoiceNumber,
+          total_amount: totalAmount.toFixed(2),
+          due_date: new Date().toLocaleDateString('en-AE', { year: 'numeric', month: 'long', day: 'numeric' }),
+          company_name: 'INAYA Facilities Management',
+        };
+        for (const [key, val] of Object.entries(vars)) {
+          const re = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+          subject = subject.replace(re, val ?? '');
+          body = body.replace(re, val ?? '');
+        }
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: customer.email,
+          subject,
+          body,
+          from_name: 'INAYA Facilities Management',
+        });
+        console.log(`Invoice email sent to ${customer.email} using template`);
+      } else {
+        // Fallback plain email if template not found
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: customer.email,
+          subject: `Invoice ${invoiceNumber} — ${service.name} Completed`,
+          body: `<p>Dear ${customer.full_name},</p><p>Your service <strong>${service.name}</strong> has been completed. Invoice <strong>${invoiceNumber}</strong> — Total: AED ${totalAmount.toFixed(2)}.</p><p>INAYA Facilities Management</p>`,
+          from_name: 'INAYA Facilities Management',
+        });
+        console.log(`Invoice fallback email sent to ${customer.email}`);
+      }
     }
 
     return new Response(pdfBytes, {
@@ -336,7 +293,7 @@ Deno.serve(async (req) => {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename=invoice-${invoiceNumber}.pdf`,
-      }
+      },
     });
 
   } catch (error) {
