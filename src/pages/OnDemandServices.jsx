@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ArrowRight, Search, Clock, Star, Shield, Sparkles, Wrench, Settings } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import AIRecommendations from '../components/services/AIRecommendations';
@@ -42,29 +43,51 @@ export default function OnDemandServices() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-16 lg:py-20">
-          <div className="max-w-2xl">
-            <Badge className="bg-white/20 text-white border-0 mb-4">On-Demand</Badge>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">Book a Service Instantly</h1>
-            <p className="text-lg text-emerald-100 mb-8">
-              No subscriptions needed. Choose the service you need, pick a time, and we'll handle the rest. Professional technicians at your doorstep.
-            </p>
-            <div className="flex flex-wrap gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>Same-day availability</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4" />
-                <span>Vetted professionals</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                <span>Satisfaction guaranteed</span>
-              </div>
-            </div>
-          </div>
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-28 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-700/20 rounded-full blur-[160px] -translate-y-1/4" />
+          <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-teal-800/15 rounded-full blur-[120px]" />
+        </div>
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)',
+          backgroundSize: '72px 72px'
+        }} />
+        <div className="max-w-7xl mx-auto px-6 relative">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-300 font-semibold text-[11px] tracking-[0.2em] uppercase">On-Demand</span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl lg:text-6xl font-bold mb-5 tracking-tight max-w-3xl"
+          >
+            Book a Service Instantly
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-slate-300 max-w-2xl font-light leading-relaxed mb-8"
+          >
+            No subscriptions needed. Choose the service you need, pick a time, and we'll handle the rest. Professional technicians at your doorstep.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex flex-wrap gap-6 text-sm text-slate-300"
+          >
+            <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-emerald-400" /><span>Same-day availability</span></div>
+            <div className="flex items-center gap-2"><Star className="w-4 h-4 text-emerald-400" /><span>Vetted professionals</span></div>
+            <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-emerald-400" /><span>Satisfaction guaranteed</span></div>
+          </motion.div>
         </div>
       </div>
 

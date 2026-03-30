@@ -3,6 +3,7 @@ import { Shield, Heart, Award, Users, GraduationCap, HandHeart } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { motion } from 'framer-motion';
 
 const commitments = [
   { icon: Shield, title: "Safe Working Conditions", desc: "Provision of safe working conditions for all employees" },
@@ -16,16 +17,41 @@ const commitments = [
 export default function OurPeople() {
   return (
     <div className="min-h-screen">
-      <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-28 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&h=600&fit=crop" alt="" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-slate-900/70" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)',
+          backgroundSize: '72px 72px'
+        }} />
         <div className="relative max-w-7xl mx-auto px-6">
-          <h1 className="text-5xl font-bold mb-6">Our People</h1>
-          <p className="text-xl text-slate-300 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-300 font-semibold text-[11px] tracking-[0.2em] uppercase">Our Team</span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl lg:text-6xl font-bold mb-5 tracking-tight"
+          >
+            Our People
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-slate-300 max-w-3xl font-light leading-relaxed"
+          >
             Who made INAYA the top Facilities Management company in Dubai & UAE
-          </p>
+          </motion.p>
         </div>
       </div>
 

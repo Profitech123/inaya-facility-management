@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, Mail, MapPin, Clock, Globe, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 import AIQuoteWidget from '../components/service-finder/AIQuoteWidget';
 
 export default function Contact() {
@@ -42,12 +43,41 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl text-slate-300 max-w-2xl">
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-28 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-700/20 rounded-full blur-[160px] -translate-y-1/4" />
+          <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-teal-800/15 rounded-full blur-[120px]" />
+        </div>
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)',
+          backgroundSize: '72px 72px'
+        }} />
+        <div className="max-w-7xl mx-auto px-6 relative">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2.5 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-300 font-semibold text-[11px] tracking-[0.2em] uppercase">Get In Touch</span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl lg:text-6xl font-bold mb-5 tracking-tight"
+          >
+            Contact Us
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-slate-300 max-w-2xl font-light leading-relaxed"
+          >
             Have you got a question or comment? Feel free to drop us a line.
-          </p>
+          </motion.p>
         </div>
       </div>
 
