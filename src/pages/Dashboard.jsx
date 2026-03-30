@@ -13,6 +13,7 @@ import DashboardRecommendations from '../components/dashboard/DashboardRecommend
 import PropertyHealthScore from '../components/dashboard/PropertyHealthScore';
 import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
+import CustomerAnalytics from '../components/dashboard/CustomerAnalytics';
 
 function DashboardContent() {
   const [user, setUser] = useState(null);
@@ -67,6 +68,13 @@ function DashboardContent() {
     initialData: []
   });
 
+  const { data: invoices = [] } = useQuery({
+    queryKey: ['myInvoices', user?.id],
+    queryFn: () => base44.entities.Invoice.filter({ customer_id: user.id }),
+    enabled: !!user?.id,
+    initialData: []
+  });
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -115,6 +123,14 @@ function DashboardContent() {
               <PropertyHealthScore user={user} properties={properties} />
               <DashboardRecommendations user={user} bookings={bookings} />
             </div>
+
+            {/* Customer Analytics */}
+            <CustomerAnalytics
+              bookings={bookings}
+              services={services}
+              subscriptions={subscriptions}
+              packages={packages}
+            />
 
             {/* Quick actions */}
             <QuickActionsRow />
