@@ -4,12 +4,30 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Download, CreditCard, FileText, Receipt } from 'lucide-react';
+import { Calendar, Download, CreditCard, FileText, Receipt, Loader2 } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
 
 function PaymentHistoryContent() {
   const [user, setUser] = useState(null);
+  const [downloading, setDownloading] = useState(null);
+
+  const handleDownload = async (invoiceId) => {
+    setDownloading(invoiceId);
+    try {
+      const response = await base44.functions.invoke('generateInvoicePDF', { booking_id: null, invoice_id: invoiceId });
+      // If a pdf_url is returned open it, otherwise just notify
+      if (response?.data?.pdf_url) {
+        window.open(response.data.pdf_url, '_blank');
+      } else {
+        toast?.success?.('Invoice processed. Check your email for the PDF.');
+      }
+    } catch {
+      // Fallback: open a print-friendly version
+      window.print();
+    }
+    setDownloading(null);
+  };
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => window.location.href = createPageUrl('Home'));
@@ -133,9 +151,16 @@ function PaymentHistoryContent() {
                           via {invoice.payment_method}
                         </div>
                       )}
-                      <Button variant="outline" size="sm">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDownload(invoice.id)}
+                        disabled={downloading === invoice.id}
+                      >
+                        {downloading === invoice.id
+                          ? <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          : <Download className="w-4 h-4 mr-2" />}
+                        Download PDF
                       </Button>
                     </div>
                   </div>

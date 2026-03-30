@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, Home, Plus, MapPin, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
+import ServiceAreaChecker from './ServiceAreaChecker';
 
 export default function PropertyStep({ bookingData, setBookingData, properties, userId, onPropertiesRefetch, onBack, onNext }) {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -188,6 +189,11 @@ export default function PropertyStep({ bookingData, setBookingData, properties, 
               <div className="text-xs text-slate-500 mt-1 italic">Access: {selectedProp.access_notes}</div>
             )}
           </div>
+        )}
+
+        {/* Service area coverage check */}
+        {selectedProp && (
+          <ServiceAreaChecker area={selectedProp.area} city={selectedProp.city} />
         )}
 
         <div className="flex items-center justify-between pt-4">

@@ -1,5 +1,15 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
+// Helper: send SMS via internal function (fire-and-forget, never throws)
+async function sendSMS(base44, phone, message) {
+  if (!phone) return;
+  try {
+    await base44.asServiceRole.functions.invoke('sendSMSInternal', { to: phone, message });
+  } catch (e) {
+    console.warn('SMS send failed (non-critical):', e.message);
+  }
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -103,6 +113,13 @@ Deno.serve(async (req) => {
         property_address: `${property?.address || ''}${property?.area ? ', ' + property.area : ''}`,
       }, `Booking Confirmed — ${service?.name}`);
 
+      // SMS confirmation
+      if (customer.phone) {
+        await sendSMS(base44, customer.phone,
+          `INAYA: Your ${service?.name} booking is confirmed for ${bookingDate}${booking.scheduled_time ? ' at ' + booking.scheduled_time : ''}. Ref: INY-${event.entity_id.substring(0, 8).toUpperCase()}`
+        );
+      }
+
       return Response.json({ success: true, action: 'confirmation_sent' });
     }
 
@@ -185,6 +202,16 @@ Deno.serve(async (req) => {
         total_amount: (booking.total_amount || 0).toString(),
         cancellation_reason: booking.cancellation_reason || 'N/A',
       }, `Booking ${newStatus.replace(/_/g, ' ')} — ${service?.name}`);
+
+      // SMS status updates for key statuses
+      if (customer.phone && ['en_route', 'completed', 'cancelled'].includes(newStatus)) {
+        const smsMessages = {
+          en_route: `INAYA: Your technician is on the way for ${service?.name}. Please ensure property access is ready.`,
+          completed: `INAYA: Your ${service?.name} service is complete! Rate your experience in the app.`,
+          cancelled: `INAYA: Your ${service?.name} booking has been cancelled. Contact us at +971 4 815 7300 for assistance.`,
+        };
+        await sendSMS(base44, customer.phone, smsMessages[newStatus]);
+      }
 
       // Auto-generate invoice + AI service report on completion
       if (newStatus === 'completed') {

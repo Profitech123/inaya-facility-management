@@ -16,6 +16,9 @@ const ENTITY_OPTIONS = [
   { value: 'Provider', label: 'Providers', fields: ['full_name', 'email', 'phone', 'is_active'] },
   { value: 'ServiceArea', label: 'Service Areas', fields: ['area_name', 'emirate', 'is_active', 'service_fee', 'delivery_time'] },
   { value: 'ServiceAddon', label: 'Service Add-ons', fields: ['name', 'description', 'service_id', 'price', 'is_active'] },
+  { value: 'Invoice', label: 'Invoices (Migration)', fields: ['invoice_number', 'customer_id', 'booking_id', 'subscription_id', 'invoice_date', 'due_date', 'amount', 'tax_amount', 'discount_amount', 'total_amount', 'status', 'payment_method', 'payment_date', 'payment_reference', 'notes'] },
+  { value: 'Subscription', label: 'Subscriptions (Migration)', fields: ['package_id', 'customer_id', 'property_id', 'status', 'start_date', 'end_date', 'next_billing_date', 'monthly_amount', 'payment_method', 'auto_renew'] },
+  { value: 'Booking', label: 'Bookings (Migration)', fields: ['service_id', 'property_id', 'customer_id', 'scheduled_date', 'scheduled_time', 'status', 'total_amount', 'payment_status', 'assigned_provider', 'customer_notes'] },
 ];
 
 function parseCSV(text) {
@@ -80,9 +83,9 @@ function AdminCSVMigrationContent() {
         if (field && field !== '_skip') {
           let val = row[i] || '';
           // Type coercion for numbers/booleans
-          if (['price', 'duration_minutes', 'bedrooms', 'square_meters', 'service_fee'].includes(field)) {
-            val = parseFloat(val) || 0;
-          } else if (['is_active'].includes(field)) {
+          if (['price', 'duration_minutes', 'bedrooms', 'square_meters', 'service_fee', 'amount', 'tax_amount', 'discount_amount', 'total_amount', 'monthly_amount'].includes(field)) {
+                    val = parseFloat(val) || 0;
+                  } else if (['is_active', 'auto_renew'].includes(field)) {
             val = val.toLowerCase() === 'true' || val === '1';
           }
           obj[field] = val;
@@ -129,6 +132,9 @@ function AdminCSVMigrationContent() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-slate-900">CSV Data Migration</h1>
           <p className="text-slate-500">Import data from CSV files into your platform.</p>
+          <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+            <strong>Data Migration:</strong> Invoices, Subscriptions, and Bookings options are for migrating historical data. Ensure <code>customer_id</code>, <code>property_id</code> etc. reference valid existing IDs.
+          </div>
         </div>
         <div className="space-y-6">
         {/* Step 1: Select Entity */}

@@ -5,7 +5,9 @@ import { Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function PlanCards({ packages, currentPkgId }) {
+const YEARLY_DISCOUNT = 0.15; // 15% off
+
+export default function PlanCards({ packages, currentPkgId, billing = 'monthly' }) {
   // Sort packages by price
   const sorted = [...packages].sort((a, b) => (a.monthly_price || 0) - (b.monthly_price || 0));
 
@@ -14,6 +16,10 @@ export default function PlanCards({ packages, currentPkgId }) {
       {sorted.map((pkg, index) => {
         const isPopular = pkg.popular;
         const isCurrent = pkg.id === currentPkgId;
+        const monthlyPrice = pkg.monthly_price || 0;
+        const displayPrice = billing === 'yearly'
+          ? Math.round(monthlyPrice * (1 - YEARLY_DISCOUNT))
+          : monthlyPrice;
 
         return (
           <div
@@ -35,13 +41,18 @@ export default function PlanCards({ packages, currentPkgId }) {
 
             {/* Plan name & price */}
             <h3 className="text-lg font-bold text-slate-900 mb-3">{pkg.name}</h3>
-            <div className="flex items-baseline gap-1 mb-2">
+            <div className="flex items-baseline gap-1 mb-1">
               <span className="text-sm text-slate-400">AED</span>
               <span className={`text-4xl font-bold ${isPopular ? 'text-emerald-600' : 'text-slate-900'}`}>
-                {pkg.monthly_price}
+                {displayPrice}
               </span>
               <span className="text-sm text-slate-400">/mo</span>
             </div>
+            {billing === 'yearly' && (
+              <div className="text-xs text-emerald-600 font-medium mb-1">
+                AED {displayPrice * 12}/yr · Save AED {Math.round(monthlyPrice * 12 * YEARLY_DISCOUNT)}/yr
+              </div>
+            )}
             <p className="text-sm text-slate-500 mb-5 min-h-[40px]">
               {pkg.description || 'Professional home maintenance plan.'}
             </p>

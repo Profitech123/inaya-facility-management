@@ -11,9 +11,11 @@ import PlanCards from '../components/subscriptions/PlanCards';
 import ComparisonTable from '../components/subscriptions/ComparisonTable';
 import PlanManagement from '../components/subscriptions/PlanManagement';
 import AIPackageSuggestion from '../components/subscriptions/AIPackageSuggestion';
+import BillingToggle from '../components/subscriptions/BillingToggle';
 
 export default function Subscriptions() {
   const [user, setUser] = useState(null);
+  const [billing, setBilling] = useState('monthly');
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -141,13 +143,14 @@ export default function Subscriptions() {
 
       {/* Plan Cards */}
       <div className="max-w-6xl mx-auto px-6 py-14">
+        <BillingToggle billing={billing} onChange={setBilling} />
         {packages.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-500 text-lg mb-2">Subscription packages coming soon!</p>
             <p className="text-slate-400">We're preparing exclusive plans for homeowners.</p>
           </div>
         ) : (
-          <PlanCards packages={packages} currentPkgId={currentPkg?.id} />
+          <PlanCards packages={packages} currentPkgId={currentPkg?.id} billing={billing} />
         )}
       </div>
 
