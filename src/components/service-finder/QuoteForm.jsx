@@ -24,18 +24,13 @@ export default function QuoteForm({ prefillQuery = '' }) {
     e.preventDefault();
     setSending(true);
 
-    await base44.integrations.Core.SendEmail({
-      to: "info@inaya.ae",
-      subject: `Service Finder Quote: ${form.service_need || 'General'} — ${form.name}`,
-      body: `
-        <h2>Quote Request from Service Finder</h2>
-        <p><strong>Name:</strong> ${form.name}</p>
-        <p><strong>Email:</strong> ${form.email}</p>
-        <p><strong>Phone:</strong> ${form.phone || 'N/A'}</p>
-        <p><strong>Property Type:</strong> ${form.property_type || 'Not specified'}</p>
-        <p><strong>Service Need:</strong> ${form.service_need || 'General inquiry'}</p>
-        <p><strong>Additional Details:</strong><br/>${form.message || 'None'}</p>
-      `
+    await base44.functions.invoke('sendQuoteRequest', {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      property_type: form.property_type,
+      service_need: form.service_need,
+      message: form.message
     });
 
     toast.success("Quote request sent! We'll get back to you within 24 hours.");
