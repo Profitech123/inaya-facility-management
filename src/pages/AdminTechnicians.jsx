@@ -45,7 +45,7 @@ function AdminTechniciansContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="flex items-center justify-center py-20">
         <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -98,10 +98,9 @@ function AdminTechniciansContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Technicians Directory and Performance</h1>
           </div>
@@ -111,7 +110,7 @@ function AdminTechniciansContent() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-4 gap-4">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
@@ -294,7 +293,6 @@ function AdminTechniciansContent() {
         <AddTechnicianDialog open={showAddDialog} onClose={() => setShowAddDialog(false)} />
         <AssignServicesDialog open={!!assignServicesProvider} onClose={() => setAssignServicesProvider(null)} provider={assignServicesProvider} />
         <BlockoutManager open={!!blockoutProvider} onClose={() => setBlockoutProvider(null)} provider={blockoutProvider} />
-      </div>
     </div>
   );
 }

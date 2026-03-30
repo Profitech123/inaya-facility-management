@@ -106,9 +106,8 @@ function AdminBookingsContent() {
     : bookings;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-6 flex items-center justify-between">
+    <div className="space-y-6">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Manage Bookings</h1>
             <p className="text-slate-500">View and manage all service bookings</p>
@@ -346,10 +345,9 @@ function AdminBookingsContent() {
           </div>
           )}
           <CreateJobDialog open={showCreateJob} onClose={() => setShowCreateJob(false)} />
-          </div>
-          </div>
-          );
-          }
+    </div>
+  );
+}
 
 export default function AdminBookings() {
   return (

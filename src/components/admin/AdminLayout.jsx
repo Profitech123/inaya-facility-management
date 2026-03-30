@@ -61,7 +61,7 @@ export default function AdminLayout({ children, currentPage }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-[#F4F6FA] flex">
       {/* Desktop Sidebar */}
       <aside className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen bg-slate-950 text-white z-40 transition-all duration-300 ${collapsed ? 'w-[72px]' : 'w-[260px]'}`}>
         {/* Logo */}

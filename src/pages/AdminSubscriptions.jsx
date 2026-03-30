@@ -192,14 +192,13 @@ function AdminSubscriptionsContent() {
   const mrr = activeSubs.reduce((sum, s) => sum + (s.monthly_amount || 0), 0);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-6">
+    <div className="space-y-6">
+        <div>
           <h1 className="text-3xl font-bold text-slate-900">Manage Subscriptions</h1>
           <p className="text-slate-500">View subscriptions and manage packages</p>
         </div>
         {/* Summary Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-4 gap-6">
           <Card>
             <CardContent className="pt-6">
               <div className="text-sm text-slate-600 mb-2">Active</div>
@@ -418,7 +417,6 @@ function AdminSubscriptionsContent() {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
 
       <AdminPackageForm
         open={showPackageForm}
@@ -442,6 +440,7 @@ function AdminSubscriptionsContent() {
     </div>
   );
 }
+
 
 export default function AdminSubscriptions() {
   return (
