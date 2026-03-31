@@ -77,32 +77,26 @@ function AdminAnalyticsContent() {
   const isLoading = lb || ls;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <div className="max-w-[1440px] mx-auto px-6 py-8">
-        {/* Premium Header */}
-        <div className="relative mb-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE4YzEuNjU2IDAgMyAxLjM0NCAzIDMgMCAxLjY1Ni0xLjM0NCAzLTMgMy0xLjY1NiAwLTMtMS4zNDQtMy0zIDAtMS42NTYgMS4zNDQtMyAzLTN6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50" />
-          </div>
-          <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 md:p-8">
-            <div className="text-white">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-white" />
-                </div>
-                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Analytics Command Center</h1>
-              </div>
-              <p className="text-slate-400 text-sm md:text-base">Real-time business intelligence, performance metrics, and AI-powered insights</p>
+    <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-white" />
             </div>
-            <AnalyticsExportPanel
-              bookings={bookings} subscriptions={subscriptions} providers={providers}
-              services={services} startDate={startDate} endDate={endDate}
-            />
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900">Analytics</h1>
+              <p className="text-slate-500 text-sm">Real-time metrics, performance data, and AI-powered insights</p>
+            </div>
           </div>
+          <AnalyticsExportPanel
+            bookings={bookings} subscriptions={subscriptions} providers={providers}
+            services={services} startDate={startDate} endDate={endDate}
+          />
         </div>
 
         {/* Date Range */}
-        <div className="mb-8">
+        <div>
           <DateRangeFilter
             startDate={startDate} endDate={endDate}
             onStartChange={setStartDate} onEndChange={setEndDate}
@@ -234,7 +228,6 @@ function AdminAnalyticsContent() {
             </TabsContent>
           </Tabs>
         )}
-      </div>
     </div>
   );
 }

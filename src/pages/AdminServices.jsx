@@ -183,9 +183,8 @@ function AdminServicesContent() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+    <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">Manage Services</h1>
             <p className="text-slate-500">Configure services, add-ons, and categories</p>
@@ -329,7 +328,6 @@ function AdminServicesContent() {
             <AIBundleRecommendations services={services} categories={categories} bookings={allBookings} />
           </TabsContent>
         </Tabs>
-      </div>
 
       {/* Dialogs */}
       <ServiceFormDialog

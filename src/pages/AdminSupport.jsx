@@ -159,6 +159,12 @@ function AdminSupportContent() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900">Support Tickets</h1>
+        <p className="text-slate-500">Manage and resolve customer support requests</p>
+      </div>
+
       {/* Stats bar */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
