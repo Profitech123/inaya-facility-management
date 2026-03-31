@@ -1,0 +1,69 @@
+{
+  "name": "ProviderReview",
+  "type": "object",
+  "properties": {
+    "provider_id": {
+      "type": "string",
+      "description": "Reference to Provider"
+    },
+    "booking_id": {
+      "type": "string",
+      "description": "Reference to Booking"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User (customer)"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Star rating 1-5"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "review_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "provider_id",
+    "booking_id",
+    "customer_id",
+    "rating"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {},
+    "update": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
