@@ -96,6 +96,19 @@ Deno.serve(async (req) => {
           from_name: 'INAYA Facilities Management',
         });
 
+        // SMS reminder (24h before)
+        if (customer.phone) {
+          try {
+            await base44.asServiceRole.functions.invoke('sendSMSInternal', {
+              to: customer.phone,
+              message: `INAYA Reminder: Your ${service?.name || 'service'} is scheduled for tomorrow${booking.scheduled_time ? ' at ' + booking.scheduled_time : ''}${address ? ' at ' + address : ''}. Ref: INY-${booking.id.substring(0, 8).toUpperCase()}. Ensure property access is ready. `,
+            });
+            console.log(`SMS reminder sent to ${customer.phone} for booking ${booking.id}`);
+          } catch (smsErr) {
+            console.warn(`SMS reminder failed for booking ${booking.id}:`, smsErr.message);
+          }
+        }
+
         sent++;
         console.log(`Reminder sent to ${customer.email} for booking ${booking.id}`);
       } catch (err) {
