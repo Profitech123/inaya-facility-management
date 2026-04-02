@@ -11,8 +11,13 @@ export default function RenewalReminderBanner({ subscription, packageName, userE
 
   if (!subscription?.end_date || dismissed) return null;
 
-  const daysUntilEnd = differenceInDays(parseISO(subscription.end_date), new Date());
-  
+  let daysUntilEnd;
+  try {
+    daysUntilEnd = differenceInDays(parseISO(subscription.end_date), new Date());
+  } catch {
+    return null;
+  }
+
   if (daysUntilEnd > 30 || daysUntilEnd < 0) return null;
 
   const handleSendReminder = async () => {

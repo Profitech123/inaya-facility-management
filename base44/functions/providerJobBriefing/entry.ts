@@ -118,15 +118,18 @@ Keep each job section concise but informative.`,
 </body>
 </html>`;
 
-      await base44.asServiceRole.integrations.Core.SendEmail({
-        to: provider.email,
-        subject: `📋 Tomorrow's Briefing — ${provBookings.length} Job${provBookings.length > 1 ? 's' : ''} (${tomorrowStr})`,
-        body: emailHtml,
-        from_name: 'INAYA Dispatch'
-      });
-
-      sent++;
-      console.log(`Briefing sent to ${provider.full_name} (${provider.email}) — ${provBookings.length} jobs`);
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: provider.email,
+          subject: `📋 Tomorrow's Briefing — ${provBookings.length} Job${provBookings.length > 1 ? 's' : ''} (${tomorrowStr})`,
+          body: emailHtml,
+          from_name: 'INAYA Dispatch'
+        });
+        sent++;
+        console.log(`Briefing sent to ${provider.full_name} (${provider.email}) — ${provBookings.length} jobs`);
+      } catch (emailErr) {
+        console.warn(`Could not send briefing to ${provider.full_name} (${provider.email}): ${emailErr.message}`);
+      }
     }
 
     return Response.json({ success: true, briefings_sent: sent, total_providers: Object.keys(providerBookingsMap).length });

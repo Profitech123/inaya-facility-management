@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,16 @@ export default function AddPropertyDialog({ open, onClose, existingProperties, o
   const [newProperty, setNewProperty] = useState({ address: '', area: '', property_type: 'villa', bedrooms: '' });
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Reset state when dialog opens
+  useEffect(() => {
+    if (open) {
+      setMode('existing');
+      setSelectedPropertyId('');
+      setNewProperty({ address: '', area: '', property_type: 'villa', bedrooms: '' });
+      setNotes('');
+    }
+  }, [open]);
 
   const handleRequest = async () => {
     setIsSubmitting(true);

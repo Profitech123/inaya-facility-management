@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Calendar, MapPin, CreditCard, Pause, Play, XCircle, ArrowUpCircle,
-  PlusCircle, ChevronDown, ChevronUp, CheckCircle2, Clock, Home
+  PlusCircle, ChevronDown, ChevronUp, CheckCircle2, Clock
 } from 'lucide-react';
 import { format } from 'date-fns';
 
