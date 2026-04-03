@@ -7,6 +7,7 @@ import { Phone, Mail, MapPin, Clock, Globe, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import AIQuoteWidget from '../components/service-finder/AIQuoteWidget';
+import CertificationsBar from '../components/marketing/CertificationsBar';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -221,6 +222,39 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {/* ── Google Maps ── */}
+      <div className="w-full h-80 md:h-96 relative overflow-hidden border-t border-slate-100">
+        <iframe
+          title="INAYA Office Location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.0!2d55.3370!3d25.2773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f00000000%3A0x1!2sBelhasa+Building%2C+Hor+Al+Anz+East%2C+Dubai!5e0!3m2!1sen!2sae!4v1700000000000"
+          width="100%"
+          height="100%"
+          style={{ border: 0, filter: 'grayscale(15%)' }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="absolute inset-0 w-full h-full"
+        />
+        {/* Overlay CTA */}
+        <div className="absolute bottom-4 left-4 bg-white rounded-xl px-4 py-3 shadow-luxury border border-slate-100 flex items-center gap-3">
+          <MapPin className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-slate-900">Belhasa HO Building, Hor Al Anz East</p>
+            <a
+              href="https://maps.google.com/?q=Belhasa+Building+Hor+Al+Anz+East+Dubai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-emerald-600 hover:underline font-medium"
+            >
+              Get directions →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Certifications ── */}
+      <CertificationsBar />
     </div>
   );
 }

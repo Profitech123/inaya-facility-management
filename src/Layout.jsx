@@ -14,6 +14,7 @@ import {
 import CustomerChatWidget from './components/chat/CustomerChatWidget';
 import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
+import FloatingCTA from './components/marketing/FloatingCTA';
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -224,6 +225,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       <AIChatWidget />
+      <FloatingCTA />
 
       <footer className="bg-[#080C0A] text-white py-24 relative overflow-hidden">
         <div className="absolute inset-0">

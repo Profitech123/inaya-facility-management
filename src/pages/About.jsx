@@ -2,6 +2,7 @@ import React from 'react';
 import { Shield, Award, Heart, Users, Target, TrendingUp } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import CertificationsBar from '../components/marketing/CertificationsBar';
 
 const coreValues = [
   { icon: Heart,      title: "Honesty",         desc: "We'll always tell the entire truth, be sincere and refrain from withholding important information in relationships of trust." },
@@ -219,6 +220,9 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      {/* ── Certifications ── */}
+      <CertificationsBar />
     </div>
   );
 }
