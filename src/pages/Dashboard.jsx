@@ -14,6 +14,7 @@ import PropertyHealthScore from '../components/dashboard/PropertyHealthScore';
 import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 import CustomerAnalytics from '../components/dashboard/CustomerAnalytics';
+import ServiceHistoryTrends from '../components/dashboard/ServiceHistoryTrends';
 
 function DashboardContent() {
   const [user, setUser] = useState(null);
@@ -123,6 +124,13 @@ function DashboardContent() {
               <PropertyHealthScore user={user} properties={properties} />
               <DashboardRecommendations user={user} bookings={bookings} />
             </div>
+
+            {/* Service History Trends */}
+            <ServiceHistoryTrends
+              bookings={bookings}
+              services={services}
+              properties={properties}
+            />
 
             {/* Customer Analytics */}
             <CustomerAnalytics
