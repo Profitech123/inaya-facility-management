@@ -1,0 +1,37 @@
+{
+  "name": "TechBlockout",
+  "type": "object",
+  "properties": {
+    "provider_id": {
+      "type": "string",
+      "description": "Reference to Provider"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Block-out date"
+    },
+    "time_slot": {
+      "type": "string",
+      "description": "Specific time slot blocked (e.g., 08:00-10:00), or 'all_day' for full day"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for block-out (e.g., Leave, Training, Personal)"
+    },
+    "is_recurring": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this block repeats weekly"
+    },
+    "recurring_day": {
+      "type": "number",
+      "description": "Day of week (0=Sunday, 6=Saturday) for recurring blocks"
+    }
+  },
+  "required": [
+    "provider_id",
+    "date",
+    "time_slot"
+  ]
+}

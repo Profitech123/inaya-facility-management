@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Download, CreditCard, FileText, Receipt, Loader2 } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import { toast } from 'sonner';
 import AuthGuard from '../components/AuthGuard';
 
 function PaymentHistoryContent() {
@@ -20,7 +21,7 @@ function PaymentHistoryContent() {
       if (response?.data?.pdf_url) {
         window.open(response.data.pdf_url, '_blank');
       } else {
-        toast?.success?.('Invoice processed. Check your email for the PDF.');
+        toast.success('Invoice processed. Check your email for the PDF.');
       }
     } catch {
       // Fallback: open a print-friendly version

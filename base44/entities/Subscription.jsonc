@@ -1,0 +1,128 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "package_id": {
+      "type": "string",
+      "description": "Reference to SubscriptionPackage"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User"
+    },
+    "property_id": {
+      "type": "string",
+      "description": "Reference to Property"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "cancelled",
+        "expired"
+      ],
+      "default": "active"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_billing_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "monthly_amount": {
+      "type": "number"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "auto_renew": {
+      "type": "boolean",
+      "default": true
+    },
+    "pause_reason": {
+      "type": "string",
+      "description": "Reason for pausing subscription"
+    },
+    "cancel_reason": {
+      "type": "string",
+      "description": "Reason for cancelling subscription"
+    },
+    "paused_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cancelled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "renewal_reminder_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether renewal reminder has been sent"
+    }
+  },
+  "required": [
+    "package_id",
+    "customer_id",
+    "property_id",
+    "start_date",
+    "monthly_amount"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "name": "CustomPackage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Customer-chosen name for their custom package"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service_id": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string",
+            "description": "weekly, biweekly, monthly, quarterly, one-time"
+          },
+          "visits_per_month": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "Selected services with frequencies"
+    },
+    "addon_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Selected addon IDs"
+    },
+    "property_type": {
+      "type": "string",
+      "enum": [
+        "villa",
+        "apartment",
+        "townhouse",
+        "any"
+      ],
+      "default": "any"
+    },
+    "duration_months": {
+      "type": "number",
+      "default": 1,
+      "description": "Contract duration"
+    },
+    "monthly_price": {
+      "type": "number",
+      "description": "Calculated monthly price"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "customer_id",
+    "services",
+    "monthly_price"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

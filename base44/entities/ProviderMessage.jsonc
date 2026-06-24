@@ -1,0 +1,67 @@
+{
+  "name": "ProviderMessage",
+  "type": "object",
+  "properties": {
+    "booking_id": {
+      "type": "string",
+      "description": "Reference to Booking"
+    },
+    "sender_type": {
+      "type": "string",
+      "enum": [
+        "provider",
+        "customer"
+      ],
+      "description": "Who sent the message"
+    },
+    "sender_id": {
+      "type": "string",
+      "description": "Provider ID or Customer ID"
+    },
+    "message": {
+      "type": "string"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "status_update",
+        "photo"
+      ],
+      "default": "text"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "booking_id",
+    "sender_type",
+    "sender_id",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

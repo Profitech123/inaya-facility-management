@@ -1,0 +1,121 @@
+{
+  "name": "SubscriptionPackage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Package name (e.g., Villa Care Essentials)"
+    },
+    "description": {
+      "type": "string"
+    },
+    "package_type": {
+      "type": "string",
+      "enum": [
+        "pre-built",
+        "custom"
+      ],
+      "default": "pre-built"
+    },
+    "property_type": {
+      "type": "string",
+      "enum": [
+        "villa",
+        "apartment",
+        "townhouse",
+        "all"
+      ],
+      "default": "all",
+      "description": "Which property types this package applies to"
+    },
+    "duration_months": {
+      "type": "number",
+      "description": "Contract duration (1, 3, 6, 12 months)"
+    },
+    "monthly_price": {
+      "type": "number",
+      "description": "Monthly subscription price in AED"
+    },
+    "setup_fee": {
+      "type": "number",
+      "default": 0,
+      "description": "One-time setup fee in AED"
+    },
+    "discount_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Discount percentage for longer commitments"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service_id": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string",
+            "description": "e.g., weekly, biweekly, monthly, quarterly"
+          },
+          "visits_per_period": {
+            "type": "number",
+            "description": "Number of visits per billing period"
+          }
+        }
+      },
+      "description": "Array of services included in package"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "popular": {
+      "type": "boolean",
+      "default": false
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "min_bedrooms": {
+      "type": "number",
+      "description": "Minimum bedrooms this package applies to"
+    },
+    "max_bedrooms": {
+      "type": "number",
+      "description": "Maximum bedrooms this package applies to"
+    },
+    "cancellation_notice_days": {
+      "type": "number",
+      "default": 30,
+      "description": "Days notice required for cancellation"
+    }
+  },
+  "required": [
+    "name",
+    "duration_months",
+    "monthly_price",
+    "services"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

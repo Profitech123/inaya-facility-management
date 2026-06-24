@@ -15,6 +15,7 @@ import CustomerChatWidget from './components/chat/CustomerChatWidget';
 import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 import FloatingCTA from './components/marketing/FloatingCTA';
+import BottomTabBar from './components/mobile/BottomTabBar';
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -59,13 +60,15 @@ export default function Layout({ children, currentPageName }) {
     await base44.auth.logout(homeUrl);
   };
 
+  const isCustomer = user && user.role !== 'admin';
+
   const isActivePage = (pageName) => currentPageName === pageName;
   const navLinkClass = (pageName) => 
     `transition-colors duration-200 text-[13px] font-medium tracking-[-0.01em] ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-900'}`;
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)]">
+      <nav className="bg-white/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)] safe-top">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-[4.5rem]">
             {/* Logo */}
@@ -181,9 +184,11 @@ export default function Layout({ children, currentPageName }) {
                 </div>
               )}
               
-              <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+              {!isCustomer && (
+                <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -220,12 +225,13 @@ export default function Layout({ children, currentPageName }) {
         )}
       </nav>
 
-      <main className="flex-1">
+      <main className={`flex-1 ${isCustomer ? 'pb-16 lg:pb-0' : ''}`}>
         {children}
       </main>
 
       <AIChatWidget />
       <FloatingCTA />
+      {isCustomer && <BottomTabBar />}
 
       <footer className="bg-[#080C0A] text-white py-24 relative overflow-hidden">
         <div className="absolute inset-0">

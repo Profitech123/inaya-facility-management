@@ -138,15 +138,6 @@ function ProviderDashboardContent() {
     );
   }
 
-  const handleJobUpdate = () => {
-    refetchBookings();
-    setSelectedBooking(null);
-  };
-
-  const getService = (id) => services.find(s => s.id === id);
-  const getProperty = (id) => properties.find(p => p.id === id);
-  const getCustomer = (id) => customers.find(u => u.id === id);
-
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 1024);
@@ -166,6 +157,15 @@ function ProviderDashboardContent() {
       />
     );
   }
+
+  const handleJobUpdate = () => {
+    refetchBookings();
+    setSelectedBooking(null);
+  };
+
+  const getService = (id) => services.find(s => s.id === id);
+  const getProperty = (id) => properties.find(p => p.id === id);
+  const getCustomer = (id) => customers.find(u => u.id === id);
 
   return (
     <div className="min-h-screen bg-slate-50">

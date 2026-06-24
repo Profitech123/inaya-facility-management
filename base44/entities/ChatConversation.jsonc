@@ -1,0 +1,117 @@
+{
+  "name": "ChatConversation",
+  "type": "object",
+  "properties": {
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "resolved",
+        "closed"
+      ],
+      "default": "active"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Chat topic or first message summary"
+    },
+    "last_message": {
+      "type": "string",
+      "description": "Preview of the last message"
+    },
+    "last_message_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_sender": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "admin"
+      ],
+      "description": "Who sent the last message"
+    },
+    "assigned_admin": {
+      "type": "string",
+      "description": "Admin email handling this chat"
+    },
+    "unread_admin": {
+      "type": "number",
+      "default": 0,
+      "description": "Unread messages for admin"
+    },
+    "unread_customer": {
+      "type": "number",
+      "default": 0,
+      "description": "Unread messages for customer"
+    },
+    "resolved_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "customer_id",
+    "customer_name",
+    "customer_email"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "data.assigned_admin": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.customer_id": "{{user.id}}"
+        },
+        {
+          "data.assigned_admin": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

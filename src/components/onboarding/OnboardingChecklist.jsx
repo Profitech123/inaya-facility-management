@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle as PhCheckCircle, Circle as PhCircle, CaretDown, CaretUp, X as PhX, Sparkle, MagnifyingGlass, House, CalendarPlus, Package as PhPackage, ClipboardText, SquaresFour, CalendarCheck, Lifebuoy, ChartLineUp, UsersThree } from '@phosphor-icons/react';
+
+const Circle = PhCircle;
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CUSTOMER_STEPS, ADMIN_STEPS } from './onboardingConfig';

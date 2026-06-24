@@ -1,0 +1,77 @@
+{
+  "name": "OnboardingProgress",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to User"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "admin"
+      ],
+      "description": "User role for onboarding track"
+    },
+    "completed_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of completed onboarding step IDs"
+    },
+    "dismissed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user dismissed the onboarding"
+    }
+  },
+  "required": [
+    "user_id",
+    "role"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

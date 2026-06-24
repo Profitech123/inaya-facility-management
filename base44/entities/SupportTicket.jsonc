@@ -1,0 +1,82 @@
+{
+  "name": "SupportTicket",
+  "type": "object",
+  "properties": {
+    "ticket_number": {
+      "type": "string",
+      "description": "Unique ticket identifier"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User"
+    },
+    "booking_id": {
+      "type": "string",
+      "description": "Related booking if applicable"
+    },
+    "subscription_id": {
+      "type": "string",
+      "description": "Related subscription if applicable"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "billing",
+        "service_quality",
+        "scheduling",
+        "technical",
+        "general"
+      ],
+      "default": "general"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_progress",
+        "resolved",
+        "closed"
+      ],
+      "default": "open"
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Admin user assigned to ticket"
+    },
+    "resolution_notes": {
+      "type": "string"
+    },
+    "resolved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "ticket_number",
+    "customer_id",
+    "subject",
+    "description"
+  ]
+}

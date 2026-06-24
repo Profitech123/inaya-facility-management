@@ -1,0 +1,36 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "profile_image": {
+      "type": "string",
+      "description": "Profile picture URL"
+    },
+    "address": {
+      "type": "string",
+      "description": "Residential address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "preferred_language": {
+      "type": "string",
+      "enum": [
+        "english",
+        "arabic"
+      ],
+      "default": "english"
+    }
+  },
+  "required": [
+    "phone",
+    "profile_image",
+    "address",
+    "city"
+  ]
+}

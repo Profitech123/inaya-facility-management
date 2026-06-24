@@ -1,0 +1,69 @@
+{
+  "name": "Service",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Service name (e.g., AC Maintenance, Pest Control)"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "category_id": {
+      "type": "string",
+      "description": "Reference to ServiceCategory"
+    },
+    "description": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number",
+      "description": "Base price in AED"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "description": "Estimated service duration"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of service features/inclusions"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "available_for_subscription": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "category_id",
+    "price"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

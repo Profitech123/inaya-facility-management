@@ -1,0 +1,58 @@
+{
+  "name": "ServiceArea",
+  "type": "object",
+  "properties": {
+    "area_name": {
+      "type": "string",
+      "description": "Area/Community name (e.g., Dubai Marina, JBR)"
+    },
+    "emirate": {
+      "type": "string",
+      "enum": [
+        "Dubai",
+        "Abu Dhabi",
+        "Sharjah",
+        "Ajman",
+        "RAK",
+        "Fujairah",
+        "UAQ"
+      ],
+      "default": "Dubai"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "service_fee": {
+      "type": "number",
+      "default": 0,
+      "description": "Additional fee for this area"
+    },
+    "delivery_time": {
+      "type": "string",
+      "description": "Typical service delivery time (e.g., 'Same day', '24 hours')"
+    }
+  },
+  "required": [
+    "area_name",
+    "emirate"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

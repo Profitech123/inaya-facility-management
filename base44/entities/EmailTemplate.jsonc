@@ -1,0 +1,76 @@
+{
+  "name": "EmailTemplate",
+  "type": "object",
+  "properties": {
+    "template_key": {
+      "type": "string",
+      "description": "Unique identifier for this template (e.g., booking_confirmed, invoice_sent)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable template name"
+    },
+    "description": {
+      "type": "string",
+      "description": "What triggers this email"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject line (supports placeholders)"
+    },
+    "body": {
+      "type": "string",
+      "description": "Email body HTML (supports placeholders)"
+    },
+    "placeholders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Available placeholders for this template"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "booking",
+        "subscription",
+        "invoice",
+        "support",
+        "general"
+      ],
+      "default": "general"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "template_key",
+    "name",
+    "subject",
+    "body"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

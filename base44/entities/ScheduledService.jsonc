@@ -1,0 +1,83 @@
+{
+  "name": "ScheduledService",
+  "type": "object",
+  "properties": {
+    "subscription_id": {
+      "type": "string",
+      "description": "Reference to parent Subscription"
+    },
+    "service_id": {
+      "type": "string"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "scheduled_time": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "confirmed",
+        "completed",
+        "skipped",
+        "reassigned"
+      ],
+      "default": "scheduled"
+    },
+    "assigned_provider": {
+      "type": "string",
+      "description": "Provider ID assigned to this service"
+    },
+    "previous_provider": {
+      "type": "string",
+      "description": "Previous provider ID if reassigned"
+    },
+    "reassignment_reason": {
+      "type": "string",
+      "description": "Reason for provider reassignment"
+    },
+    "customer_notified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the customer was notified about this scheduled service"
+    },
+    "provider_notified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the provider was notified about this assignment"
+    },
+    "completion_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "subscription_id",
+    "service_id",
+    "scheduled_date"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

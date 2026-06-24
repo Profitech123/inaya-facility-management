@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import AuthGuard from '../components/AuthGuard';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
@@ -15,9 +15,11 @@ import OnboardingChecklist from '../components/onboarding/OnboardingChecklist';
 import OnboardingTooltip from '../components/onboarding/OnboardingTooltip';
 import CustomerAnalytics from '../components/dashboard/CustomerAnalytics';
 import ServiceHistoryTrends from '../components/dashboard/ServiceHistoryTrends';
+import PullToRefresh from '../components/mobile/PullToRefresh';
 
 function DashboardContent() {
   const [user, setUser] = useState(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -89,6 +91,7 @@ function DashboardContent() {
   const nextBooking = bookings.find(b => ['pending', 'confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status));
 
   return (
+    <PullToRefresh onRefresh={() => queryClient.invalidateQueries()}>
     <div className="min-h-screen bg-[#F8F9FB] flex">
       <DashboardSidebar currentPage="Dashboard" />
 
@@ -149,6 +152,7 @@ function DashboardContent() {
         </div>
       </div>
     </div>
+    </PullToRefresh>
   );
 }
 

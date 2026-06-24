@@ -1,0 +1,99 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to User who receives this notification"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "booking_confirmed",
+        "technician_en_route",
+        "service_in_progress",
+        "service_completed",
+        "booking_cancelled",
+        "booking_delayed",
+        "subscription_renewed",
+        "subscription_expiring",
+        "quote_response",
+        "payment_received",
+        "provider_assigned",
+        "general"
+      ],
+      "default": "general",
+      "description": "Type of notification"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short notification title"
+    },
+    "message": {
+      "type": "string",
+      "description": "Notification body text"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    },
+    "link_page": {
+      "type": "string",
+      "description": "Page name to navigate to when clicked (e.g. MyBookings)"
+    },
+    "link_params": {
+      "type": "string",
+      "description": "URL params to append (e.g. id=abc)"
+    },
+    "related_entity_type": {
+      "type": "string",
+      "description": "Entity type related to this notification (Booking, Subscription, etc.)"
+    },
+    "related_entity_id": {
+      "type": "string",
+      "description": "ID of the related entity"
+    }
+  },
+  "required": [
+    "user_id",
+    "type",
+    "title",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

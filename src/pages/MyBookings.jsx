@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, ArrowLeft, ClipboardList } from 'lucide-react';
@@ -9,6 +9,7 @@ import { createPageUrl } from '@/utils';
 import AuthGuard from '../components/AuthGuard';
 import BookingCard from '../components/bookings/BookingCard';
 import ReviewPrompt from '../components/bookings/ReviewPrompt';
+import PullToRefresh from '../components/mobile/PullToRefresh';
 
 const TABS = [
   { key: 'upcoming', label: 'Upcoming' },
@@ -19,6 +20,7 @@ const TABS = [
 function MyBookingsContent() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('upcoming');
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -81,6 +83,7 @@ function MyBookingsContent() {
   }
 
   return (
+    <PullToRefresh onRefresh={() => queryClient.invalidateQueries()}>
     <div className="min-h-screen bg-slate-50">
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
         <div className="max-w-5xl mx-auto px-6">
@@ -178,6 +181,7 @@ function MyBookingsContent() {
         )}
       </div>
     </div>
+    </PullToRefresh>
   );
 }
 

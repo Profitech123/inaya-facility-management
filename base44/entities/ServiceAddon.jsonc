@@ -1,0 +1,29 @@
+{
+  "name": "ServiceAddon",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Add-on name (e.g., Deep Cleaning, Extra Room)"
+    },
+    "description": {
+      "type": "string"
+    },
+    "service_id": {
+      "type": "string",
+      "description": "Reference to parent Service (blank = available for all)"
+    },
+    "price": {
+      "type": "number",
+      "description": "Add-on price in AED"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "price"
+  ]
+}

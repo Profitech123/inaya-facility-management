@@ -1,0 +1,198 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "service_id": {
+      "type": "string",
+      "description": "Reference to Service"
+    },
+    "property_id": {
+      "type": "string",
+      "description": "Reference to Property"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to User (customer)"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "scheduled_time": {
+      "type": "string",
+      "description": "Time slot (e.g., '09:00-12:00')"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "en_route",
+        "in_progress",
+        "completed",
+        "cancelled",
+        "delayed"
+      ],
+      "default": "pending"
+    },
+    "total_amount": {
+      "type": "number"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "refunded"
+      ],
+      "default": "pending"
+    },
+    "assigned_provider_id": {
+      "type": "string",
+      "description": "Reference to Provider entity (primary)"
+    },
+    "assigned_provider_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "All assigned provider IDs for multi-provider jobs"
+    },
+    "assigned_provider": {
+      "type": "string",
+      "description": "Provider name (legacy, kept for compatibility)"
+    },
+    "customer_notes": {
+      "type": "string"
+    },
+    "admin_notes": {
+      "type": "string"
+    },
+    "provider_notes": {
+      "type": "string",
+      "description": "Notes added by provider during/after job"
+    },
+    "completion_photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Photo URLs uploaded by provider"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "addon_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Selected add-on IDs"
+    },
+    "addons_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Total price of selected add-ons"
+    },
+    "delay_reason": {
+      "type": "string",
+      "description": "Reason for delay if status is delayed"
+    },
+    "cancellation_reason": {
+      "type": "string",
+      "description": "Reason provided by customer when cancelling"
+    },
+    "cancelled_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the booking was cancelled"
+    },
+    "cancellation_fee": {
+      "type": "number",
+      "default": 0,
+      "description": "Cancellation fee applied"
+    },
+    "rescheduled_from_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Original date before reschedule"
+    },
+    "rescheduled_from_time": {
+      "type": "string",
+      "description": "Original time before reschedule"
+    },
+    "reschedule_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of times this booking has been rescheduled"
+    }
+  },
+  "required": [
+    "service_id",
+    "property_id",
+    "customer_id",
+    "scheduled_date",
+    "total_amount"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "data.assigned_provider_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "data.assigned_provider_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
