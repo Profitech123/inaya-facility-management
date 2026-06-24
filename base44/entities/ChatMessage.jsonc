@@ -39,6 +39,31 @@
           "created_by_id": "{{user.id}}"
         },
         {
+          "data.conversation_id": {
+            "_in": [
+              {
+                "entity_name": "ChatConversation",
+                "read": {
+                  "$or": [
+                    {
+                      "data.customer_id": "{{user.id}}"
+                    },
+                    {
+                      "data.assigned_admin": "{{user.email}}"
+                    },
+                    {
+                      "user_condition": {
+                        "role": "admin"
+                      }
+                    }
+                  ]
+                },
+                "_output_field": "id"
+              }
+            ]
+          }
+        },
+        {
           "user_condition": {
             "role": "admin"
           }

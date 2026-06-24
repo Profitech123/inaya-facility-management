@@ -96,9 +96,6 @@
     "update": {
       "$or": [
         {
-          "data.customer_id": "{{user.id}}"
-        },
-        {
           "data.assigned_admin": "{{user.email}}"
         },
         {

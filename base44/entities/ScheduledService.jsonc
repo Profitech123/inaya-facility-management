@@ -65,14 +65,50 @@
       }
     },
     "read": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "$or": [
+        {
+          "data.subscription_id": {
+            "_in": [
+              {
+                "entity_name": "Subscription",
+                "read": {
+                  "$or": [
+                    {
+                      "data.customer_id": "{{user.id}}"
+                    },
+                    {
+                      "user_condition": {
+                        "role": "admin"
+                      }
+                    }
+                  ]
+                },
+                "_output_field": "id"
+              }
+            ]
+          }
+        },
+        {
+          "data.assigned_provider": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
     },
     "update": {
-      "user_condition": {
-        "role": "admin"
-      }
+      "$or": [
+        {
+          "data.assigned_provider": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
     },
     "delete": {
       "user_condition": {

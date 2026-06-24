@@ -51,7 +51,32 @@
     "read": {
       "$or": [
         {
-          "data.sender_id": "{{user.id}}"
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "data.booking_id": {
+            "_in": [
+              {
+                "entity_name": "Booking",
+                "read": {
+                  "$or": [
+                    {
+                      "created_by_id": "{{user.id}}"
+                    },
+                    {
+                      "data.assigned_provider_id": "{{user.id}}"
+                    },
+                    {
+                      "user_condition": {
+                        "role": "admin"
+                      }
+                    }
+                  ]
+                },
+                "_output_field": "id"
+              }
+            ]
+          }
         },
         {
           "user_condition": {
