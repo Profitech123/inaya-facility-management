@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, ChevronLeft } from 'lucide-react';
 import NotificationBell from './components/notifications/NotificationBell';
 import {
   DropdownMenu,
@@ -62,6 +62,13 @@ export default function Layout({ children, currentPageName }) {
 
   const isCustomer = user && user.role !== 'admin';
 
+  const DETAIL_ROUTES = ['BookingDetail', 'UserProfile', 'MyProperties', 'PaymentHistory', 'BookService', 'SubscribePackage', 'Notifications', 'Support', 'TechnicianProfile', 'ProviderOnboarding'];
+  const isDetailRoute = DETAIL_ROUTES.includes(currentPageName);
+  const handleBack = () => {
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = createPageUrl('Dashboard');
+  };
+
   const isActivePage = (pageName) => currentPageName === pageName;
   const navLinkClass = (pageName) => 
     `transition-colors duration-200 text-[13px] font-medium tracking-[-0.01em] ${isActivePage(pageName) ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-900'}`;
@@ -71,8 +78,17 @@ export default function Layout({ children, currentPageName }) {
       <nav className="bg-card/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)] safe-top">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-[4.5rem]">
-            {/* Logo */}
-            <Link to={createPageUrl('Home')} className="flex items-center gap-3 flex-shrink-0">
+            {/* Logo / Back button */}
+            {isDetailRoute && (
+              <button
+                onClick={handleBack}
+                className="lg:hidden flex items-center justify-center p-2 -ml-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-700"
+                aria-label="Go back"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            )}
+            <Link to={createPageUrl('Home')} className={`flex items-center gap-3 flex-shrink-0 ${isDetailRoute ? 'hidden lg:flex' : ''}`}>
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
                 alt="INAYA Facilities Management" 
@@ -225,7 +241,7 @@ export default function Layout({ children, currentPageName }) {
         )}
       </nav>
 
-      <main className={`flex-1 ${isCustomer ? 'pb-16 lg:pb-0' : ''}`}>
+      <main className={`flex-1 ${isCustomer ? 'pb-[calc(4.5rem_+_env(safe-area-inset-bottom))] lg:pb-0' : ''}`}>
         {children}
       </main>
 
