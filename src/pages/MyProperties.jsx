@@ -45,6 +45,18 @@ function MyPropertiesContent() {
 
   const createPropertyMutation = useMutation({
     mutationFn: (data) => base44.entities.Property.create(data),
+    onMutate: async (newProperty) => {
+      await queryClient.cancelQueries({ queryKey: ['myProperties', user?.id] });
+      const previousProperties = queryClient.getQueryData(['myProperties', user?.id]);
+      queryClient.setQueryData(['myProperties', user?.id], (old = []) => [
+        ...old,
+        { ...newProperty, id: 'temp-' + Date.now(), created_date: new Date().toISOString() }
+      ]);
+      return { previousProperties };
+    },
+    onError: (err, newProperty, context) => {
+      queryClient.setQueryData(['myProperties', user?.id], context.previousProperties);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(['myProperties']);
       setShowForm(false);

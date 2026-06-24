@@ -80,7 +80,7 @@ function DashboardContent() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -92,7 +92,7 @@ function DashboardContent() {
 
   return (
     <PullToRefresh onRefresh={() => queryClient.invalidateQueries()}>
-    <div className="min-h-screen bg-[#F8F9FB] flex">
+    <div className="min-h-screen bg-background flex">
       <DashboardSidebar currentPage="Dashboard" />
 
       {/* Main content */}

@@ -111,6 +111,13 @@ function ProviderDashboardContent() {
   const activeCount = bookings.filter(b => ['confirmed', 'en_route', 'in_progress', 'delayed'].includes(b.status)).length;
   const completedCount = bookings.filter(b => b.status === 'completed').length;
 
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
   if (providerLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -137,13 +144,6 @@ function ProviderDashboardContent() {
       </div>
     );
   }
-
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
 
   if (isMobile) {
     return (

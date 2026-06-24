@@ -98,6 +98,21 @@ function BookingDetailContent() {
         cancellation_fee: feeAmount,
       });
     },
+    onMutate: async ({ reason, feeAmount }) => {
+      await queryClient.cancelQueries({ queryKey: ['booking', bookingId] });
+      const previousBooking = queryClient.getQueryData(['booking', bookingId]);
+      queryClient.setQueryData(['booking', bookingId], (old) => ({
+        ...old,
+        status: 'cancelled',
+        cancellation_reason: reason,
+        cancelled_at: new Date().toISOString(),
+        cancellation_fee: feeAmount,
+      }));
+      return { previousBooking };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(['booking', bookingId], context.previousBooking);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['booking', bookingId] });
       queryClient.invalidateQueries({ queryKey: ['allMyBookings'] });
@@ -115,6 +130,22 @@ function BookingDetailContent() {
         scheduled_time: newTime,
         reschedule_count: (booking.reschedule_count || 0) + 1,
       });
+    },
+    onMutate: async ({ newDate, newTime }) => {
+      await queryClient.cancelQueries({ queryKey: ['booking', bookingId] });
+      const previousBooking = queryClient.getQueryData(['booking', bookingId]);
+      queryClient.setQueryData(['booking', bookingId], (old) => ({
+        ...old,
+        rescheduled_from_date: old?.scheduled_date,
+        rescheduled_from_time: old?.scheduled_time,
+        scheduled_date: newDate,
+        scheduled_time: newTime,
+        reschedule_count: (old?.reschedule_count || 0) + 1,
+      }));
+      return { previousBooking };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(['booking', bookingId], context.previousBooking);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['booking', bookingId] });

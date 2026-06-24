@@ -68,7 +68,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-white/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)] safe-top">
+      <nav className="bg-card/75 backdrop-blur-2xl sticky top-0 z-50 border-b border-slate-100/60 shadow-[0_1px_0_0_rgba(15,23,42,0.04)] safe-top">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex items-center justify-between h-[4.5rem]">
             {/* Logo */}
@@ -194,7 +194,7 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white">
+          <div className="lg:hidden border-t border-slate-200 bg-card">
             <div className="px-6 py-4 space-y-3">
               <Link to={createPageUrl('Home')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>Home</Link>
               <Link to={createPageUrl('About')} className="block text-slate-700 hover:text-emerald-600" onClick={() => setMobileMenuOpen(false)}>About Us</Link>

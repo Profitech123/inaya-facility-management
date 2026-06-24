@@ -84,7 +84,7 @@ function MyBookingsContent() {
 
   return (
     <PullToRefresh onRefresh={() => queryClient.invalidateQueries()}>
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
         <div className="max-w-5xl mx-auto px-6">
           <Link to={createPageUrl('Dashboard')} className="inline-flex items-center text-slate-400 hover:text-white text-sm mb-4 transition-colors">
@@ -97,7 +97,7 @@ function MyBookingsContent() {
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Tabs */}
-        <div className="flex gap-1 bg-white rounded-xl border border-slate-200 p-1 mb-6 w-fit">
+        <div className="flex gap-1 bg-card rounded-xl border border-slate-200 p-1 mb-6 w-fit">
           {TABS.map(tab => {
             const count = bookings.filter(b => {
               if (tab.key === 'cancelled') return b.status === 'cancelled';
