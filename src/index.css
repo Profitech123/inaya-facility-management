@@ -103,7 +103,7 @@
     overscroll-behavior: none;
   }
 
-  button, a, nav, [role="button"], .lucide {
+  button, a, nav, [role="button"], .lucide, img, svg {
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;

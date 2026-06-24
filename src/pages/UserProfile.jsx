@@ -30,10 +30,12 @@ function UserProfileContent() {
   const handleDeleteAccount = async () => {
     setDeleting(true);
     try {
+      await base44.functions.invoke('deleteUserAccount');
       const homeUrl = window.location.origin + createPageUrl('Home');
       await base44.auth.logout(homeUrl);
     } catch {
-      window.location.href = createPageUrl('Home');
+      toast.error('Failed to delete account. Please try again or contact support.');
+      setDeleting(false);
     }
   };
 

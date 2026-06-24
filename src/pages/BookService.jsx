@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, ArrowLeft, ShieldCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 
@@ -23,7 +23,19 @@ export default function BookService() {
 
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [step, setStep] = useState(0); // 0=hero, 1=property, 2=schedule, 3=customize, 4=review, 5=confirmation
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const step = parseInt(searchParams.get('step') || '0'); // 0=hero, 1=property, 2=schedule, 3=customize, 4=review, 5=confirmation
+
+  const setStep = (newStep, options = {}) => {
+    const next = new URLSearchParams(searchParams);
+    if (newStep === 0) {
+      next.delete('step');
+    } else {
+      next.set('step', String(newStep));
+    }
+    setSearchParams(next, options);
+  };
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState(null);
   const queryClient = useQueryClient();
@@ -125,7 +137,7 @@ export default function BookService() {
       base44.entities.Booking.filter({ id: paymentBookingId }).then(bookings => {
         if (bookings.length > 0) {
           setConfirmedBooking(bookings[0]);
-          setStep(5);
+          setStep(5, { replace: true });
         }
       }).catch(() => {});
     }
@@ -250,7 +262,7 @@ export default function BookService() {
                     properties={properties}
                     userId={user?.id}
                     onPropertiesRefetch={refetchProperties}
-                    onBack={() => setStep(0)}
+                    onBack={() => navigate(-1)}
                     onNext={() => setStep(2)}
                   />
                 )}
@@ -260,7 +272,7 @@ export default function BookService() {
                     bookingData={bookingData}
                     setBookingData={setBookingData}
                     allBookings={allBookings}
-                    onBack={() => setStep(1)}
+                    onBack={() => navigate(-1)}
                     onNext={() => setStep(3)}
                   />
                 )}
@@ -271,7 +283,7 @@ export default function BookService() {
                     setBookingData={setBookingData}
                     serviceId={serviceId}
                     allBookings={allBookings}
-                    onBack={() => setStep(2)}
+                    onBack={() => navigate(-1)}
                     onNext={() => setStep(4)}
                   />
                 )}
@@ -286,7 +298,7 @@ export default function BookService() {
                     grandTotal={grandTotal}
                     addonsTotal={addonsTotal}
                     isProcessingPayment={isProcessingPayment}
-                    onBack={() => setStep(3)}
+                    onBack={() => navigate(-1)}
                     onConfirm={handleConfirmBooking}
                   />
                 )}

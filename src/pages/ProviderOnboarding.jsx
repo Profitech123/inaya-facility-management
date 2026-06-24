@@ -12,15 +12,22 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, PartyPopper, ArrowRight } from 'lucide-react';
 import { createPageUrl } from '@/utils';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 
 function ProviderOnboardingContent() {
-  const [step, setStep] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const step = parseInt(searchParams.get('step') || '0');
   const [completed, setCompleted] = useState(false);
   const queryClient = useQueryClient();
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const providerId = urlParams.get('id');
+  const providerId = searchParams.get('id');
+
+  const setStep = (newStep, options = {}) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('step', String(newStep));
+    setSearchParams(next, options);
+  };
 
   const { data: provider, isLoading } = useQuery({
     queryKey: ['onboardingProvider', providerId],
@@ -34,7 +41,12 @@ function ProviderOnboardingContent() {
 
   useEffect(() => {
     if (provider) {
-      setStep(provider.onboarding_step || 0);
+      if (!searchParams.has('step')) {
+        const initialStep = provider.onboarding_step || 0;
+        const next = new URLSearchParams(searchParams);
+        next.set('step', String(initialStep));
+        setSearchParams(next, { replace: true });
+      }
       if (provider.onboarding_status === 'completed') {
         setCompleted(true);
       }
@@ -52,8 +64,8 @@ function ProviderOnboardingContent() {
     queryClient.invalidateQueries({ queryKey: ['onboardingProvider', providerId] });
   };
 
-  const goNext = () => setStep(s => Math.min(s + 1, 4));
-  const goBack = () => setStep(s => Math.max(s - 1, 0));
+  const goNext = () => setStep(Math.min(step + 1, 4));
+  const goBack = () => navigate(-1);
   const handleComplete = () => setCompleted(true);
 
   if (!providerId) {
