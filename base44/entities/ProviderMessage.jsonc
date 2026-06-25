@@ -54,7 +54,7 @@
           "created_by_id": "{{user.id}}"
         },
         {
-          "data.booking_id": {
+          "data.conversation_id": {
             "_in": [
               {
                 "entity_name": "Booking",
@@ -88,7 +88,7 @@
     "update": {
       "$or": [
         {
-          "data.sender_id": "{{user.id}}"
+          "created_by_id": "{{user.id}}"
         },
         {
           "user_condition": {
