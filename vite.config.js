@@ -15,5 +15,19 @@ export default defineConfig({
       visualEditAgent: true
     }),
     react(),
-  ]
+  ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-query': ['@tanstack/react-query'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-charts': ['recharts'],
+          'vendor-leaflet': ['react-leaflet'],
+          'vendor-dnd': ['@hello-pangea/dnd'],
+        },
+      },
+    },
+  },
 });

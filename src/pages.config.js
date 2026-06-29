@@ -1,102 +1,56 @@
-/**
- * pages.config.js - Page routing configuration
- * 
- * This file is AUTO-GENERATED. Do not add imports or modify PAGES manually.
- * Pages are auto-registered when you create files in the ./pages/ folder.
- * 
- * THE ONLY EDITABLE VALUE: mainPage
- * This controls which page is the landing page (shown when users visit the app).
- * 
- * Example file structure:
- * 
- *   import HomePage from './pages/HomePage';
- *   import Dashboard from './pages/Dashboard';
- *   import Settings from './pages/Settings';
- *   
- *   export const PAGES = {
- *       "HomePage": HomePage,
- *       "Dashboard": Dashboard,
- *       "Settings": Settings,
- *   }
- *   
- *   export const pagesConfig = {
- *       mainPage: "HomePage",
- *       Pages: PAGES,
- *   };
- * 
- * Example with Layout (wraps all pages):
- *
- *   import Home from './pages/Home';
- *   import Settings from './pages/Settings';
- *   import __Layout from './Layout.jsx';
- *
- *   export const PAGES = {
- *       "Home": Home,
- *       "Settings": Settings,
- *   }
- *
- *   export const pagesConfig = {
- *       mainPage: "Home",
- *       Pages: PAGES,
- *       Layout: __Layout,
- *   };
- *
- * To change the main page from HomePage to Dashboard, use find_replace:
- *   Old: mainPage: "HomePage",
- *   New: mainPage: "Dashboard",
- *
- * The mainPage value must match a key in the PAGES object exactly.
- */
-import About from './pages/About';
-import AdminAnalytics from './pages/AdminAnalytics';
-import AdminAuditLogs from './pages/AdminAuditLogs';
-import AdminBookings from './pages/AdminBookings';
-import AdminCSVMigration from './pages/AdminCSVMigration';
-import AdminCustomers from './pages/AdminCustomers';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminEmailTemplates from './pages/AdminEmailTemplates';
-import AdminInvoices from './pages/AdminInvoices';
-import AdminLiveChat from './pages/AdminLiveChat';
-import AdminProviderDetail from './pages/AdminProviderDetail';
-import AdminReports from './pages/AdminReports';
-import AdminServiceAreas from './pages/AdminServiceAreas';
-import AdminServices from './pages/AdminServices';
-import AdminSubscriptions from './pages/AdminSubscriptions';
-import AdminSupport from './pages/AdminSupport';
-import AdminTechSchedule from './pages/AdminTechSchedule';
-import AdminTechnicians from './pages/AdminTechnicians';
-import BookService from './pages/BookService';
-import BookingDetail from './pages/BookingDetail';
-import BusinessExcellence from './pages/BusinessExcellence';
-import Contact from './pages/Contact';
-import Dashboard from './pages/Dashboard';
-import FAQ from './pages/FAQ';
-import HardServices from './pages/HardServices';
+import { lazy } from 'react';
 import Home from './pages/Home';
-import IntegratedFM from './pages/IntegratedFM';
-import MyBookings from './pages/MyBookings';
-import MyProperties from './pages/MyProperties';
-import MySubscriptions from './pages/MySubscriptions';
-import Notifications from './pages/Notifications';
-import OnDemandServices from './pages/OnDemandServices';
-import OurPeople from './pages/OurPeople';
-import PackageBuilder from './pages/PackageBuilder';
-import PaymentHistory from './pages/PaymentHistory';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import ProjectManagement from './pages/ProjectManagement';
-import ProviderDashboard from './pages/ProviderDashboard';
-import ProviderOnboarding from './pages/ProviderOnboarding';
-import ServiceFinder from './pages/ServiceFinder';
-import Services from './pages/Services';
-import SoftServices from './pages/SoftServices';
-import SubscribePackage from './pages/SubscribePackage';
-import Subscriptions from './pages/Subscriptions';
-import Support from './pages/Support';
-import TechnicianProfile from './pages/TechnicianProfile';
-import TermsOfService from './pages/TermsOfService';
-import UserProfile from './pages/UserProfile';
 import __Layout from './Layout.jsx';
 
+// Eagerly import only the landing page; all other pages are code-split
+// and loaded on-demand when the user navigates to them.
+const About = lazy(() => import('./pages/About'));
+const AdminAnalytics = lazy(() => import('./pages/AdminAnalytics'));
+const AdminAuditLogs = lazy(() => import('./pages/AdminAuditLogs'));
+const AdminBookings = lazy(() => import('./pages/AdminBookings'));
+const AdminCSVMigration = lazy(() => import('./pages/AdminCSVMigration'));
+const AdminCustomers = lazy(() => import('./pages/AdminCustomers'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminEmailTemplates = lazy(() => import('./pages/AdminEmailTemplates'));
+const AdminInvoices = lazy(() => import('./pages/AdminInvoices'));
+const AdminLiveChat = lazy(() => import('./pages/AdminLiveChat'));
+const AdminProviderDetail = lazy(() => import('./pages/AdminProviderDetail'));
+const AdminReports = lazy(() => import('./pages/AdminReports'));
+const AdminServiceAreas = lazy(() => import('./pages/AdminServiceAreas'));
+const AdminServices = lazy(() => import('./pages/AdminServices'));
+const AdminSubscriptions = lazy(() => import('./pages/AdminSubscriptions'));
+const AdminSupport = lazy(() => import('./pages/AdminSupport'));
+const AdminTechSchedule = lazy(() => import('./pages/AdminTechSchedule'));
+const AdminTechnicians = lazy(() => import('./pages/AdminTechnicians'));
+const BookService = lazy(() => import('./pages/BookService'));
+const BookingDetail = lazy(() => import('./pages/BookingDetail'));
+const BusinessExcellence = lazy(() => import('./pages/BusinessExcellence'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const HardServices = lazy(() => import('./pages/HardServices'));
+const IntegratedFM = lazy(() => import('./pages/IntegratedFM'));
+const MyBookings = lazy(() => import('./pages/MyBookings'));
+const MyProperties = lazy(() => import('./pages/MyProperties'));
+const MySubscriptions = lazy(() => import('./pages/MySubscriptions'));
+const Notifications = lazy(() => import('./pages/Notifications'));
+const OnDemandServices = lazy(() => import('./pages/OnDemandServices'));
+const OurPeople = lazy(() => import('./pages/OurPeople'));
+const PackageBuilder = lazy(() => import('./pages/PackageBuilder'));
+const PaymentHistory = lazy(() => import('./pages/PaymentHistory'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const ProjectManagement = lazy(() => import('./pages/ProjectManagement'));
+const ProviderDashboard = lazy(() => import('./pages/ProviderDashboard'));
+const ProviderOnboarding = lazy(() => import('./pages/ProviderOnboarding'));
+const ServiceFinder = lazy(() => import('./pages/ServiceFinder'));
+const Services = lazy(() => import('./pages/Services'));
+const SoftServices = lazy(() => import('./pages/SoftServices'));
+const SubscribePackage = lazy(() => import('./pages/SubscribePackage'));
+const Subscriptions = lazy(() => import('./pages/Subscriptions'));
+const Support = lazy(() => import('./pages/Support'));
+const TechnicianProfile = lazy(() => import('./pages/TechnicianProfile'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
 
 export const PAGES = {
     "About": About,
