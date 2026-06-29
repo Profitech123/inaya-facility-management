@@ -16,6 +16,7 @@ import AIChatWidget from './components/chat/AIChatWidget';
 import AdminLayout from './components/admin/AdminLayout';
 import FloatingCTA from './components/marketing/FloatingCTA';
 import BottomTabBar from './components/mobile/BottomTabBar';
+import Logo from './components/Logo';
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -89,11 +90,7 @@ export default function Layout({ children, currentPageName }) {
               </button>
             )}
             <Link to={createPageUrl('Home')} className={`flex items-center gap-3 flex-shrink-0 ${isDetailRoute ? 'hidden lg:flex' : ''}`}>
-              <img 
-                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png" 
-                alt="INAYA Facilities Management" 
-                className="h-10"
-              />
+              <Logo className="text-2xl" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -256,11 +253,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-6 relative">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
-              <img 
-                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png" 
-                alt="INAYA Facilities Management" 
-                className="h-12 mb-4"
-              />
+              <Logo variant="light" className="text-2xl mb-4" />
               <p className="text-slate-400 text-sm">
                 INAYA Facilities Management Services L.L.C · INAYA Technical Services L.L.C · INAYA Security Services L.L.C · INAYA Property L.L.C
               </p>

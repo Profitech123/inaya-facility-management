@@ -4,6 +4,7 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { Menu, X, ChevronLeft } from 'lucide-react';
 import { SquaresFour, Lightning, Timer, UsersThree, CalendarDots, ChartLineUp, ChartBar, Wrench, SignOut, ChatCircleDots, Gear, FileText, ShieldCheck, Invoice, MapPin, UserList, UploadSimple, EnvelopeSimple } from '@phosphor-icons/react';
+import Logo from '@/components/Logo';
 
 const navSections = [
   {
@@ -71,11 +72,7 @@ export default function AdminLayout({ children, currentPage }) {
               IN
             </div>
           ) : (
-            <img 
-              src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
-              alt="INAYA"
-              className="h-8"
-            />
+            <Logo className="text-xl" />
           )}
           {!collapsed && <span className="ml-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Admin</span>}
         </div>
@@ -145,11 +142,7 @@ export default function AdminLayout({ children, currentPage }) {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
           <aside className="absolute top-0 left-0 h-full w-[280px] bg-white flex flex-col shadow-2xl">
             <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200">
-              <img 
-                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
-                alt="INAYA"
-                className="h-8"
-              />
+              <Logo className="text-xl" />
               <button onClick={() => setSidebarOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg">
                 <X className="w-5 h-5 text-slate-700" />
               </button>
@@ -202,11 +195,7 @@ export default function AdminLayout({ children, currentPage }) {
           <button onClick={() => setSidebarOpen(true)} className="p-2 hover:bg-slate-100 rounded-lg">
             <Menu className="w-5 h-5 text-slate-700" />
           </button>
-          <img 
-            src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
-            alt="INAYA"
-            className="h-7"
-          />
+          <Logo className="text-lg" />
           <div className="w-9" />
         </header>
 
