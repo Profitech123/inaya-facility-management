@@ -90,7 +90,7 @@ export default function Layout({ children, currentPageName }) {
             )}
             <Link to={createPageUrl('Home')} className={`flex items-center gap-3 flex-shrink-0 ${isDetailRoute ? 'hidden lg:flex' : ''}`}>
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
+                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png" 
                 alt="INAYA Facilities Management" 
                 className="h-10"
               />
@@ -257,7 +257,7 @@ export default function Layout({ children, currentPageName }) {
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png" 
+                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png" 
                 alt="INAYA Facilities Management" 
                 className="h-12 mb-4"
               />

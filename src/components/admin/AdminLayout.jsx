@@ -72,7 +72,7 @@ export default function AdminLayout({ children, currentPage }) {
             </div>
           ) : (
             <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
+              src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
               alt="INAYA"
               className="h-8"
             />
@@ -146,7 +146,7 @@ export default function AdminLayout({ children, currentPage }) {
           <aside className="absolute top-0 left-0 h-full w-[280px] bg-white flex flex-col shadow-2xl">
             <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200">
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
+                src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
                 alt="INAYA"
                 className="h-8"
               />
@@ -203,7 +203,7 @@ export default function AdminLayout({ children, currentPage }) {
             <Menu className="w-5 h-5 text-slate-700" />
           </button>
           <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
+            src="https://media.base44.com/images/public/698ae0b22bb1c388335ba480/b4887b9cc_screenshot_2026_06_28_at_213213.png"
             alt="INAYA"
             className="h-7"
           />
