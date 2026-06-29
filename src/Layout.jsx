@@ -249,7 +249,7 @@ export default function Layout({ children, currentPageName }) {
       <FloatingCTA />
       {isCustomer && <BottomTabBar />}
 
-      <footer className="bg-[#080C0A] text-white py-24 relative overflow-hidden">
+      <footer className="bg-slate-900 text-white py-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[200px] -translate-x-1/3 -translate-y-1/3" />
         </div>
@@ -302,7 +302,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
           
-          <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-slate-600">
+          <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-slate-400">
             <p>&copy; 2026 INAYA Facilities Management Services L.L.C. Part of Belhasa Group.</p>
             <div className="flex items-center gap-4">
               <Link to={createPageUrl('TermsOfService')} className="hover:text-white transition-colors">Terms of Service</Link>

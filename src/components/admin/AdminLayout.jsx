@@ -63,9 +63,9 @@ export default function AdminLayout({ children, currentPage }) {
   return (
     <div className="min-h-screen bg-[#F4F6FA] flex">
       {/* Desktop Sidebar */}
-      <aside className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen bg-slate-950 text-white z-40 transition-all duration-300 ${collapsed ? 'w-[72px]' : 'w-[260px]'}`}>
+      <aside className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen bg-white border-r border-slate-200 z-40 transition-all duration-300 ${collapsed ? 'w-[72px]' : 'w-[260px]'}`}>
         {/* Logo */}
-        <div className={`h-16 flex items-center border-b border-white/[0.06] flex-shrink-0 ${collapsed ? 'justify-center px-3' : 'px-5'}`}>
+        <div className={`h-16 flex items-center border-b border-slate-200 flex-shrink-0 ${collapsed ? 'justify-center px-3' : 'px-5'}`}>
           {collapsed ? (
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
               IN
@@ -77,7 +77,7 @@ export default function AdminLayout({ children, currentPage }) {
               className="h-8"
             />
           )}
-          {!collapsed && <span className="ml-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Admin</span>}
+          {!collapsed && <span className="ml-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Admin</span>}
         </div>
 
         {/* Nav */}
@@ -85,7 +85,7 @@ export default function AdminLayout({ children, currentPage }) {
           {navSections.map(section => (
             <div key={section.label}>
               {!collapsed && (
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] px-3 mb-2">{section.label}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] px-3 mb-2">{section.label}</p>
               )}
               <div className="space-y-0.5">
                 {section.items.map(item => {
@@ -100,8 +100,8 @@ export default function AdminLayout({ children, currentPage }) {
                         collapsed ? 'justify-center p-3' : 'px-3 py-2.5'
                       } ${
                         isActive
-                          ? 'bg-emerald-500/15 text-emerald-400'
-                          : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
                       <Icon className="w-[18px] h-[18px] flex-shrink-0" weight={isActive ? 'fill' : 'regular'} />
@@ -109,7 +109,7 @@ export default function AdminLayout({ children, currentPage }) {
                         <span className="text-[13px] font-medium">{item.label}</span>
                       )}
                       {isActive && !collapsed && (
-                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-600" />
                       )}
                     </Link>
                   );
@@ -120,17 +120,17 @@ export default function AdminLayout({ children, currentPage }) {
         </nav>
 
         {/* Bottom */}
-        <div className="border-t border-white/[0.06] p-3 flex-shrink-0">
+        <div className="border-t border-slate-200 p-3 flex-shrink-0">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-slate-500 hover:text-white hover:bg-white/[0.06] rounded-xl transition-colors text-xs"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors text-xs"
           >
             <ChevronLeft className={`w-4 h-4 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
             {!collapsed && <span>Collapse</span>}
           </button>
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center gap-3 mt-1 px-3 py-2.5 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors ${collapsed ? 'justify-center' : ''}`}
+            className={`w-full flex items-center gap-3 mt-1 px-3 py-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors ${collapsed ? 'justify-center' : ''}`}
             title={collapsed ? 'Logout' : undefined}
           >
             <SignOut className="w-[18px] h-[18px] flex-shrink-0" weight="duotone" />
@@ -143,21 +143,21 @@ export default function AdminLayout({ children, currentPage }) {
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute top-0 left-0 h-full w-[280px] bg-slate-950 text-white flex flex-col shadow-2xl">
-            <div className="h-16 flex items-center justify-between px-5 border-b border-white/[0.06]">
+          <aside className="absolute top-0 left-0 h-full w-[280px] bg-white flex flex-col shadow-2xl">
+            <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae0b22bb1c388335ba480/7d33a7d25_Screenshot2026-02-12at93002AM.png"
                 alt="INAYA"
                 className="h-8"
               />
-              <button onClick={() => setSidebarOpen(false)} className="p-2 hover:bg-white/10 rounded-lg">
-                <X className="w-5 h-5" />
+              <button onClick={() => setSidebarOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg">
+                <X className="w-5 h-5 text-slate-700" />
               </button>
             </div>
             <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
               {navSections.map(section => (
                 <div key={section.label}>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] px-3 mb-2">{section.label}</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] px-3 mb-2">{section.label}</p>
                   <div className="space-y-0.5">
                     {section.items.map(item => {
                       const Icon = item.icon;
@@ -169,8 +169,8 @@ export default function AdminLayout({ children, currentPage }) {
                           onClick={() => setSidebarOpen(false)}
                           className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
                             isActive
-                              ? 'bg-emerald-500/15 text-emerald-400'
-                              : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                              ? 'bg-emerald-50 text-emerald-700'
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                           }`}
                         >
                           <Icon className="w-[18px] h-[18px]" weight={isActive ? 'fill' : 'regular'} />
@@ -182,10 +182,10 @@ export default function AdminLayout({ children, currentPage }) {
                 </div>
               ))}
             </nav>
-            <div className="border-t border-white/[0.06] p-3">
+            <div className="border-t border-slate-200 p-3">
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-2.5 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors"
               >
                 <SignOut className="w-[18px] h-[18px]" weight="duotone" />
                 <span className="text-[13px] font-medium">Logout</span>
