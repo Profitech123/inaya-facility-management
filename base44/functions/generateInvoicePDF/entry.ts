@@ -4,6 +4,11 @@ import { jsPDF } from 'npm:jspdf@4.0.0';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { booking_id } = await req.json();
 
     if (!booking_id) {
@@ -16,6 +21,11 @@ Deno.serve(async (req) => {
     const booking = bookings?.[0];
     if (!booking) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
+    }
+
+    // Verify ownership: only the booking owner or an admin can generate the invoice
+    if (user.role !== 'admin' && booking.customer_id !== user.id) {
+      return Response.json({ error: 'Forbidden: you do not own this booking' }, { status: 403 });
     }
 
     const [serviceArr, propertyArr, customerArr] = await Promise.all([

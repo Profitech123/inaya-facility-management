@@ -16,6 +16,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing booking_id' }, { status: 400 });
     }
 
+    // Verify ownership: only the booking owner or an admin can refund
+    const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
+    const booking = bookings?.[0];
+    if (!booking) {
+      return Response.json({ error: 'Booking not found' }, { status: 404 });
+    }
+    if (user.role !== 'admin' && booking.customer_id !== user.id) {
+      return Response.json({ error: 'Forbidden: you do not own this booking' }, { status: 403 });
+    }
+
     // Find the checkout session for this booking
     const sessions = await stripe.checkout.sessions.list({ limit: 100 });
     const session = sessions.data.find(s => s.metadata?.booking_id === booking_id && s.payment_status === 'paid');
